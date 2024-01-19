@@ -2,6 +2,7 @@ package com.baby.babycareproductsshop.product;
 
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.product.model.*;
+import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductMapper productMapper;
+    private final AuthenticationFacade facade;
     //---------- 검색기능
     public List<ProductSearchVo> searchProductSelVo(ProductSearchPriceDto dto) {
+
         List<ProductSearchVo> searchVoList = productMapper.keyword(dto);
         List<Integer> iproductList = new ArrayList<>();
         Map<Integer, ProductSearchVo> keywordMap = new HashMap<>();
@@ -39,6 +42,7 @@ public class ProductService {
 
     //---------- 로그인메인화면
     public List<ProductMainSelVo> productMainSelVo2(ProductMainSelDto dto) {
+        dto.setIuser(facade.getLoginUserPk());
         Integer userChildAge  = productMapper.userChildAge(dto.getIuser());
         if (userChildAge  == null) {
             List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
@@ -141,9 +145,10 @@ public class ProductService {
 
 
     //---------- 장바구니
-    public List<ProductBasketSelVo> productBasketSelVo() {
+    public List<ProductBasketSelVo> productBasketSelVo(ProductBasketSelDto dto) {
+         dto.setIuser(facade.getLoginUserPk());
         int result = productMapper.selPaymentAmount();
-        List<ProductBasketSelVo> list = productMapper.selProductBasket();
+        List<ProductBasketSelVo> list = productMapper.selProductBasket(dto);
         List<Integer> iproductList = new ArrayList<>();
         Map<Integer, ProductBasketSelVo> mainSelVoMap = new HashMap<>();
         for (ProductBasketSelVo vo : list) {
@@ -168,6 +173,7 @@ public class ProductService {
     }
 
     public ResVo insBasket(ProductBasketInsDto dto) { // 장바구니 넣기
+        dto.setIuser(facade.getLoginUserPk());
 
         Integer productCnt = productMapper.selProductCntBasket(dto);
         if (productCnt == null) {
@@ -183,6 +189,8 @@ public class ProductService {
     //---------- 찜하기
 
     public ResVo wishProduct(ProductLikeDto dto) {
+        dto.setIuser(facade.getLoginUserPk());
+
         int result = productMapper.deleteLikeProduct(dto);
         if (result == 1) {
             return new ResVo(0);

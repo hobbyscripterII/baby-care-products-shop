@@ -30,7 +30,7 @@ public interface ProductMapper {
 
 
     //----장바구니
-    List<ProductBasketSelVo> selProductBasket ();
+    List<ProductBasketSelVo> selProductBasket (ProductBasketSelDto dto);
     int selPaymentAmount();
     int delBasket(List<Integer> iproducts);
 

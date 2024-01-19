@@ -39,6 +39,7 @@ public class BoardCommentService {
 
     public ResVo insComment(BoardCommentInsDto dto) {
         try {
+            dto.setIuser(authenticationFacade.getLoginUserPk());
             int insCommentRows = mapper.insComment(dto);
 
             if (Utils.isNotNull(insCommentRows)) {
@@ -53,7 +54,8 @@ public class BoardCommentService {
 
     public ResVo delComment(int icomment) {
         try {
-            int delCommentRows = mapper.delComment(icomment);
+            int loginUserPk = authenticationFacade.getLoginUserPk();
+            int delCommentRows = mapper.delComment(new BoardCommentDelDto(icomment, loginUserPk));
 
             if (Utils.isNotNull(delCommentRows)) {
                 return new ResVo(SUCCESS);
@@ -67,6 +69,7 @@ public class BoardCommentService {
 
     public ResVo updComment(BoardCommentUpdDto dto) {
         try {
+            dto.setIuser(authenticationFacade.getLoginUserPk());
             int updCommentRows = mapper.updComment(dto);
 
             if (Utils.isNotNull(updCommentRows)) {

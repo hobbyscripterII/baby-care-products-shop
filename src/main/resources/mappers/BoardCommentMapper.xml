@@ -17,12 +17,12 @@
 
     <delete id="delComment">
         DELETE FROM t_board_comment
-        WHERE icomment = #{icomment}
+        WHERE icomment = #{icomment} AND iuser = #{iuser}
     </delete>
 
     <update id="updComment">
         UPDATE t_board_comment SET
         comment = #{comment}
-        WHERE icomment = #{icomment}
+        WHERE icomment = #{icomment} AND iuser = #{iuser}
     </update>
 </mapper>
