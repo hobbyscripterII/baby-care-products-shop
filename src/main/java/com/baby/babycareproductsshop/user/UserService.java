@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -37,6 +38,10 @@ public class UserService {
 
     //회원가입
     public ResVo postSignUp(UserSignUpDto dto) {
+        UserSignInProcDto procDto = userMapper.selSignInInfoByUid(dto.getUid());
+        if (procDto != null) {
+            throw new RestApiException(AuthErrorCode.DUPLICATED_UID);
+        }
         String hashedUpw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedUpw);
         int insUserResult = userMapper.insUser(dto);
@@ -69,15 +74,8 @@ public class UserService {
     //로그인
     public UserSignInVo postSignIn(HttpServletResponse res, UserSignInDto dto) {
         UserSignInProcDto vo = userMapper.selSignInInfoByUid(dto.getUid());
-        if (vo == null) {
-            return UserSignInVo.builder()
-                    .result(Const.UID_NOT_EXIST)
-                    .build();
-        }
-        if (!passwordEncoder.matches(dto.getUpw(), vo.getUpw())) {
-            return UserSignInVo.builder()
-                    .result(Const.UPW_NOT_MATCHED)
-                    .build();
+        if (vo == null || !passwordEncoder.matches(dto.getUpw(), vo.getUpw())) {
+            throw new RestApiException(AuthErrorCode.LOGIN_FAIL);
         }
         MyPrincipal myPrincipal = new MyPrincipal(vo.getIuser());
         String at = jwtTokenProvider.generateAccessToken(myPrincipal);
@@ -119,17 +117,17 @@ public class UserService {
     //유저 정보 수정
     public ResVo putUserInfo(UserUpdDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
-        if (dto.getUpw() != null) {
+        if (StringUtils.hasText(dto.getUpw())) {
             String hashedUpw = passwordEncoder.encode(dto.getUpw());
             dto.setUpw(hashedUpw);
         }
-        int result = userMapper.updUser(dto);
         int delChildResult = childMapper.delUserChildren(dto.getIuser());
         for (UserChildDto child : dto.getChildren()) {
             child.setIuser(dto.getIuser());
             int insChildResult = childMapper.insUserChildren(child);
         }
-        return new ResVo(Const.SUCCESS);
+        int result = userMapper.updUser(dto);
+        return new ResVo(result);
     }
 
     //로그 아웃
@@ -168,6 +166,7 @@ public class UserService {
         int result = addressMapper.updUserAddress(dto);
         return new ResVo(Const.SUCCESS);
     }
+
     //유저 주소 정보 삭제
     public ResVo delUserAddress(UserDelAddressDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());

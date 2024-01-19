@@ -29,6 +29,8 @@ class UserMapperTest {
         dto.setEmail("test1122@naver.com");
         int insResult = mapper.insUser(dto);
         assertEquals(1, insResult);
+        UserSelMyInfoVo vo = mapper.selMyInfo(dto.getIuser());
+        assertNotNull(vo);
     }
 
     @Test
