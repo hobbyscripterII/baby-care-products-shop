@@ -10,10 +10,12 @@ import com.baby.babycareproductsshop.exception.RestApiException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
@@ -72,9 +74,10 @@ public class BoardCommentController {
             if (Utils.isNotNull(dto)) {
                 return service.updComment(dto);
             } else {
-                throw new RestApiException(AuthErrorCode.COMMENT_REGISTER_FAIL);
+                throw new RestApiException(AuthErrorCode.USER_MODIFY_FAIL);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.COMMENT_REGISTER_FAIL);
         }
     }

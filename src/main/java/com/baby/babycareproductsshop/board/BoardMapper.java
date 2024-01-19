@@ -10,7 +10,7 @@ import java.util.List;
 public interface BoardMapper {
     int insBoard(BoardInsDto dto);
     int updBoard(BoardUpdDto dto);
-    int delBoard(int iboard);
+    int delBoard(BoardDelDto dto);
     BoardSelVo selBoard(int iboard);
     List<BoardGetVo> getBoard(PageNation.Criteria criteria);
     int insBoardPics(BoardPicsDto dto);
