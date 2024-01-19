@@ -173,7 +173,7 @@
     <select id="selProductBasket" > <!-- 장바구니보기 -->
         SELECT
         A.iproduct,
-        A.product_nm ,
+        A.product_nm,
         A.price,
         B.product_cnt,
         A.price * B.product_cnt AS totalPrice
@@ -182,7 +182,7 @@
         ON A.iproduct = B.iproduct
         JOIN t_user C
         ON C.iuser = B.iuser
-        <!-- WHERE B.iuser = #{iuser} -->
+         WHERE B.iuser = #{iuser}
     </select>
 
 
@@ -216,9 +216,6 @@
             #{iproduct}
         </foreach>
     </delete>
-
-
-
 
 
     <select id="selPaymentAmount"> <!-- 결제가격 -->
