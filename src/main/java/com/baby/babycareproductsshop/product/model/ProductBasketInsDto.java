@@ -8,7 +8,7 @@ import lombok.Data;
 @Schema(title = "장바구니 넣을 때 필요한 데이터")
 public class ProductBasketInsDto {
 
-    @Schema(title = "유저 PK")
+    @Schema(title = "유저 PK 안쓸꺼")
     @JsonIgnore
     private int iuser;
 
