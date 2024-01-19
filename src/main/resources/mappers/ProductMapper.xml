@@ -206,6 +206,7 @@
         SET iuser = #{iuser}
         ,iproduct = #{iproduct}
         ,product_cnt = #{productCnt}
+        ,total_price = iproduct * product_cnt
     </insert>
 
 
