@@ -67,8 +67,8 @@ public class ProductContoller {
     //--------------------------------------장바구니 조회---------------------------------------------
     @GetMapping("/selBasket")
     @Operation(summary = "장바구니 조회")
-    public List<ProductBasketSelVo> selCartProduct () {
-        return service.productBasketSelVo();
+    public List<ProductBasketSelVo> selCartProduct (ProductBasketSelDto dto) {
+        return service.productBasketSelVo(dto);
     }
     //--------------------------------------장바구니 상품 삭제---------------------------------------------
     @DeleteMapping()
