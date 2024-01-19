@@ -36,7 +36,12 @@ public class ReviewController {
         //log.info("pics = {}",pics.size());
         dto.setIproduct(iproduct);
         dto.setPics(pics);
-        if(dto.getPics().size() >= 6){
+
+
+
+
+
+        if (dto.getPics() != null && dto.getPics().size() >= 6) {
             throw new RestApiException(AuthErrorCode.UPLOAD_PIC_OVER_REVIEW);
         }
         return service.insReview(dto);
