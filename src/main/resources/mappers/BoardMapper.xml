@@ -11,12 +11,12 @@
         UPDATE t_board SET
         title = #{title},
         contents = #{contents}
-        WHERE iboard = #{iboard}
+        WHERE iboard = #{iboard} AND iuser = #{iuser}
     </update>
 
     <delete id="delBoard">
         DELETE FROM t_board
-        WHERE iboard = #{iboard}
+        WHERE iboard = #{iboard} AND iuser = #{iuser}
     </delete>
 
     <select id="getBoard">
@@ -44,30 +44,4 @@
             (#{iboard}, #{picName})
         </foreach>
     </insert>
-
-    <!-- 댓글 -->
-    <select id="getComment">
-        SELECT a.icomment, b.iuser, b.nm, a.COMMENT, DATE_FORMAT(a.created_at, '%Y.%m.%d') createdAt
-        FROM t_board_comment a
-        INNER JOIN t_user b
-        ON a.iuser = b.iuser
-        WHERE iboard = #{iboard}
-        ORDER BY icomment DESC
-    </select>
-
-    <insert id="insComment">
-        INSERT INTO t_board_comment(iboard, iuser, COMMENT)
-        VALUES(#{iboard}, #{iuser}, #{comment})
-    </insert>
-
-    <delete id="delComment">
-        DELETE FROM t_board_comment
-        WHERE icomment = #{icomment}
-    </delete>
-
-    <update id="updComment">
-        UPDATE t_board_comment SET
-        comment = #{comment}
-        WHERE icomment = #{icomment}
-    </update>
 </mapper>

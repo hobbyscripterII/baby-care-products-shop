@@ -1,5 +1,6 @@
 package com.baby.babycareproductsshop.common;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -57,7 +58,7 @@ public class PageNation {
         // 기본값 설정
         public Criteria() {
             page = 1;
-            amount = 10;
+            amount = 15;
         }
 
         public Criteria(int page, int amount) {
