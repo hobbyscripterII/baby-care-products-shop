@@ -33,13 +33,9 @@ public class ReviewController {
                            @RequestPart ReviewInsDto dto) {
         log.info("iproduct ={}", iproduct);
         log.info("dto = {}", dto);
-        //log.info("pics = {}",pics.size());
+        log.info("pics = {}",pics.size());
         dto.setIproduct(iproduct);
         dto.setPics(pics);
-
-
-
-
 
         if (dto.getPics() != null && dto.getPics().size() >= 6) {
             throw new RestApiException(AuthErrorCode.UPLOAD_PIC_OVER_REVIEW);
