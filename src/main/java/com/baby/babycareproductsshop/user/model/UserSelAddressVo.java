@@ -1,10 +1,8 @@
 package com.baby.babycareproductsshop.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class UserSelAddressVo {
     private int iaddress;
     private String zipCode;
