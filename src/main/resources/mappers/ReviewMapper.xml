@@ -49,7 +49,7 @@
         WHERE ireview = #{ireview}
         AND iuser = #{iuser}
     </select>
-    <delete id="delReviewByReview">
+    <delete id="delReviewByPics">
         DELETE C
         FROM t_order_details AS A
         LEFT JOIN t_review AS B
