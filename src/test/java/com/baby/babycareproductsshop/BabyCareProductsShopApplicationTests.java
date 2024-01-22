@@ -11,9 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
         "app.jwt.refresh-token-expiry= 1296000000"
 })
 class BabyCareProductsShopApplicationTests {
-
     @Test
     void contextLoads() {
     }
-
 }

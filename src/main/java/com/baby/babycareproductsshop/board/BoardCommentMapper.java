@@ -9,6 +9,6 @@ import java.util.List;
 public interface BoardCommentMapper {
     List<BoardCommentGetVo> getComment(int iboard);
     int insComment(BoardCommentInsDto dto);
-    int delComment(BoardCommentDelDto icomment);
+    int delComment(BoardCommentDelDto dto);
     int updComment(BoardCommentUpdDto dto);
 }

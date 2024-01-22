@@ -5,14 +5,20 @@ import com.baby.babycareproductsshop.exception.AuthErrorCode;
 import com.baby.babycareproductsshop.exception.RestApiException;
 import com.baby.babycareproductsshop.review.model.ReviewInsDto;
 import com.baby.babycareproductsshop.review.model.ReviewSelVo;
+import com.baby.babycareproductsshop.security.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,9 +26,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +38,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@WebMvcTest({ReviewController.class})
+@WebMvcTest(controllers = ReviewController.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
 class ReviewControllerTest {
 
     @Autowired private MockMvc mvc;
@@ -40,18 +47,21 @@ class ReviewControllerTest {
 
     @MockBean private ReviewService service;
 
+
+
     @DisplayName("POST / 리뷰 등록 API 테스트")
     @Test
+    @WithMockUser
     void insReview() throws Exception {
 
         final String fileName = "testImage1";
         final String contentType = ".jpg";
         final String filePath = "review/" + fileName + contentType;
 
-        MultipartFile multipartFile1 =
-                new MockMultipartFile(fileName, contentType, filePath, "test file".getBytes(StandardCharsets.UTF_8) );
-        MultipartFile multipartFile2 =
-                new MockMultipartFile(fileName, contentType, filePath, "test file2".getBytes(StandardCharsets.UTF_8) );
+            MultipartFile multipartFile1 =
+                    new MockMultipartFile(fileName, contentType, filePath, "test file".getBytes(StandardCharsets.UTF_8) );
+            MultipartFile multipartFile2 =
+                    new MockMultipartFile(fileName, contentType, filePath, "test file2".getBytes(StandardCharsets.UTF_8) );
 
         List<MultipartFile> multipartFileList = new ArrayList<>();
         multipartFileList.add(multipartFile1);
@@ -70,6 +80,8 @@ class ReviewControllerTest {
                         .post("/api/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
+                        .with(csrf())
+
         )
                 .andExpect(status().isOk())
                 .andExpect(content().string(om.writeValueAsString(file)))
@@ -80,6 +92,7 @@ class ReviewControllerTest {
 
     @DisplayName("GET / 리뷰 목록 API 테스트")
     @Test
+    @WithMockUser
     void getReview() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", "1");
@@ -94,6 +107,7 @@ class ReviewControllerTest {
                 MockMvcRequestBuilders
                         .get("/api/review")
                         .params(params)
+                        .with(csrf())
              )
                 .andExpect(status().isOk())
                 .andExpect(content().string(om.writeValueAsString(list)))
@@ -103,6 +117,7 @@ class ReviewControllerTest {
 
     @DisplayName("DELETE / 리뷰 삭제 API 테스트")
     @Test
+    @WithMockUser
     void delReview() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("ireview","75");
@@ -115,6 +130,7 @@ class ReviewControllerTest {
                 MockMvcRequestBuilders
                         .delete("/api/review")
                         .params(params)
+                        .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(om.writeValueAsString(vo)))
