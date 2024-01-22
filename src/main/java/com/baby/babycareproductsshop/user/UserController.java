@@ -4,6 +4,7 @@ import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.user.model.*;
 import com.baby.babycareproductsshop.validation.ValidationSequence;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+@Tag(name = "유저 API", description = "유저 관련 파트")
 public class UserController {
     private final UserService service;
 

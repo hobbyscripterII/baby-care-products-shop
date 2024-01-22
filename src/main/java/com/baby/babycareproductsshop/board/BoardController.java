@@ -26,6 +26,19 @@ import java.util.stream.Collectors;
 public class BoardController {
     private final BoardService service;
 
+    @GetMapping("/pagenation")
+    @Operation(summary = "게시글 페이지네이션", description = "")
+    public PageNation getPageNation(@RequestParam(name = "board_code") int boardCode, @RequestParam int page, @RequestParam(required = false) String keyword) {
+        PageNation.Criteria criteria = new PageNation.Criteria();
+        criteria.setPage(page);
+        criteria.setBoardCode(boardCode);
+        criteria.setKeyword(keyword);
+
+        List<BoardGetVo> list = service.getBoard(criteria);
+
+        return new PageNation(criteria, list.size());
+    }
+
     @GetMapping
     @Operation(summary = "게시글 목록 출력 기능", description = "")
     public List<BoardGetVo> getBoard(@RequestParam(name = "board_code") int boardCode, @RequestParam int page, @RequestParam(required = false) String keyword) {
@@ -37,7 +50,6 @@ public class BoardController {
                 criteria.setKeyword(keyword);
 
                 List<BoardGetVo> list = service.getBoard(criteria);
-//                PageNation pageNation = new PageNation(criteria, list.size());
                 return list;
             } else {
                 throw new RestApiException(AuthErrorCode.POST_NOT_FOUND);
@@ -74,7 +86,6 @@ public class BoardController {
                 return service.insBoard(dto);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }

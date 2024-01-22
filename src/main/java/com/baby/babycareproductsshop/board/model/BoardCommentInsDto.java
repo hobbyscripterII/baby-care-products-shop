@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class BoardCommentInsDto {
+    @JsonIgnore
+    private int icomment;
     @Schema(title = "게시판 PK", description = "")
     private int iboard;
     @JsonIgnore

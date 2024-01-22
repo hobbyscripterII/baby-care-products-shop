@@ -2,11 +2,14 @@ package com.baby.babycareproductsshop.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @Getter
-@ConfigurationProperties(prefix = "app")
-public class AppProperties {
+@ExtendWith(SpringExtension.class)
+@Import({AppPropertiesTest.class})
+public class AppPropertiesTest {
 
     private final Jwt jwt = new Jwt();
 

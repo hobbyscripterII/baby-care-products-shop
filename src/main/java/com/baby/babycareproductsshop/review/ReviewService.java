@@ -85,7 +85,7 @@ public class ReviewService {
             throw new RestApiException(AuthErrorCode.DEL_REVIEW_NOT_FAIL);
         }
         if (selReview == 1){
-            mapper.delReviewByReview(dto);
+            mapper.delReviewByPics(dto);
             mapper.delReview(dto);
         }
         return new ResVo(Const.SUCCESS);

@@ -15,6 +15,6 @@ public interface ReviewMapper {
     List<ReviewPicsVo> getReviewPics(List<Integer> ireview);
     // 리뷰 삭제
     int selReviewByReview(ReviewDelDto dto);
-    int delReviewByReview(ReviewDelDto dto);
+    int delReviewByPics(ReviewDelDto dto);
     int delReview(ReviewDelDto dto);
 }

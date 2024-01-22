@@ -10,7 +10,7 @@
         ORDER BY icomment DESC
     </select>
 
-    <insert id="insComment">
+    <insert id="insComment" useGeneratedKeys="true" keyProperty="icomment">
         INSERT INTO t_board_comment(iboard, iuser, COMMENT)
         VALUES(#{iboard}, #{iuser}, #{comment})
     </insert>
