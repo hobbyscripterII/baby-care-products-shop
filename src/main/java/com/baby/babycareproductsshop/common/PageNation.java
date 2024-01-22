@@ -3,6 +3,7 @@ package com.baby.babycareproductsshop.common;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -49,6 +50,7 @@ public class PageNation {
     // 페이징 처리
     @Getter
     @Setter
+    @ToString
     public static class Criteria {
         private int boardCode; // 다중 게시판 식별코드
         private int page; // 페이지 번호

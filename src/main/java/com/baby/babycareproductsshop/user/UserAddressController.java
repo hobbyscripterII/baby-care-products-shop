@@ -6,6 +6,7 @@ import com.baby.babycareproductsshop.user.model.UserInsAddressDto;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
 import com.baby.babycareproductsshop.user.model.UserUpdAddressDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user/address")
+@Tag(name = "유저 주소 API", description = "유저 주소 관련 파트")
 public class UserAddressController {
     private final UserService service;
 

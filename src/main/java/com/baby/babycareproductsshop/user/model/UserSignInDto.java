@@ -9,7 +9,7 @@ import static com.baby.babycareproductsshop.common.Const.PASSWORD_IS_BLANK;
 
 @Data
 public class UserSignInDto {
-    @Schema(defaultValue = "bottle123")
+    @Schema(defaultValue = "winter123")
     @NotBlank(message = NM_IS_BLANK)
     private String uid;
     @Schema(defaultValue = "xptmxm123!@#")
