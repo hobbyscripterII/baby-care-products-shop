@@ -63,7 +63,7 @@ public class ReviewService {
             reviewMap.put(vo.getIreview(), vo);
         }
         //
-        if(iReviewList.size() >= 0){
+        if(iReviewList.size() > 0){
             //
             List<ReviewPicsVo> reviewPicsVoList = mapper.getReviewPics(iReviewList);
             for( ReviewPicsVo vo : reviewPicsVoList){
