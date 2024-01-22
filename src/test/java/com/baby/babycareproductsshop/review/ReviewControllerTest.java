@@ -5,6 +5,7 @@ import com.baby.babycareproductsshop.exception.AuthErrorCode;
 import com.baby.babycareproductsshop.exception.RestApiException;
 import com.baby.babycareproductsshop.review.model.ReviewInsDto;
 import com.baby.babycareproductsshop.review.model.ReviewSelVo;
+import com.baby.babycareproductsshop.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,9 @@ class ReviewControllerTest {
     @Autowired private ObjectMapper om;
 
     @MockBean private ReviewService service;
+
+
+    @MockBean private JwtTokenProvider provider;
 
     @DisplayName("POST / 리뷰 등록 API 테스트")
     @Test
