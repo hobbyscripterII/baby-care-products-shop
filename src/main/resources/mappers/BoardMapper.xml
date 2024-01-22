@@ -44,4 +44,8 @@
             (#{iboard}, #{picName})
         </foreach>
     </insert>
+
+    <delete id="delBoardPics">
+        DELETE FROM t_board_pics WHERE iboard = #{iboard}
+    </delete>
 </mapper>

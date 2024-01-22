@@ -14,4 +14,5 @@ public interface BoardMapper {
     BoardSelVo selBoard(int iboard);
     List<BoardGetVo> getBoard(PageNation.Criteria criteria);
     int insBoardPics(BoardPicsDto dto);
+    int delBoardPics(int iboard);
 }

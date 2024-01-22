@@ -109,10 +109,14 @@ public class BoardService {
             dto.setIuser(loginUserPk);
             int updBoardRows = mapper.updBoard(dto);
 
-            // 작성자 외 다른 사용자가 접근했을 때
+            // 작성자 외 다른 사용자가 접근했을 때 및 게시글 수정 실패 시
             if (!Utils.isNotNull(updBoardRows)) {
                 throw new RestApiException(AuthErrorCode.USER_MODIFY_FAIL);
+                // 등록 시 사진이 있었으나 수정 시 사진이 없을 때 테이블 사진, 디렉토리 모두 삭제
             } else if (Utils.isNotNull(updBoardRows) && dto.getPics() == null) {
+                String path = "/board/" + dto.getIboard();
+                myFileUtils.delDirTrigger(path);
+                int delBoardPicsRows = mapper.delBoardPics(dto.getIboard());
                 return new ResVo(SUCCESS);
             } else {
                 BoardPicsDto picsDto = createPics(dto.getIboard(), dto.getPics());

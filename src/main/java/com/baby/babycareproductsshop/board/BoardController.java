@@ -92,7 +92,7 @@ public class BoardController {
 
     @PatchMapping
     @Operation(summary = "게시판 수정 기능", description = "")
-    public ResVo updBoard(@RequestPart BoardUpdDto dto, @RequestPart List<MultipartFile> pics) {
+    public ResVo updBoard(@RequestPart BoardUpdDto dto, @RequestPart(required = false) List<MultipartFile> pics) {
         try {
             if (!Utils.isNotNull(dto)) {
                 throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
