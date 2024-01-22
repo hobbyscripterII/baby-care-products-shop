@@ -23,10 +23,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(x-> x.getDefaultMessage()).toList();
-        String errStr = String.join(" / ", errors);
-        log.warn("handleMethodArgumentNotValid", ex);
-        return handleExceptionInternal(CommonErrorCode.INVALID_PARAMETER, errStr);
+        BindingResult bindingResult = ex.getBindingResult();
+        List<ErrorResponse.ValidError> errors = bindingResult.getFieldErrors()
+                .stream()
+                .map(ErrorResponse.ValidError::putError)
+                .toList();
+
+        return handleExceptionInternal(CommonErrorCode.INVALID_PARAMETER, errors);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -38,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
         log.warn("handleException", e);
-        return handleExceptionInternal(CommonErrorCode.INTERNAL_SERVER_ERROR);  //
+        return handleExceptionInternal(CommonErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RestApiException.class)
@@ -48,24 +51,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     public ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
-        return handleExceptionInternal(errorCode, null);
+        return handleExceptionInternal(errorCode, errorCode.getMessage());
     }
 
     public ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode, String message) {
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(message == null ?
                         makeErrorResponse(errorCode)
-                        : makeErrorResponse(errorCode, message));
+                        : makeErrorResponse(errorCode, message, null));
+    }
+
+    public ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode, List<ErrorResponse.ValidError> errors) {
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(errors == null ?
+                        makeErrorResponse(errorCode)
+                        : makeErrorResponse(errorCode, errors));
     }
 
     private ErrorResponse makeErrorResponse(ErrorCode errorCode) {
-        return makeErrorResponse(errorCode, errorCode.getMessage());
+        return makeErrorResponse(errorCode, errorCode.getMessage(), null);
     }
 
-    private ErrorResponse makeErrorResponse(ErrorCode errorCode, String message) {
+    private ErrorResponse makeErrorResponse(ErrorCode errorCode, String message, List<ErrorResponse.ValidError> errors) {
         return ErrorResponse.builder()
                 .code(errorCode.name())
                 .message(message)
+                .validErrorList(errors)
                 .build();
+    }
+
+    private ErrorResponse makeErrorResponse(ErrorCode errorCode, List<ErrorResponse.ValidError> errors) {
+        return makeErrorResponse(errorCode, errorCode.getMessage(), errors);
     }
 }
