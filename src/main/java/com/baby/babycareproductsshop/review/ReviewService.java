@@ -45,6 +45,9 @@ public class ReviewService {
             for(MultipartFile file : dto.getPics()){
                 String savedFileNm = myFileUtils.transferTo(file, target);
                 insDto.getPics().add(savedFileNm);
+                if (dto.getPics().size() >0) {
+                    dto.setReqReviewPic(dto.getPics().get(1).toString());
+                }
             }
             int insReviewPics = mapper.insReviewPics(insDto);
         }
