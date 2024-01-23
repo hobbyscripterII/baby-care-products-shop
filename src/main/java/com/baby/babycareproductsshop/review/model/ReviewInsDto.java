@@ -22,6 +22,8 @@ public class ReviewInsDto {
     private int iproduct;
     @JsonIgnore
     private int iuser;
+    @Schema(title = "리뷰 대표 사진")
+    private String reqReviewPic;
     @Schema(title = "리뷰 내용")
     private String contents;
     @Schema(title = "리뷰 별점")

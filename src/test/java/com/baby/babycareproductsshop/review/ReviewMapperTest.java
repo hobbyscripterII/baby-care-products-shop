@@ -79,6 +79,7 @@ class ReviewMapperTest {
         List<ReviewSelVo> selVos = mapper.getReview(selDto);
         selVos.add(vo);
         selVos.add(vo2);
+
         assertEquals(19, selDto.getIuser());
         assertNotNull(selVos);
     }
@@ -94,7 +95,8 @@ class ReviewMapperTest {
         List<ReviewPicsVo> picsVos = mapper.getReviewPics(ireview);
         picsVos.add(vo);
         picsVos.add(vo2);
-        assertEquals(2, ireview);
+
+        assertEquals(2, picsVos.size());
         assertNotNull(picsVos);
     }
 
