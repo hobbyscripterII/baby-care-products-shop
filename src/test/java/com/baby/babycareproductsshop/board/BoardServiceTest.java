@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -39,8 +40,9 @@ class BoardServiceTest {
     private String nm = "주영";
     private String createdAt = String.valueOf(LocalDate.now());
 
-    @MockBean
+    @Autowired
     BoardService service;
+
     @MockBean
     private BoardMapper mapper;
     @MockBean
@@ -83,7 +85,7 @@ class BoardServiceTest {
         criteria.setPage(page);
         criteria.setAmount(amount);
 
-        List<BoardGetVo> result = mapper.getBoard(criteria);
+        List<BoardGetVo> result = service.getBoard(criteria);
 
         // then - 앞선 과정의 결과
         assertEquals(list, result);
@@ -103,7 +105,7 @@ class BoardServiceTest {
         given(mapper.selBoard(selVo.getIboard())).willReturn(selVo);
         when(mapper.selBoard(anyInt())).thenReturn(selVo);
 
-        BoardSelVo result = mapper.selBoard(iboard);
+        BoardSelVo result = service.selBoard(iboard);
 
         assertEquals(selVo, result);
     }
@@ -160,9 +162,9 @@ class BoardServiceTest {
         given(mapper.insBoard(insDto)).willReturn(1);
         when(mapper.insBoard(insDto)).thenReturn(1);
 
-        int result = mapper.insBoard(insDto);
+        ResVo insBoard = service.insBoard(insDto);
 
-        assertEquals(1, result);
+        assertEquals(1, insBoard.getResult());
     }
 
     @Test
@@ -196,8 +198,9 @@ class BoardServiceTest {
     @Test
     @DisplayName("게시글 삭제")
     void delBoard() {
-        BoardDelDto trueUser = new BoardDelDto(iboard, iuser);
-        BoardDelDto falseUser = new BoardDelDto(iboard, 2);
-        ResVo success = new ResVo(Const.SUCCESS);
+        BoardDelDto delDto1 = new BoardDelDto(iboard, iuser);
+        BoardDelDto delDto2 = new BoardDelDto(iboard, 2);
+
+
     }
 }

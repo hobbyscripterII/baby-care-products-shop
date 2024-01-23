@@ -13,7 +13,7 @@ import java.util.UUID;
 public class MyFileUtils {
     private final String uploadPrefixPath;
 
-    public MyFileUtils(@Value("${file.path}") String uploadPrefixPath) {
+    public MyFileUtils(@Value("${file.dir}") String uploadPrefixPath) {
         this.uploadPrefixPath = uploadPrefixPath;
     }
 
@@ -26,7 +26,7 @@ public class MyFileUtils {
             dir.mkdirs(); // 폴더 생성
             File saveFile = new File(dir.getPath(), saveFileName);
             file.transferTo(saveFile); // 파일 저장
-            return saveFileName;
+            return saveFile.getPath();
         } catch (Exception e) {
             // 추후 예외 처리 추가
             e.printStackTrace();
