@@ -8,6 +8,6 @@ import lombok.Data;
 public class UserDelAddressDto {
     @JsonIgnore
     private int iuser;
-
+    @Positive
     private int iaddress;
 }
