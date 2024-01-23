@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baby.babycareproductsshop.order.OrderMapper">
+    <insert id="insOrder" useGeneratedKeys="true" keyProperty="iorder">
+        INSERT INTO t_order
+        SET iuser = #{iuser},
+            total_price = #{orderTotalPrice}
+            iaddress = #{iaddress}
+    </insert>
+
+    <insert id="insOrderDetail">
+        <selectKey keyProperty="idetails" resultType="int" order="BEFORE">
+            SELECT MAX(idetails)
+            FROM t_order_details
+        </selectKey>
+        INSERT INTO t_order_details
+        SET iorder = #{iorder},
+            iproduct = #{iproduct},
+            idetails = #{idetails},
+            product_cnt = #{productCnt},
+            product_price = #{productPrice},
+            product_total_price = #{productTotalPrice}
+    </insert>
+</mapper>
