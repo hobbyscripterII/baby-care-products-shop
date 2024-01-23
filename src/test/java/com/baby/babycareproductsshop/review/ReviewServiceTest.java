@@ -84,9 +84,9 @@ class ReviewServiceTest {
 
         List<ReviewSelVo> reviewSelVoList = new ArrayList<>();
         ReviewSelVo vo = new ReviewSelVo();
-        vo.setContents("TDD 작업");
+        vo.setContents("TDD Good");
         ReviewSelVo vo2 = new ReviewSelVo();
-        vo2.setContents("TDD 작업");
+        vo2.setContents("TDD Good");
         reviewSelVoList.add(vo);
         reviewSelVoList.add(vo2);
 
