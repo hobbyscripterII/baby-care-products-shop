@@ -1,11 +1,13 @@
 package com.baby.babycareproductsshop.board;
 
 import com.baby.babycareproductsshop.board.model.*;
+import com.baby.babycareproductsshop.common.MyFileUtils;
 import com.baby.babycareproductsshop.common.PageNation;
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.common.Utils;
 import com.baby.babycareproductsshop.exception.AuthErrorCode;
 import com.baby.babycareproductsshop.exception.RestApiException;
+import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,9 @@ import java.util.stream.Collectors;
 @Tag(name = "게시판 API", description = "게시판 관련 파트")
 public class BoardController {
     private final BoardService service;
+    private final MyFileUtils myFileUtils;
+    private final AuthenticationFacade authenticationFacade;
+    private int iboard;
 
     @GetMapping("/pagenation")
     @Operation(summary = "게시글 페이지네이션", description = "")
@@ -33,7 +38,6 @@ public class BoardController {
         criteria.setPage(page);
         criteria.setBoardCode(boardCode);
         criteria.setKeyword(keyword);
-
         List<BoardGetVo> list = service.getBoard(criteria);
 
         return new PageNation(criteria, list.size());
@@ -48,7 +52,6 @@ public class BoardController {
                 criteria.setPage(page);
                 criteria.setBoardCode(boardCode);
                 criteria.setKeyword(keyword);
-
                 List<BoardGetVo> list = service.getBoard(criteria);
                 return list;
             } else {
@@ -73,6 +76,34 @@ public class BoardController {
         }
     }
 
+    @PostMapping("/webeditor")
+    @Operation(summary = "웹에디터 사진 등록 기능", description = "")
+    public String insBoardPics(@RequestPart(name = "pic") MultipartFile pic) {
+        try {
+            BoardInsDto insDto = new BoardInsDto();
+            insDto.setIuser(authenticationFacade.getLoginUserPk());
+            int insBoardRows = service.insBoard(insDto);
+
+            if (Utils.isNotNull(insBoardRows)) {
+                this.iboard = insDto.getIboard();
+                String path = "/board/" + insDto.getIboard();
+                String savedFileName = myFileUtils.transferTo(pic, path);
+
+                if (Utils.isNotNull(savedFileName)) {
+                    BoardPicsDto picsDto = new BoardPicsDto();
+                    picsDto.setIboard(insDto.getIboard());
+                    picsDto.setPicName(savedFileName);
+                    int insBoardPic = service.insBoardPic(picsDto);
+
+                    return Utils.isNotNull(insBoardPic) ? savedFileName : null;
+                }
+            }
+            throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
+        } catch (Exception e) {
+            throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
+        }
+    }
+
     @PostMapping
     @Operation(summary = "게시글 등록 기능", description = "")
     public ResVo insBoard(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) {
@@ -81,9 +112,17 @@ public class BoardController {
                 throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
             } else {
                 if (pics != null) {
+                    dto.setIboard(iboard);
                     dto.setPics(pics);
                 }
-                return service.insBoard(dto);
+
+                BoardUpdDto updDto = new BoardUpdDto();
+                updDto.setIboard(iboard);
+                updDto.setIuser(authenticationFacade.getLoginUserPk());
+                updDto.setTitle(dto.getTitle());
+                updDto.setContents(dto.getContents());
+                return service.updBoard(updDto);
+//                return service.insBoard(dto);
             }
         } catch (Exception e) {
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
