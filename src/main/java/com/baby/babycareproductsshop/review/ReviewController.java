@@ -33,7 +33,7 @@ public class ReviewController {
                            @RequestPart ReviewInsDto dto) {
         log.info("iproduct ={}", iproduct);
         log.info("dto = {}", dto);
-        log.info("pics = {}",pics.size());
+        // log.info("pics = {}",pics.size());
         dto.setIproduct(iproduct);
         dto.setPics(pics);
 

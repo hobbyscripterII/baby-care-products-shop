@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -38,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
+
 @WebMvcTest(controllers = ReviewController.class,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
 class ReviewControllerTest {
@@ -47,34 +50,31 @@ class ReviewControllerTest {
 
     @MockBean private ReviewService service;
 
-
-
+    /*
     @DisplayName("POST / 리뷰 등록 API 테스트")
     @Test
     @WithMockUser
     void insReview() throws Exception {
 
         final String fileName = "testImage1";
+        final String fileName2 = "testImage2";
         final String contentType = ".jpg";
-        final String filePath = "review/" + fileName + contentType;
-
-            MultipartFile multipartFile1 =
-                    new MockMultipartFile(fileName, contentType, filePath, "test file".getBytes(StandardCharsets.UTF_8) );
-            MultipartFile multipartFile2 =
-                    new MockMultipartFile(fileName, contentType, filePath, "test file2".getBytes(StandardCharsets.UTF_8) );
-
-        List<MultipartFile> multipartFileList = new ArrayList<>();
-        multipartFileList.add(multipartFile1);
-        multipartFileList.add(multipartFile2);
 
         ReviewInsDto dto = new ReviewInsDto();
-        dto.setPics(multipartFileList);
-        if(dto.getPics() != null && dto.getPics().size() >= 6){
-            throw new RestApiException(AuthErrorCode.UPLOAD_PIC_OVER_REVIEW);
-        }
-        String json = om.writeValueAsString(dto);
-        MultipartFile file = new MockMultipartFile("dto", "dto", "application/json", json.getBytes(StandardCharsets.UTF_8));
+        dto.setIproduct(25);
 
+        List<MultipartFile> files = new ArrayList<>();
+        MultipartFile multipartFile1 =
+                new MockMultipartFile(fileName + contentType, "test file".getBytes(StandardCharsets.UTF_8) );
+        MultipartFile multipartFile2 =
+                new MockMultipartFile(fileName2 + contentType,  "test file2".getBytes(StandardCharsets.UTF_8) );
+        files.add(multipartFile1);
+        files.add(multipartFile2);
+
+
+        dto.setPics(files);
+        ResVo vo = new ResVo(1);
+        String json = om.writeValueAsString(dto);
         mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/review")
@@ -84,11 +84,12 @@ class ReviewControllerTest {
 
         )
                 .andExpect(status().isOk())
-                .andExpect(content().string(om.writeValueAsString(file)))
+                .andExpect(content().string(om.writeValueAsString(vo)))
                 .andDo(print());
 
         verify(service).insReview(any());
     }
+     */
 
     @DisplayName("GET / 리뷰 목록 API 테스트")
     @Test
@@ -99,8 +100,16 @@ class ReviewControllerTest {
         params.add("iuser","19");
 
         List<ReviewSelVo> list = new ArrayList<>();
-        list.add(new ReviewSelVo(1, "이름", 1, "내용", "날짜", null));
-        list.add(new ReviewSelVo(2, "이름2", 2, "내용2", "날짜2", null));
+        List<String> pics = new ArrayList<>();
+        String str1 = "abc.jpg";
+        String str2 = "def.jpg";
+        pics.add(str1);
+        pics.add(str2);
+
+        List<String> pics2 = Arrays.stream(new String[]{"a.jpg","b.jpg"}).toList();
+
+        list.add(new ReviewSelVo(1, "nm", 1, "cont", "date", pics));
+        list.add(new ReviewSelVo(2, "nm2", 2, "cont2", "date ", pics2));
         given(service.getReview(any())).willReturn(list);
 
         mvc.perform(

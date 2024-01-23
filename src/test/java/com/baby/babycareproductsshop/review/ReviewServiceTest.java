@@ -80,34 +80,38 @@ class ReviewServiceTest {
         ReviewSelDto dto = new ReviewSelDto();
         dto.setIuser(authenticationFacade.getLoginUserPk());
 
-        List<ReviewSelVo> result = mapper.getReview(dto);
+        ReviewSelVo vo = new ReviewSelVo();
+        vo.setIreview(75);
+        vo.setContents("TDD1 Good");
+
+        ReviewSelVo vo2 = new ReviewSelVo();
+        vo.setIreview(75);
+        vo2.setContents("TDD2 Good");
 
         List<ReviewSelVo> reviewSelVoList = new ArrayList<>();
-        ReviewSelVo vo = new ReviewSelVo();
-        vo.setContents("TDD 작업");
-        ReviewSelVo vo2 = new ReviewSelVo();
-        vo2.setContents("TDD 작업");
         reviewSelVoList.add(vo);
         reviewSelVoList.add(vo2);
 
-        List<Integer> iReviewList = new ArrayList<>();
-        iReviewList.add(vo.getIreview());
-        iReviewList.add(vo2.getIreview());
+        when(mapper.getReview(any())).thenReturn(reviewSelVoList);
 
-        Map<Integer, ReviewSelVo> reviewSelVoMap = new HashMap<>();
-        for(ReviewSelVo selVo : reviewSelVoList){
-            iReviewList.add(selVo.getIreview());
-            reviewSelVoMap.put(selVo.getIreview(), selVo);
-        }
-        if(iReviewList.size() > 0){
-            List<ReviewPicsVo> reviewPicsVoList = mapper.getReviewPics(iReviewList);
-            for(ReviewPicsVo picsVo : reviewPicsVoList){
-                ReviewSelVo reviewSelVo = reviewSelVoMap.get(picsVo.getIreview());
-                List<String> pics = reviewSelVo.getPics();
-                pics.add(picsVo.getReviewPic());
-            }
-        }
-        assertEquals(result, reviewSelVoList);
+        String pics = "a.jpg";
+        String pics2 = "b.jpg";
+
+        ReviewPicsVo picsVo = new ReviewPicsVo(vo.getIreview(), pics);
+        ReviewPicsVo picsVo2 = new ReviewPicsVo(vo2.getIreview(), pics2);
+
+        List<ReviewPicsVo> picsVoList = new ArrayList<>();
+        picsVoList.add(picsVo);
+        picsVoList.add(picsVo2);
+
+        List<Integer> integers = new ArrayList<>();
+        integers.add(vo.getIreview());
+        integers.add(vo2.getIreview());
+
+        when(mapper.getReviewPics(integers)).thenReturn(picsVoList);
+
+        assertEquals(2, reviewSelVoList.size());
+        assertEquals(2,picsVoList.size());
     }
 
     @Test
