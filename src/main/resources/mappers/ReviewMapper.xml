@@ -7,9 +7,9 @@
     <!-- 리뷰 작성 -->
     <insert id="insReview" >
         INSERT INTO t_review
-        ( ireview, iorder, iproduct, iuser, contents, product_score )
+        ( ireview, iorder, iproduct, iuser, req_review_pic, contents, product_score )
         VALUES
-        ( #{ireview}, #{iorder}, #{iproduct}, #{iuser}, #{contents}, #{productScore} )
+        ( #{ireview}, #{iorder}, #{iproduct}, #{iuser}, #{reqReviewPic}, #{contents}, #{productScore} )
     </insert>
     <!-- -->
     <insert id="insReviewPics">

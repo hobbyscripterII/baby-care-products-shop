@@ -4,6 +4,7 @@ import com.baby.babycareproductsshop.CharEncodingConfig;
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.security.JwtAuthenticationFilter;
 import com.baby.babycareproductsshop.security.SecurityConfiguration;
+import com.baby.babycareproductsshop.user.model.UserDelAddressDto;
 import com.baby.babycareproductsshop.user.model.UserInsAddressDto;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
 import com.baby.babycareproductsshop.user.model.UserUpdAddressDto;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = UserAddressController.class,
 //        excludeAutoConfiguration = SecurityConfiguration.class,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
+@WithMockUser
 class UserAddressControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -47,7 +49,6 @@ class UserAddressControllerTest {
     private ObjectMapper mapper;
 
     @Test
-    @WithMockUser
     void postUserAddress() throws Exception {
         ResVo result = new ResVo(1);
         given(service.postUserAddress(any())).willReturn(result);
@@ -71,9 +72,7 @@ class UserAddressControllerTest {
     }
 
 
-
     @Test
-    @WithMockUser
     void getUserAddress() throws Exception {
         UserSelAddressVo vo1 = new UserSelAddressVo();
         vo1.setAddress("주소");
@@ -94,8 +93,8 @@ class UserAddressControllerTest {
         given(service.getUserAddress()).willReturn(result);
 
         mvc.perform(
-               MockMvcRequestBuilders.get("/api/user/address")
-        ).andExpect(status().isOk())
+                        MockMvcRequestBuilders.get("/api/user/address")
+                ).andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(result)))
                 .andDo(print());
 
@@ -103,7 +102,6 @@ class UserAddressControllerTest {
     }
 
     @Test
-    @WithMockUser
     void putUserAddress() throws Exception {
         ResVo result = new ResVo(1);
         UserUpdAddressDto dto = new UserUpdAddressDto();
@@ -113,21 +111,35 @@ class UserAddressControllerTest {
         dto.setAddressDetail("상세 주소");
         dto.setZipCode("1234");
 
-        given(service.putUserAddress(dto)).willReturn(result);
+        given(service.putUserAddress(any())).willReturn(result);
+
 
         mvc.perform(
-                MockMvcRequestBuilders.put("/api/user/address")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dto))
+                        MockMvcRequestBuilders.put("/api/user/address")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(dto))
+                                .with(csrf())
+                ).andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(result)))
+                .andDo(print());
+
+        verify(service).putUserAddress(any());
+    }
+
+    @Test
+    void delUserAddress() throws Exception{
+        UserDelAddressDto dto = new UserDelAddressDto();
+        dto.setIaddress(1);
+        ResVo result = new ResVo(1);
+        given(service.delUserAddress(any())).willReturn(result);
+
+        mvc.perform(
+                MockMvcRequestBuilders.delete("/api/user/address?iaddress=1")
                         .with(csrf())
         ).andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(result)))
                 .andDo(print());
 
-        verify(service).putUserAddress(dto);
-    }
-
-    @Test
-    void delUserAddress() {
+        verify(service).delUserAddress(any());
     }
 }
