@@ -42,7 +42,7 @@ public class UserController {
             중복되는 닉네임 없음 -> result = 1<br>
             중복되는 닉네임 있음 -> error
             """)
-    @PostMapping("/sign-up/check")
+    @PostMapping("/sign-up/check-id")
     public ResVo postCheckUid(@Valid @RequestBody UserCheckUidDto dto) {
         log.info("uid : {}",dto);
         return service.postCheckUid(dto);
