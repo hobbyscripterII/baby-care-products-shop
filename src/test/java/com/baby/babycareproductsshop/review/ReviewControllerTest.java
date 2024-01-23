@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -37,6 +38,7 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 @WebMvcTest(controllers = ReviewController.class,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
@@ -99,8 +101,8 @@ class ReviewControllerTest {
         params.add("iuser","19");
 
         List<ReviewSelVo> list = new ArrayList<>();
-        list.add(new ReviewSelVo(1, "이름", 1, "내용", "날짜", null));
-        list.add(new ReviewSelVo(2, "이름2", 2, "내용2", "날짜2", null));
+        list.add(new ReviewSelVo(1, "nm", 1, "cont", "date", null));
+        list.add(new ReviewSelVo(2, "nm2", 2, "cont2", "date ", null));
         given(service.getReview(any())).willReturn(list);
 
         mvc.perform(
