@@ -35,7 +35,7 @@ public class ProductMainSelVo {
     private int likeProduct;
 
     @Schema(title = "상품 사진")
-    private List<String> productPic = new ArrayList<>(); //상품 사진
+    private String repPic;; //상품 사진
 
 
 

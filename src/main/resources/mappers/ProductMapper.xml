@@ -191,7 +191,10 @@
         A.price,
         B.product_cnt,
         A.price * B.product_cnt AS totalPrice,
-        SUM(B.product_cnt * A.price) AS paymentAmount
+        (SELECT SUM(B.product_cnt * A.price)
+        FROM t_product A
+        JOIN t_basket B ON A.iproduct = B.iproduct
+        )AS paymentAmount
         FROM t_product A
         JOIN t_basket B ON A.iproduct = B.iproduct
         JOIN t_user C ON C.iuser = B.iuser
@@ -318,6 +321,9 @@
         FROM t_basket
         WHERE iuser = #{iuser}
     </delete>
+
+
+
 
 
 
