@@ -12,7 +12,6 @@ public class BoardInsDto {
     @JsonIgnore
     private int iboard;
     @JsonIgnore
-//    @Schema(title = "회원 PK", description = "")
     private int iuser;
     @Schema(title = "게시판 식별코드", description = "1. 공지사항 2. 소통해요 3. 1:1 문의")
     private int boardCode;
