@@ -22,7 +22,7 @@ public class OrderService {
         List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
         dto.setIaddress(addresses.get(0).getIaddress());
         int insOrderResult = orderMapper.insOrder(dto);
-        for (OrderProductDto product : dto.getProducts()) {
+        for (OrderInsDetailsProcDto product : dto.getProducts()) {
             product.setIorder(dto.getIorder());
             product.setProductPrice(product.getProductTotalPrice() / product.getProductCnt());
             int insOrderDetails = orderDetailMapper.insOrderDetail(product);
@@ -38,5 +38,13 @@ public class OrderService {
         result.setPaymentOptions(paymentOptions);
 
         return result;
+    }
+
+    public OrderConfirmOrderVo confirmOrder(OrderConfirmOrderDto dto) {
+        dto.setIaddress(authenticationFacade.getLoginUserPk());
+        int updResult = orderMapper.updOrder(dto);
+
+        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto.getIorder());
+        return resultVo;
     }
 }

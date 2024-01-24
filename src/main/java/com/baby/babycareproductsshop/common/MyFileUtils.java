@@ -13,7 +13,7 @@ import java.util.UUID;
 public class MyFileUtils {
     private final String uploadPrefixPath;
 
-    public MyFileUtils(@Value("${file.path}") String uploadPrefixPath) {
+    public MyFileUtils(@Value("${file.dir}") String uploadPrefixPath) {
         this.uploadPrefixPath = uploadPrefixPath;
     }
 

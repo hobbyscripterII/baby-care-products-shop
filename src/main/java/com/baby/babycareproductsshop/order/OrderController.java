@@ -1,5 +1,7 @@
 package com.baby.babycareproductsshop.order;
 
+import com.baby.babycareproductsshop.order.model.OrderConfirmOrderDto;
+import com.baby.babycareproductsshop.order.model.OrderConfirmOrderVo;
 import com.baby.babycareproductsshop.order.model.OrderInsDto;
 import com.baby.babycareproductsshop.order.model.OrderInsVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +21,7 @@ public class OrderController {
     }
 
     @PutMapping
-    public String confirmOrder() {
-        return null;
+    public OrderConfirmOrderVo confirmOrder(@RequestBody OrderConfirmOrderDto dto) {
+        return service.confirmOrder(dto);
     }
 }
