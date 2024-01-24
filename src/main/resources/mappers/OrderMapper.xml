@@ -6,21 +6,14 @@
     <insert id="insOrder" useGeneratedKeys="true" keyProperty="iorder">
         INSERT INTO t_order
         SET iuser = #{iuser},
-            total_price = #{orderTotalPrice}
+            total_price = #{totalOrderPrice},
             iaddress = #{iaddress}
     </insert>
 
-    <insert id="insOrderDetail">
-        <selectKey keyProperty="idetails" resultType="int" order="BEFORE">
-            SELECT MAX(idetails)
-            FROM t_order_details
-        </selectKey>
-        INSERT INTO t_order_details
-        SET iorder = #{iorder},
-            iproduct = #{iproduct},
-            idetails = #{idetails},
-            product_cnt = #{productCnt},
-            product_price = #{productPrice},
-            product_total_price = #{productTotalPrice}
-    </insert>
+    <select id="selPaymentOption">
+        SELECT ipayment_option, payment_option
+        FROM t_payment_option
+        WHERE ipayment_option != 1
+    </select>
+
 </mapper>
