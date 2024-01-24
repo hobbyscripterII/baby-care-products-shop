@@ -20,7 +20,7 @@ public class UserUpdDto {
     private int iuser;
 
     @Schema(description = "유저 비밀번호", example = "특수문자는 @$!%*?&#~_-를 사용할 수 있습니다.")
-    @NotNull(message = Const.NM_IS_BLANK)
+    @NotNull(message = PASSWORD_IS_BLANK)
     @Pattern(regexp = "^[a-zA-Z0-9]{4,10}$",
             message = NOT_ALLOWED_ID)
     private String upw;

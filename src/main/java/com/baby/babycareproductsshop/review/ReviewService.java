@@ -34,20 +34,22 @@ public class ReviewService {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         log.info("dto = {}", dto);
         ReviewPicsInsDto insDto = new ReviewPicsInsDto();
-        insDto.setIreview(dto.getIreview());
+        insDto.setIreview(dto.getIdetails());
         log.info("insDto = {}", insDto);
-        String target = "review/" + dto.getIreview();
-        for(MultipartFile file : dto.getPics()) {
-            String savedFileNm = myFileUtils.transferTo(file, target);
-            dto.setReqReviewPic(savedFileNm);
-            insDto.getPics().add(savedFileNm);
-            if (dto.getPics() != null || dto.getPics() == null) {
-                int insReview = mapper.insReview(dto);
-            }
-            else {
-                int insReviewPics = mapper.insReviewPics(insDto);
-            }
+        String target = "review/" + dto.getIdetails();
+        if( dto.getPics() == null) {
+            int insReview = mapper.insReview(dto);
+            return new ResVo(Const.SUCCESS);
         }
+        for (MultipartFile file : dto.getPics()) {
+            String savedFileNm = myFileUtils.transferTo(file, target);
+            insDto.getPics().add(savedFileNm);
+            if(dto.getReqReviewPic() == null) {
+                dto.setReqReviewPic(savedFileNm);
+            }
+          }
+         int insReview = mapper.insReview(dto);
+         int insReviewPics = mapper.insReviewPics(insDto);
         return new ResVo(Const.SUCCESS);
     }
 

@@ -3,16 +3,14 @@ package com.baby.babycareproductsshop.order.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class OrderInsDto {
+public class OrderConfirmOrderDto {
     @JsonIgnore
     private int iuser;
-    List<OrderProductDto> products;
-    private int totalOrderPrice;
-    @JsonIgnore
-    private int iaddress;
-    @JsonIgnore
     private int iorder;
+    private int iaddress;
+    private String addresseeNm;
+    private String email;
+    private String phoneNumber;
+    private int ipaymentOption;
 }

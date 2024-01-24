@@ -22,8 +22,23 @@ public class ProductService {
     private final ProductReviewMapper productReviewMapper;
     private final AuthenticationFacade facade;
     //---------- 검색기능
-    public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
-        List<ProductSearchVo> searchVoList = productMapper.search(dto);
+    public List<ProductSearchVo> searchProductSelVo(ProductSearchPriceDto dto) {
+
+        List<ProductSearchVo> searchVoList = productMapper.keyword(dto);
+        List<Integer> iproductList = new ArrayList<>();
+        Map<Integer, ProductSearchVo> keywordMap = new HashMap<>();
+        for (ProductSearchVo vo : searchVoList) {
+            iproductList.add(vo.getIproduct());
+            keywordMap.put(vo.getIproduct(), vo);
+        }
+        if (iproductList.size() > 0) {
+            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
+            for (ProductPicsVo vo : productPicsVoList) {
+                ProductSearchVo searchVo = keywordMap.get(vo.getIproduct());
+                List<String> pics = searchVo.getPics();
+                pics.add(vo.getProductPic());
+            }
+        }
         return searchVoList;
     }
 
@@ -32,28 +47,67 @@ public class ProductService {
     public List<ProductMainSelVo> productMainSelVo2(ProductMainSelDto dto) {
         dto.setIuser(facade.getLoginUserPk());
         Integer userChildAge  = productMapper.userChildAge(dto.getIuser());
-        if (dto.getIuser()  == 0) {
+        if (userChildAge  == null) {
             List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
+            List<Integer> iproductList = new ArrayList<>();
+            Map<Integer, ProductMainSelVo> mainSelVoMap = new HashMap<>();
+            for (ProductMainSelVo vo : mainlist) {
+                iproductList.add(vo.getIproduct());
+                mainSelVoMap.put(vo.getIproduct(), vo);
+            }
+            if (iproductList.size() > 0) {
+                List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
+                for (ProductPicsVo vo : productPicsVoList) {
+                    ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
+                    List<String> pics = mainSelVo.getProductPic();
+                    pics.add(vo.getProductPic());
+                }
+            }
             return mainlist;
         }
-        if(dto.getIuser() > 0) {
-            dto.setRecommandAge(userChildAge);
-            List<ProductMainSelVo> mainlist = productMapper.selProductMainByAge(dto);
-            return mainlist;
+        dto.setRecommandAge(userChildAge );
+        List<ProductMainSelVo> mainlist = productMapper.selProductMainByAge(dto);
+        List<Integer> iproductList = new ArrayList<>();
+        Map<Integer, ProductMainSelVo> mainSelVoMap = new HashMap<>();
+        for (ProductMainSelVo vo : mainlist) {
+            iproductList.add(vo.getIproduct());
+            mainSelVoMap.put(vo.getIproduct(), vo);
         }
-        return null;
+        if (iproductList.size() > 0) {
+            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
+            for (ProductPicsVo vo : productPicsVoList) {
+                ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
+                List<String> pics = mainSelVo.getProductPic();
+                pics.add(vo.getProductPic());
+            }
+        }
+        return mainlist;
     }
 
     //------ 월령별 화면? 카테고리 느낌인거같은데
 
     public List<ProductMainSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
         List<ProductMainSelVo> list = productMapper.getProductByAgeRange(dto);
+        List<Integer> iproductList = new ArrayList<>();
+        Map<Integer, ProductMainSelVo> mainSelVoMap = new HashMap<>();
+        for (ProductMainSelVo vo : list) {
+            iproductList.add(vo.getIproduct());
+            mainSelVoMap.put(vo.getIproduct(), vo);
+        }
+        if (iproductList.size() > 0) {
+            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
+            for (ProductPicsVo vo : productPicsVoList) {
+                ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
+                List<String> pics = mainSelVo.getProductPic();
+                pics.add(vo.getProductPic());
+            }
+        }
         return list;
     }
 
     //---- 상품 상세 정보
     public List<ProductSelVo> selProduct(ProductSelDto dto) {
-        ProductAverageSelVo productAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
+        ProductProductAverageSelVo productProductAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
 
         List<Integer> productReview = new ArrayList<>();
         List<Integer> iProductList = new ArrayList<>();
@@ -82,8 +136,8 @@ public class ProductService {
         }
         if (reviewSelVoList.size() > 0 ) {
             for (ProductSelVo vo : Product) {
-                vo.setScoreAvg(productAverageSelVo.getAvgProductScore());
-                vo.setReviewCnt(productAverageSelVo.getReviewCnt());
+                vo.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
+                vo.setReviewCnt(productProductAverageSelVo.getCountIreview());
                 iProductList.add(vo.getIproduct());
                 vo.setReviewSelVo(reviewSelVoList);
 
@@ -104,10 +158,26 @@ public class ProductService {
 
 
     //---------- 장바구니
-    public List<ProductBasketSelVo> productBasketSelVo(int iuser) {
-        iuser = facade.getLoginUserPk();
-        List<ProductBasketSelVo> basketSelVo = productMapper.selProductBasket(iuser);
-        return basketSelVo;
+    public List<ProductBasketSelVo> productBasketSelVo(ProductBasketSelDto dto) {
+         dto.setIuser(facade.getLoginUserPk());
+        int result = productMapper.selPaymentAmount();
+        List<ProductBasketSelVo> list = productMapper.selProductBasket(dto);
+        List<Integer> iproductList = new ArrayList<>();
+        Map<Integer, ProductBasketSelVo> mainSelVoMap = new HashMap<>();
+        for (ProductBasketSelVo vo : list) {
+            vo.setPaymentAmount(result);
+            iproductList.add(vo.getIproduct());
+            mainSelVoMap.put(vo.getIproduct(), vo);
+        }
+        if (iproductList.size() > 0) {
+            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
+            for (ProductPicsVo vo : productPicsVoList) {
+                ProductBasketSelVo basketSelVo = mainSelVoMap.get(vo.getIproduct());
+                List<String> pics = basketSelVo.getProductPic();
+                pics.add(vo.getProductPic());
+            }
+        }
+        return list;
     }
 
     public ResVo delBasket(List<Integer> iproducts) { // 장바구니 삭제
@@ -131,6 +201,7 @@ public class ProductService {
 
 
     //---------- 찜하기
+
     public ResVo wishProduct(ProductLikeDto dto) {
         dto.setIuser(facade.getLoginUserPk());
 
@@ -142,6 +213,17 @@ public class ProductService {
         return new ResVo(result2);
     }
 
-
     //----------장바구니에서 주문으로 넘겨줄 데이터
+
+    public ResVo www(wwww dto){
+        dto.setIuser(facade.getLoginUserPk());
+        int ress = productMapper.insOrder(dto);
+
+        int del = productMapper.delBasketAll(dto.getIuser());
+        return new ResVo(ress);
+    }
+
+    public ResVo zzzz () {
+        return null;
+    }
 }

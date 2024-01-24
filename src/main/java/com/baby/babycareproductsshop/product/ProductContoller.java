@@ -5,10 +5,7 @@ import com.baby.babycareproductsshop.product.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +15,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/product")
-@Tag(name = "상품 API", description = "상품 관련 파트")
 public class ProductContoller {
     private final ProductService service;
     //--------------------------------------검색기능---------------------------------------------
@@ -30,9 +26,9 @@ public class ProductContoller {
             ,@Parameter(name = "maxPrice", description = "최댓값")
             ,@Parameter(name = "category", description = "카테고리")
             ,@Parameter(name = "sortBy", description = "정렬 값")
-            ,@Parameter(name = "imain", description = "대분류")
+            ,@Parameter(name = "category", description = "카테고리")
     })
-    public List<ProductSearchVo> searchProduct (ProductSearchDto dto) {
+    public List<ProductSearchVo> searchProduct (ProductSearchPriceDto dto) {
         log.info("dto = {}",dto);
         return service.searchProductSelVo(dto);
     }
@@ -73,11 +69,8 @@ public class ProductContoller {
     //--------------------------------------장바구니 조회---------------------------------------------
     @GetMapping("/selBasket")
     @Operation(summary = "장바구니 조회")
-    @Parameters(value = {
-            @Parameter(name = "iuser", description = "유저 PK")
-    })
-    public List<ProductBasketSelVo> selCartProduct (Integer iuser ) {
-        return service.productBasketSelVo(iuser);
+    public List<ProductBasketSelVo> selCartProduct (ProductBasketSelDto dto) {
+        return service.productBasketSelVo(dto);
     }
     //--------------------------------------장바구니 상품 삭제---------------------------------------------
     @DeleteMapping()
@@ -111,8 +104,20 @@ public class ProductContoller {
             @Parameter(name = "iproduct", description = "상품 PK"),
     })
     public ResVo wishProduct (ProductLikeDto dto) {
+        log.info("dto = {}", dto);
         return service.wishProduct(dto);
     }
     //-------------------------------
+    @PostMapping("/zzz")
+    public ResVo www(@RequestBody wwww dto) {
+        return service.www(dto);
+    }
+    /*
 
+    @PostMapping("/gg")
+    public ResVo zz(@RequestBody ) {
+        return service.www(dto);
+    }
+
+     */
 }
