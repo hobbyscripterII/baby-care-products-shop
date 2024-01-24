@@ -37,21 +37,19 @@ public class ReviewService {
         insDto.setIreview(dto.getIdetails());
         log.info("insDto = {}", insDto);
         String target = "review/" + dto.getIdetails();
-        int insReview = mapper.insReview(dto);
-        if (dto.getPics() == null) {
+        if( dto.getPics() == null) {
+            int insReview = mapper.insReview(dto);
             return new ResVo(Const.SUCCESS);
         }
-        if (dto.getPics() != null && dto.getPics().size() < 6) {
-            for (MultipartFile file : dto.getPics()) {
-                String savedFileNm = myFileUtils.transferTo(file, target);
-                insDto.getPics().add(savedFileNm);
+        for (MultipartFile file : dto.getPics()) {
+            String savedFileNm = myFileUtils.transferTo(file, target);
+            insDto.getPics().add(savedFileNm);
+            if(dto.getReqReviewPic() == null) {
                 dto.setReqReviewPic(savedFileNm);
-                if (dto.getPics().size() > 0) {
-                    dto.setReqReviewPic(dto.getPics().get(1).toString());
-                }
             }
-            int insReviewPics = mapper.insReviewPics(insDto);
-        }
+          }
+         int insReview = mapper.insReview(dto);
+         int insReviewPics = mapper.insReviewPics(insDto);
         return new ResVo(Const.SUCCESS);
     }
 
