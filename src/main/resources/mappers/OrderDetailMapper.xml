@@ -22,6 +22,6 @@
         FROM t_order_details A
         JOIN t_product B
         USING (iproduct)
-        WHERE iorder = #{iorder}
+        WHERE A.iorder = #{iorder}
     </select>
 </mapper>

@@ -8,7 +8,7 @@ import java.util.List;
 public class OrderConfirmOrderVo {
     private int iorder;
     private int totalProductCnt;
-    private List<OrderConfirmDetailsProcVo> products;
+    private List<OrderSelOrderDetailsVo> products;
     private String addresseeNm;
     private String phoneNumber;
     private String zipCode;

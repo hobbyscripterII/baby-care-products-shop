@@ -41,10 +41,29 @@ public class OrderService {
     }
 
     public OrderConfirmOrderVo confirmOrder(OrderConfirmOrderDto dto) {
-        dto.setIaddress(authenticationFacade.getLoginUserPk());
+        dto.setIuser(authenticationFacade.getLoginUserPk());
         int updResult = orderMapper.updOrder(dto);
 
-        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto.getIorder());
+        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto);
+        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        for (OrderSelOrderDetailsVo product : products) {
+            resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
+        }
+        resultVo.setProducts(products);
+        return resultVo;
+    }
+
+    public OrderConfirmOrderVo getOrderDetail(int iorder) {
+        OrderConfirmOrderDto dto = new OrderConfirmOrderDto();
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        dto.setIorder(iorder);
+
+        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto);
+        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        for (OrderSelOrderDetailsVo product : products) {
+            resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
+        }
+        resultVo.setProducts(products);
         return resultVo;
     }
 }
