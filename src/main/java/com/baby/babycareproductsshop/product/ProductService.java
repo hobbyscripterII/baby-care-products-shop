@@ -22,7 +22,7 @@ public class ProductService {
     private final ProductReviewMapper productReviewMapper;
     private final AuthenticationFacade facade;
     //---------- 검색기능
-    public List<ProductSearchVo> searchProductSelVo(ProductSearchPriceDto dto) {
+    /*public List<ProductSearchVo> searchProductSelVo(ProductSearchPriceDto dto) {
 
         List<ProductSearchVo> searchVoList = productMapper.keyword(dto);
         List<Integer> iproductList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ProductService {
             }
         }
         return searchVoList;
-    }
+    }*/
 
 
     //---------- 로그인메인화면
@@ -59,8 +59,8 @@ public class ProductService {
                 List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
                 for (ProductPicsVo vo : productPicsVoList) {
                     ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
-                    List<String> pics = mainSelVo.getProductPic();
-                    pics.add(vo.getProductPic());
+                    /*List<String> pics = mainSelVo.getProductPic();
+                    pics.add(vo.getProductPic());*/
                 }
             }
             return mainlist;
@@ -77,8 +77,8 @@ public class ProductService {
             List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
             for (ProductPicsVo vo : productPicsVoList) {
                 ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
-                List<String> pics = mainSelVo.getProductPic();
-                pics.add(vo.getProductPic());
+               /* List<String> pics = mainSelVo.getProductPic();
+                pics.add(vo.getProductPic());*/
             }
         }
         return mainlist;
@@ -98,8 +98,8 @@ public class ProductService {
             List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
             for (ProductPicsVo vo : productPicsVoList) {
                 ProductMainSelVo mainSelVo = mainSelVoMap.get(vo.getIproduct());
-                List<String> pics = mainSelVo.getProductPic();
-                pics.add(vo.getProductPic());
+                //List<String> pics = mainSelVo.getProductPic();
+                //pics.add(vo.getProductPic());
             }
         }
         return list;
@@ -107,7 +107,6 @@ public class ProductService {
 
     //---- 상품 상세 정보
     public List<ProductSelVo> selProduct(ProductSelDto dto) {
-        ProductProductAverageSelVo productProductAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
 
         List<Integer> productReview = new ArrayList<>();
         List<Integer> iProductList = new ArrayList<>();
@@ -136,8 +135,6 @@ public class ProductService {
         }
         if (reviewSelVoList.size() > 0 ) {
             for (ProductSelVo vo : Product) {
-                vo.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
-                vo.setReviewCnt(productProductAverageSelVo.getCountIreview());
                 iProductList.add(vo.getIproduct());
                 vo.setReviewSelVo(reviewSelVoList);
 
@@ -172,9 +169,8 @@ public class ProductService {
         if (iproductList.size() > 0) {
             List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
             for (ProductPicsVo vo : productPicsVoList) {
-                ProductBasketSelVo basketSelVo = mainSelVoMap.get(vo.getIproduct());
-                List<String> pics = basketSelVo.getProductPic();
-                pics.add(vo.getProductPic());
+                /*ProductBasketSelVo basketSelVo = mainSelVoMap.get(vo.getIproduct());
+                pics.add(vo.getProductPic());*/
             }
         }
         return list;
@@ -215,15 +211,5 @@ public class ProductService {
 
     //----------장바구니에서 주문으로 넘겨줄 데이터
 
-    public ResVo www(wwww dto){
-        dto.setIuser(facade.getLoginUserPk());
-        int ress = productMapper.insOrder(dto);
 
-        int del = productMapper.delBasketAll(dto.getIuser());
-        return new ResVo(ress);
-    }
-
-    public ResVo zzzz () {
-        return null;
-    }
 }

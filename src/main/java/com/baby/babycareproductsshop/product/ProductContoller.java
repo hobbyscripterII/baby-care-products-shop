@@ -18,7 +18,7 @@ import java.util.List;
 public class ProductContoller {
     private final ProductService service;
     //--------------------------------------검색기능---------------------------------------------
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     @Operation(summary = "검색")
     @Parameters(value = {
             @Parameter(name = "String", description = "검색어")
@@ -31,7 +31,7 @@ public class ProductContoller {
     public List<ProductSearchVo> searchProduct (ProductSearchPriceDto dto) {
         log.info("dto = {}",dto);
         return service.searchProductSelVo(dto);
-    }
+    }*/
 
     //--------------------------------------메인 페이지---------------------------------------------
     @GetMapping()
@@ -108,16 +108,5 @@ public class ProductContoller {
         return service.wishProduct(dto);
     }
     //-------------------------------
-    @PostMapping("/zzz")
-    public ResVo www(@RequestBody wwww dto) {
-        return service.www(dto);
-    }
-    /*
 
-    @PostMapping("/gg")
-    public ResVo zz(@RequestBody ) {
-        return service.www(dto);
-    }
-
-     */
 }

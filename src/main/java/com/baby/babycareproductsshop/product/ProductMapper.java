@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductMapper {
     //---검색기능
 
-    List<ProductSearchVo> keyword(ProductSearchPriceDto dto);
+    //List<ProductSearchVo> keyword(ProductSearchPriceDto dto);
 
     //-----메인화면
     List<ProductMainSelVo> maimSelVo();
@@ -40,7 +40,6 @@ public interface ProductMapper {
 
     //-----상품정보 , 리뷰갯수 별점평균
     List <ProductSelVo>selProductInformation(int iproduct);
-    ProductProductAverageSelVo selProductAverage(int iproduct);
 
 
     //----------------찜하기 기능
@@ -48,7 +47,6 @@ public interface ProductMapper {
     int deleteLikeProduct (ProductLikeDto dto);
 
     //---------------
-    int insOrder(wwww wwww);
     /*
     int insOrderDetails(ddd);
 
