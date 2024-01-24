@@ -32,7 +32,7 @@ public class BoardController {
     private int iboard;
 
     @GetMapping("/pagenation")
-    @Operation(summary = "게시글 페이지네이션", description = "")
+    @Operation(summary = "게시글 페이지네이션 기능", description = "[보류] 담당자랑 협의 후 수정 진행")
     public PageNation getPageNation(@RequestParam(name = "board_code") int boardCode, @RequestParam int page, @RequestParam(required = false) String keyword) {
         PageNation.Criteria criteria = new PageNation.Criteria();
         criteria.setPage(page);
@@ -52,8 +52,7 @@ public class BoardController {
                 criteria.setPage(page);
                 criteria.setBoardCode(boardCode);
                 criteria.setKeyword(keyword);
-                List<BoardGetVo> list = service.getBoard(criteria);
-                return list;
+                return service.getBoard(criteria);
             } else {
                 throw new RestApiException(AuthErrorCode.POST_NOT_FOUND);
             }
@@ -76,25 +75,34 @@ public class BoardController {
         }
     }
 
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     @PostMapping("/webeditor")
     @Operation(summary = "웹에디터 사진 등록 기능", description = "")
     public String insBoardPics(@RequestPart(name = "pic") MultipartFile pic) {
         try {
+            // null로 게시글 insert(pk 값 받아오기 위함)
             BoardInsDto insDto = new BoardInsDto();
             insDto.setIuser(authenticationFacade.getLoginUserPk());
             int insBoardRows = service.insBoard(insDto);
 
+            // null로 insert 완료 시 해당 pk로 폴더 생성 후 이미지 업로드 진행
             if (Utils.isNotNull(insBoardRows)) {
                 this.iboard = insDto.getIboard();
+                log.info("this.iboard = {}", this.iboard);
                 String path = "/board/" + insDto.getIboard();
+                log.info("path = {}", path);
                 String savedFileName = myFileUtils.transferTo(pic, path);
+                log.info("savedFileName = {}", savedFileName);
 
+                // 이미지 업로드 완료 시 tbl에 사진 경로 저장
                 if (Utils.isNotNull(savedFileName)) {
                     BoardPicsDto picsDto = new BoardPicsDto();
                     picsDto.setIboard(insDto.getIboard());
                     picsDto.setPicName(savedFileName);
                     int insBoardPic = service.insBoardPic(picsDto);
+                    log.info("insBoardPic = {}", insBoardPic);
 
+                    // db에 사진 저장 완료 시 사진 경로 문자열 반환 없으면 null로 반환
                     return Utils.isNotNull(insBoardPic) ? savedFileName : null;
                 }
             }
@@ -104,9 +112,16 @@ public class BoardController {
         }
     }
 
+//    @GetMapping
+//    @Operation(summary = "게시글 등록 기능", description = "")
+//    public ResVo insBoard() {
+//        return null;
+//    }
+
     @PostMapping
     @Operation(summary = "게시글 등록 기능", description = "")
     public ResVo insBoard(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) {
+        // iboard 있으면 update 진행 없으면 insert
         try {
             if (!Utils.isNotNull(dto)) {
                 throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
@@ -128,6 +143,7 @@ public class BoardController {
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     @PatchMapping
     @Operation(summary = "게시판 수정 기능", description = "")
