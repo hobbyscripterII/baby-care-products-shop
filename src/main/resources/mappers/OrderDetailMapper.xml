@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.baby.babycareproductsshop.order.OrderMapper">
+<mapper namespace="com.baby.babycareproductsshop.order.OrderDetailMapper">
     <insert id="insOrderDetail">
         <selectKey keyProperty="idetails" resultType="int" order="BEFORE">
             SELECT MAX(idetails) + 1
@@ -10,11 +10,11 @@
         </selectKey>
         INSERT INTO t_order_details
         SET iorder = #{iorder},
-        iproduct = #{iproduct},
-        idetails = #{idetails},
-        product_cnt = #{productCnt},
-        product_price = #{productPrice},
-        product_total_price = #{productTotalPrice}
+            iproduct = #{iproduct},
+            idetails = #{idetails},
+            product_cnt = #{productCnt},
+            product_price = #{productPrice},
+            product_total_price = #{productTotalPrice}
     </insert>
 
     <select id="selOrderDetailsForPurchase">

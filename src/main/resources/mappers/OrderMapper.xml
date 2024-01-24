@@ -6,7 +6,7 @@
     <insert id="insOrder" useGeneratedKeys="true" keyProperty="iorder">
         INSERT INTO t_order
         SET iuser = #{iuser},
-            total_price = #{orderTotalPrice}
+            total_price = #{totalOrderPrice},
             iaddress = #{iaddress}
     </insert>
 
