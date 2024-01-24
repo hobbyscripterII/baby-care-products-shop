@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductMapper {
     //---검색기능
 
-    //List<ProductSearchVo> keyword(ProductSearchPriceDto dto);
+    List<ProductSearchVo> keyword(ProductSearchDto dto);
 
     //-----메인화면
     List<ProductMainSelVo> maimSelVo();
@@ -31,15 +31,15 @@ public interface ProductMapper {
 
     //----장바구니
     List<ProductBasketSelVo> selProductBasket (ProductBasketSelDto dto);
-    int selPaymentAmount();
-    int delBasket(List<Integer> iproducts);
+    int delBasket(List<Integer> iproducts); // 여러개 삭제
 
-    int insBasket (ProductBasketInsDto dto);
-    Integer selProductCntBasket (ProductBasketInsDto dto);
-    int uptBasketProductCnt(ProductBasketInsDto dto);
+    int insBasket (ProductBasketInsDto dto); // 넣고
+    Integer selProductCntBasket (ProductBasketInsDto dto); //갯수
+    int uptBasketProductCnt(ProductBasketInsDto dto); // 수정
 
     //-----상품정보 , 리뷰갯수 별점평균
     List <ProductSelVo>selProductInformation(int iproduct);
+    ProductAverageSelVo selProductAverage(int iproduct);
 
 
     //----------------찜하기 기능
@@ -47,11 +47,7 @@ public interface ProductMapper {
     int deleteLikeProduct (ProductLikeDto dto);
 
     //---------------
-    /*
-    int insOrderDetails(ddd);
 
-     */
-    int delBasketAll (int iuser);
 
 
 

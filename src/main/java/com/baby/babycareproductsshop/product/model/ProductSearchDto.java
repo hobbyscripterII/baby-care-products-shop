@@ -26,8 +26,7 @@ public class ProductSearchDto {
     @JsonProperty(value = "카테고리")
     private List<Integer> category;
 
-    @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순")
-    @JsonProperty(value = "정렬")
+    @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")
     private int sortBy ;
 
     @Schema(title = "대분류 PK")

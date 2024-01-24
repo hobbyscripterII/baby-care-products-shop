@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.baby.babycareproductsshop.product.ProductMapper">
-    <select id="search">
+    <select id="keyword">
         SELECT
         A.iproduct,
         M.imiddle,
@@ -260,6 +260,8 @@
     </select>
 
 
+
+
     <insert id="insertLikeProduct"> <!-- 찜하기 추가하기 -->
         INSERT INTO t_wish_list
         SET iuser = #{iuser}
@@ -319,6 +321,9 @@
         FROM t_basket
         WHERE iuser = #{iuser}
     </delete>
+
+
+
 
 
 

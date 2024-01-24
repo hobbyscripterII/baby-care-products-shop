@@ -14,8 +14,9 @@ public class productByAgeRangeDto {
     @Schema(title = "대분류 PK")
     @JsonProperty(value = "대분류")
     private int imain;
-    @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순")
-    @JsonProperty(value = "정렬")
+
+    @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")
+
     private int sortBy;
 
     @JsonIgnore

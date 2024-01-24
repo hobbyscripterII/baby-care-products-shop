@@ -14,7 +14,6 @@ public class ProductLikeDto {
     private int iuser;
 
     @Schema(title = "상품 PK")
-    @JsonProperty(value = "상품 PK")
     private int iproduct;
 }
 
