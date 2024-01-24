@@ -1,6 +1,7 @@
 package com.baby.babycareproductsshop.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class ProductSelDto {
     private int rowCount = 5;
 
     @Schema(title = "페이징처리")
+    @JsonProperty(value = "페이지")
     public void setPage(int page) {
         this.startIdx = (page - 1) * rowCount;
     }

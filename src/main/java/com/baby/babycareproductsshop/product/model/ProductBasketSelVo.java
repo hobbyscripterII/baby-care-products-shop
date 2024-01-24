@@ -30,8 +30,6 @@ public class ProductBasketSelVo {
     @Schema(title = "최종 결제 가격")
     private int paymentAmount;
 
-    @Schema(title = "사진")
-    private List<String> productPic = new ArrayList<>();
-    //
+    private String repPic;
 }
 
