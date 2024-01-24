@@ -1,5 +1,6 @@
 package com.baby.babycareproductsshop.review;
 
+import com.baby.babycareproductsshop.common.Const;
 import com.baby.babycareproductsshop.common.MyFileUtils;
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.review.model.*;
@@ -51,29 +52,33 @@ class ReviewServiceTest {
         files.add(multipartFile2);
 
         ReviewInsDto dto = new ReviewInsDto();
-        dto.setIreview(1);
+        dto.setIdetails(1);
         dto.setIuser(authenticationFacade.getLoginUserPk());
         dto.setPics(files);
         ResVo vo = service.insReview(dto);
-        assertEquals(dto.getIreview(), vo.getResult());
+        assertEquals(dto.getIdetails(), vo.getResult());
 
         verify(mapper).insReview(any());
         verify(mapper).insReviewPics(any());
 
         ReviewPicsInsDto insDto = new ReviewPicsInsDto();
-        insDto.setIreview(dto.getIreview());
-        String target = "review/" + dto.getIreview();
+        insDto.setIreview(dto.getIdetails());
+        String target = "review/" + dto.getIdetails();
 
-        if(dto.getPics() != null){
-            for(MultipartFile file : dto.getPics()){
-                String saveFileNm = myFileUtils.transferTo(file, target);
-                insDto.getPics().add(saveFileNm);
-                if(dto.getReqReviewPic() == null){
-                    dto.setReqReviewPic(saveFileNm);
-                }
+        if( dto.getPics() == null) {
+           int insReviewResult = mapper.insReview(dto);
+           assertEquals(1, insReviewResult);
+        }
+        for (MultipartFile file : dto.getPics()) {
+            String savedFileNm = myFileUtils.transferTo(file, target);
+            insDto.getPics().add(savedFileNm);
+            if(dto.getReqReviewPic() == null) {
+                dto.setReqReviewPic(savedFileNm);
             }
         }
+        int insReview = mapper.insReview(dto);
         int result = mapper.insReviewPics(insDto);
+        assertEquals(1, insReview);
         assertEquals(1, result);
     }
 

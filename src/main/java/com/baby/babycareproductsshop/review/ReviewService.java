@@ -47,9 +47,9 @@ public class ReviewService {
             if(dto.getReqReviewPic() == null) {
                 dto.setReqReviewPic(savedFileNm);
             }
-          }
-         int insReview = mapper.insReview(dto);
-         int insReviewPics = mapper.insReviewPics(insDto);
+        }
+        int insReview = mapper.insReview(dto);
+        int insReviewPics = mapper.insReviewPics(insDto);
         return new ResVo(Const.SUCCESS);
     }
 
