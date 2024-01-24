@@ -52,4 +52,18 @@ public class OrderService {
         resultVo.setProducts(products);
         return resultVo;
     }
+
+    public OrderConfirmOrderVo getOrderDetail(int iorder) {
+        OrderConfirmOrderDto dto = new OrderConfirmOrderDto();
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        dto.setIorder(iorder);
+
+        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto);
+        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        for (OrderSelOrderDetailsVo product : products) {
+            resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
+        }
+        resultVo.setProducts(products);
+        return resultVo;
+    }
 }
