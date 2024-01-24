@@ -27,13 +27,13 @@
     </update>
 
     <select id="selConfirmOrder">
-        SELECT A.addressee_nm, A.phone_number, B.zip_code, B.address, B.address_detail,
+        SELECT A.iorder, A.addressee_nm, A.phone_number, B.zip_code, B.address, B.address_detail,
             C.payment_option, A.created_at
         FROM t_order A
         JOIN t_address B
-        ON A.iuser = B.iuser
+        ON A.iaddress = B.iaddress
         JOIN t_payment_option C
         ON A.ipayment_option = C.ipayment_option
-        WHERE iorder = #{iorder}
+        WHERE (A.iuser, A.iorder) = (#{iuser}, #{iorder})
     </select>
 </mapper>
