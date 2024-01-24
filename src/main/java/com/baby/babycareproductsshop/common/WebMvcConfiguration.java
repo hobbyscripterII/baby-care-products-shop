@@ -16,7 +16,7 @@ import java.io.IOException;
 public class WebMvcConfiguration implements WebMvcConfigurer {  //새로고침
     private final String imgFolder;
 
-    public WebMvcConfiguration(@Value("${file.dir}") String imgFolder) {    //지금    은 절대경로 사용중
+    public WebMvcConfiguration(@Value("${file.path}") String imgFolder) {    //지금    은 절대경로 사용중
         this.imgFolder = imgFolder;
     }
 
