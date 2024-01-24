@@ -108,10 +108,6 @@ public class ProductContoller {
         return service.wishProduct(dto);
     }
     //-------------------------------
-    @PostMapping("/zzz")
-    public ResVo www(@RequestBody wwww dto) {
-        return service.www(dto);
-    }
     /*
 
     @PostMapping("/gg")

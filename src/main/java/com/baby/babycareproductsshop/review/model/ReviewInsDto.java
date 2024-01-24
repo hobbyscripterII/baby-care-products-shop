@@ -15,7 +15,7 @@ import java.util.*;
 @Schema(title = "리뷰 작성 시 필요한 데이터")
 public class ReviewInsDto {
     @Schema(title = "주문상세 KEY")
-    private int ireview;
+    private int idetails;
     @Schema(title = "주문 PK")
     private int iorder;
     @JsonIgnore
@@ -24,11 +24,11 @@ public class ReviewInsDto {
     private int iuser;
     @Schema(title = "리뷰 대표 사진")
     private String reqReviewPic;
+    @Schema(title = "리뷰 내용")
+    private String contents;
     @Schema(title = "리뷰 별점")
     @Min(1) @Max(5)
     private int productScore;
-    @Schema(title = "리뷰 내용")
-    private String contents;
     @Schema(title = "리뷰 첨부사진")
     private List<MultipartFile> pics;
 }
