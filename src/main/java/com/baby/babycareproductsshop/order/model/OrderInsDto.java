@@ -9,7 +9,7 @@ import java.util.List;
 public class OrderInsDto {
     @JsonIgnore
     private int iuser;
-    List<OrderProductDto> products;
+    List<OrderInsDetailsProcDto> products;
     private int totalOrderPrice;
     @JsonIgnore
     private int iaddress;
