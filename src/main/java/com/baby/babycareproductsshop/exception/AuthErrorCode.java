@@ -34,6 +34,9 @@ public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 �
     NEED_SIGNIN(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "refresh-token 이 없습니다.");
 
+    //상품
+
+
     private final HttpStatus httpStatus;
     private final String message;
 }

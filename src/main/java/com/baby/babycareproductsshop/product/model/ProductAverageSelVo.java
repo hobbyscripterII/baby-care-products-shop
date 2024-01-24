@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @Schema(title = "리뷰 수 와 평균 별점 조회")
-public class ProductProductAverageSelVo {
+public class ProductAverageSelVo {
 
     @Schema(title = "리뷰 갯수")
-    private int countIreview; // 리뷰 갯수
+    private int reviewCnt; // 리뷰 갯수
 
     @Schema(title = "평균 별점")
     private double avgProductScore; //평균 별점
