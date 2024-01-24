@@ -47,4 +47,14 @@ public interface ProductMapper {
     int insertLikeProduct (ProductLikeDto dto);
     int deleteLikeProduct (ProductLikeDto dto);
 
+    //---------------
+    int insOrder(wwww wwww);
+    /*
+    int insOrderDetails(ddd);
+
+     */
+    int delBasketAll (int iuser);
+
+
+
 }

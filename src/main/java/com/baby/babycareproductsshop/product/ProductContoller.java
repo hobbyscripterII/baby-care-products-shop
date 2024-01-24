@@ -60,9 +60,11 @@ public class ProductContoller {
     @Parameters(value = {
             @Parameter(name = "iproduct", description = "상품 PK")
     })
-    public List<ProductSelVo> selProduct (ProductSelDto dto) {
+    public List<ProductSelVo> selProduct (@PathVariable int iproduct, ProductSelDto dto) {
+        dto.setIproduct(iproduct);
         return service.selProduct(dto);
     }
+
 
     //--------------------------------------장바구니 조회---------------------------------------------
     @GetMapping("/selBasket")
@@ -105,4 +107,17 @@ public class ProductContoller {
         log.info("dto = {}", dto);
         return service.wishProduct(dto);
     }
+    //-------------------------------
+    @PostMapping("/zzz")
+    public ResVo www(@RequestBody wwww dto) {
+        return service.www(dto);
+    }
+    /*
+
+    @PostMapping("/gg")
+    public ResVo zz(@RequestBody ) {
+        return service.www(dto);
+    }
+
+     */
 }

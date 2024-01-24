@@ -2,6 +2,8 @@ package com.baby.babycareproductsshop.product;
 
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.product.model.*;
+import com.baby.babycareproductsshop.review.model.ReviewPicsVo;
+import com.baby.babycareproductsshop.review.model.ReviewSelVo;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductMapper productMapper;
+    private final ProductReviewMapper productReviewMapper;
     private final AuthenticationFacade facade;
     //---------- 검색기능
     public List<ProductSearchVo> searchProductSelVo(ProductSearchPriceDto dto) {
@@ -105,42 +108,52 @@ public class ProductService {
     //---- 상품 상세 정보
     public List<ProductSelVo> selProduct(ProductSelDto dto) {
         ProductProductAverageSelVo productProductAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
-        List<Integer> iproductList = new ArrayList<>();
-        List<Integer> ireviewList = new ArrayList<>();
+
+        List<Integer> productReview = new ArrayList<>();
+        List<Integer> iProductList = new ArrayList<>();
+
+        Map<Integer, ReviewSelVo> reviewMap = new HashMap<>();
         Map<Integer, ProductSelVo> ProductSelVoMap = new HashMap<>();
-        Map<Integer, ProductSelVo> reviewSelVoMap = new HashMap<>();
 
-        List<ProductSelVo> list = productMapper.selProductInformation(dto.getIproduct());
-        for (ProductSelVo vo : list) {
-            vo.setAvgProductScore(productProductAverageSelVo.getAvgProductScore());
-            vo.setCountIreview(productProductAverageSelVo.getCountIreview());
-            iproductList.add(vo.getIproduct());
-            ireviewList.add(vo.getIreview());
-            ProductSelVoMap.put(vo.getIproduct(), vo);
-            reviewSelVoMap.put(vo.getIreview(),vo);
 
+        List<ReviewSelVo> reviewSelVoList = productReviewMapper.getProductReview(dto);
+        List<ProductSelVo> Product = productMapper.selProductInformation(dto.getIproduct());
+
+
+        for(ReviewSelVo vo : reviewSelVoList){
+            productReview.add(vo.getIreview());
+            reviewMap.put(vo.getIreview(), vo);
         }
 
-        if (iproductList.size() > 0) {
+        if(productReview.size() > 0){
+            List<ReviewPicsVo> reviewPicsVoList = productReviewMapper.getProductReviewPics(productReview);
 
-            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iproductList);
-            List<ProductPicsVo> reviewPicsVoList = productMapper.selReviewPicsAll(ireviewList);
-
-            for (ProductPicsVo vo : productPicsVoList) {
-                ProductSelVo productSelVo = ProductSelVoMap.get(vo.getIproduct());
-                List<String> pics = productSelVo.getProductPics();
-                pics.add(vo.getProductPic());
-            }
-            for (ProductPicsVo vo : reviewPicsVoList) {
-                ProductSelVo productSelVo = reviewSelVoMap.get(vo.getIreview());
-                List<String> pics = productSelVo.getReviewPic();
+            for(ReviewPicsVo vo : reviewPicsVoList){
+                ReviewSelVo reviewSelVo = reviewMap.get(vo.getIreview());
+                List<String> pics = reviewSelVo.getPics();
                 pics.add(vo.getReviewPic());
             }
-
-
-
         }
-        return list;
+        if (reviewSelVoList.size() > 0 ) {
+            for (ProductSelVo vo : Product) {
+                vo.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
+                vo.setReviewCnt(productProductAverageSelVo.getCountIreview());
+                iProductList.add(vo.getIproduct());
+                vo.setReviewSelVo(reviewSelVoList);
+
+                ProductSelVoMap.put(vo.getIproduct(), vo);
+            }
+            if (iProductList.size() > 0) {
+                List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iProductList);
+                for (ProductPicsVo vo : productPicsVoList) {
+                    ProductSelVo productSelVo = ProductSelVoMap.get(vo.getIproduct());
+                    List<String> pics = productSelVo.getProductPics();
+                    pics.add(vo.getProductPic());
+                }
+            }
+        }
+
+        return Product;
     }
 
 
@@ -186,6 +199,7 @@ public class ProductService {
 
     }
 
+
     //---------- 찜하기
 
     public ResVo wishProduct(ProductLikeDto dto) {
@@ -197,6 +211,19 @@ public class ProductService {
         }
         int result2 = productMapper.insertLikeProduct(dto);
         return new ResVo(result2);
+    }
 
+    //----------장바구니에서 주문으로 넘겨줄 데이터
+
+    public ResVo www(wwww dto){
+        dto.setIuser(facade.getLoginUserPk());
+        int ress = productMapper.insOrder(dto);
+
+        int del = productMapper.delBasketAll(dto.getIuser());
+        return new ResVo(ress);
+    }
+
+    public ResVo zzzz () {
+        return null;
     }
 }
