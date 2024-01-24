@@ -16,14 +16,12 @@ public class ReviewSelVo{
     private int ireview;
     @Schema(title = "리뷰 작성한 사람의 이름")
     private String nm;
-
     @Schema(title = "리뷰 평점")
     private int productScore;
     @Schema(title = "리뷰 내용")
     private String contents;
-
+    @Schema(title = "리뷰 대표 사진")
     private String reqReviewPic;
-
     @Schema(title = "리뷰를 작성한 시간")
     private String createdAt;
     //

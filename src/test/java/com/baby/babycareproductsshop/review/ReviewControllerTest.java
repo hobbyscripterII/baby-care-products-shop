@@ -107,8 +107,8 @@ class ReviewControllerTest {
 
         List<String> pics2 = Arrays.stream(new String[]{"a.jpg","b.jpg"}).toList();
 
-        list.add(new ReviewSelVo(1, "nm", 1, "cont", "date", pics));
-        list.add(new ReviewSelVo(2, "nm2", 2, "cont2", "date ", pics2));
+        list.add(new ReviewSelVo(1, "nm", 1, "cont", "pic","date", pics));
+        list.add(new ReviewSelVo(2, "nm2", 2, "cont2", "pic2", "date ", pics2));
         given(service.getReview(any())).willReturn(list);
 
         mvc.perform(
