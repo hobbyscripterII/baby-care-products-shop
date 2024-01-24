@@ -215,13 +215,6 @@ public class ProductService {
 
     //----------장바구니에서 주문으로 넘겨줄 데이터
 
-    public ResVo www(wwww dto){
-        dto.setIuser(facade.getLoginUserPk());
-        int ress = productMapper.insOrder(dto);
-
-        int del = productMapper.delBasketAll(dto.getIuser());
-        return new ResVo(ress);
-    }
 
     public ResVo zzzz () {
         return null;

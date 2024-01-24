@@ -48,7 +48,6 @@ public interface ProductMapper {
     int deleteLikeProduct (ProductLikeDto dto);
 
     //---------------
-    int insOrder(wwww wwww);
     /*
     int insOrderDetails(ddd);
 
