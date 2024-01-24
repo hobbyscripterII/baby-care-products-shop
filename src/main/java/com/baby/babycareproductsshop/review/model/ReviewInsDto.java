@@ -24,11 +24,11 @@ public class ReviewInsDto {
     private int iuser;
     @Schema(title = "리뷰 대표 사진")
     private String reqReviewPic;
-    @Schema(title = "리뷰 내용")
-    private String contents;
     @Schema(title = "리뷰 별점")
     @Min(1) @Max(5)
     private int productScore;
+    @Schema(title = "리뷰 내용")
+    private String contents;
     @Schema(title = "리뷰 첨부사진")
     private List<MultipartFile> pics;
 }

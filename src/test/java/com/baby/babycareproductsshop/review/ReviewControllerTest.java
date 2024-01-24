@@ -50,7 +50,6 @@ class ReviewControllerTest {
 
     @MockBean private ReviewService service;
 
-    /*
     @DisplayName("POST / 리뷰 등록 API 테스트")
     @Test
     @WithMockUser
@@ -89,7 +88,7 @@ class ReviewControllerTest {
 
         verify(service).insReview(any());
     }
-     */
+
 
     @DisplayName("GET / 리뷰 목록 API 테스트")
     @Test
