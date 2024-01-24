@@ -3,7 +3,10 @@ package com.baby.babycareproductsshop.order;
 import com.baby.babycareproductsshop.order.model.*;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.user.UserAddressMapper;
+import com.baby.babycareproductsshop.user.UserMapper;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
+import com.baby.babycareproductsshop.user.model.UserSelMyInfoVo;
+import com.baby.babycareproductsshop.user.model.UserSelToModifyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
     private final UserAddressMapper addressMapper;
+    private final UserMapper userMapper;
     private final AuthenticationFacade authenticationFacade;
 
     public OrderInsVo postOrder(OrderInsDto dto) {
@@ -28,16 +32,22 @@ public class OrderService {
             int insOrderDetails = orderDetailMapper.insOrderDetail(product);
         }
 
-        OrderInsVo result = new OrderInsVo();
-        result.setIorder(dto.getIorder());
-        result.setTotalOrderPrice(dto.getTotalOrderPrice());
-        result.setAddresses(addresses);
-        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
-        result.setProducts(products);
-        List<OrderSelPaymentOptionVo> paymentOptions = orderMapper.selPaymentOption();
-        result.setPaymentOptions(paymentOptions);
+        UserSelToModifyVo userInfoVo = userMapper.selUserInfoByIuser(dto.getIuser());
 
-        return result;
+        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        List<OrderSelPaymentOptionVo> paymentOptions = orderMapper.selPaymentOption();
+
+        return OrderInsVo.builder()
+                .addresses(addresses)
+                .iorder(dto.getIorder())
+                .products(products)
+                .totalOrderPrice(dto.getTotalOrderPrice())
+                .paymentOptions(paymentOptions)
+                .nm(userInfoVo.getNm())
+                .phoneNumber(userInfoVo.getPhoneNumber())
+                .email(userInfoVo.getEmail())
+                .build();
+
     }
 
     public OrderConfirmOrderVo confirmOrder(OrderConfirmOrderDto dto) {
