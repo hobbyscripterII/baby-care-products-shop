@@ -10,7 +10,7 @@ public class OrderInsDto {
     @JsonIgnore
     private int iuser;
     List<OrderProductDto> products;
-    private int orderTotalPrice;
+    private int totalOrderPrice;
     @JsonIgnore
     private int iaddress;
     @JsonIgnore
