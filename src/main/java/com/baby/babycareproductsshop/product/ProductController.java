@@ -37,7 +37,7 @@ public class ProductController {
 
     //--------------------------------------월령별 상품 페이지---------------------------------------------
 
-    @GetMapping("/productByAgeRange")
+    @GetMapping
     @Operation(summary = "상품 조회 페이지")
 
     public List<ProductByAgeRangeSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
