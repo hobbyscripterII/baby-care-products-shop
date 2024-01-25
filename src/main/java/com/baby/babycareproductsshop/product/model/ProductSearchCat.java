@@ -6,4 +6,5 @@ import lombok.Data;
 public class ProductSearchCat {
     private int imiddle;
     private int imain;
+
 }
