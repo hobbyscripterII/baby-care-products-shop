@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class ProductSearchDto {
 
     @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")
     private int sortBy ;
+
+
 /*
     @Schema(title = "중분류 PK ")
     private List<Integer> imiddle;
@@ -32,8 +35,9 @@ public class ProductSearchDto {
     private List<Integer> imain;
 
  */
+//   private List<ProductSearchCat> category=new ArrayList<>();
 
-    private Map<Integer,Integer> category = new HashMap<>();
+
 
 
     @JsonIgnore

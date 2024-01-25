@@ -1,5 +1,6 @@
 package com.baby.babycareproductsshop.product.model;
 
+import com.baby.babycareproductsshop.review.model.ReviewSelVo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -32,5 +33,9 @@ public class ProductBasketSelVo {
 
     @Schema(title = "사진")
     private String repPic;
+
+
+
+
 }
 

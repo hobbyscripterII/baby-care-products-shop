@@ -27,10 +27,9 @@
                 A.product_nm LIKE CONCAT('%', #{keyword}, '%')
             </if>
 
-            <if test="imiddle != null and imiddle.size() > 0">
-                <foreach collection="category" item="value" index="key" separator="and">
-                    (imain = #{key} and imiddle = #{value})
-
+            <if test="category != null and category.size() > 0">
+                <foreach collection="category" item="ProductSearchCat"  separator="OR">
+                    (imiddle = #{imiddle} and imain = #{imain})
                 </foreach>
 
             </if>
@@ -85,6 +84,46 @@
         ON A.iproduct = L.iproduct
         GROUP BY A.iproduct
         <!--  LIMIT #{startIdx},#{rowCount} -->
+    </select>
+
+    <select id="SelNewProduct">
+        SELECT
+        A.iproduct,
+        A.product_nm,
+        A.price,
+        A.rc_fl,
+        A.pop_fl,
+        A.new_fl,
+        A.rep_pic,
+        COUNT(DISTINCT R.iorder) AS reviewCnt,
+        IF(COUNT(L.iuser) > 0, 1, 0) AS likeProduct
+        FROM t_product A
+        LEFT JOIN t_review R
+        ON A.iproduct = R.iproduct
+        LEFT JOIN t_wish_list L
+        ON A.iproduct = L.iproduct
+        WHERE A.new_fl = 1
+        GROUP BY A.iproduct
+    </select>
+
+    <select id="SelPopProduct">
+        SELECT
+        A.iproduct,
+        A.product_nm,
+        A.price,
+        A.rc_fl,
+        A.pop_fl,
+        A.new_fl,
+        A.rep_pic,
+        COUNT(DISTINCT R.iorder) AS reviewCnt,
+        IF(COUNT(L.iuser) > 0, 1, 0) AS likeProduct
+        FROM t_product A
+        LEFT JOIN t_review R
+        ON A.iproduct = R.iproduct
+        LEFT JOIN t_wish_list L
+        ON A.iproduct = L.iproduct
+        WHERE A.pop_fl = 1
+        GROUP BY A.iproduct
     </select>
 
     <select id="selProductMainByAge"> <!-- 로그인시-->

@@ -23,33 +23,41 @@ public class ProductService {
     private final ProductReviewMapper productReviewMapper;
     private final AuthenticationFacade facade;
     //---------- 검색기능
-    public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
+    public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto,List<ProductSearchCat> cats) {
 
-        List<ProductSearchVo> searchVoList = productMapper.search(dto);
+        List<ProductSearchVo> searchVoList = productMapper.search(dto,cats);
+
         return searchVoList;
     }
 
     //---------- 로그인메인화면
-    public List<ProductMainSelVo> productMainSelVo2(ProductMainSelDto dto) {
+    public List<ProductMainSelVo> productMainSelVo(ProductMainSelDto dto) {
         dto.setIuser(facade.getLoginUserPk());
 
+        List<zzzSelVo> selNewProduct = productMapper.SelNewProduct();
+        List<zzzSelVo> selPopProduct = productMapper.SelPopProduct();
+
+        ProductMainSelVo vo = new ProductMainSelVo();
+        vo.setProductPopSelVo(selPopProduct);
+        vo.setProductNewSelVo(selNewProduct);
+
         Integer userChildAge  = productMapper.userChildAge(dto.getIuser());
-        if (dto.getIuser()  == 0) {
-            List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
-            return mainlist;
-        }
+
         if(dto.getIuser() > 0) {
             dto.setRecommandAge(userChildAge);
             List<ProductMainSelVo> mainlist = productMapper.selProductMainByAge(dto);
             return mainlist;
         }
-        return null;
+
+        List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
+        return mainlist;
+
     }
 
     //------ 월령별 화면? 카테고리 느낌인거같은데
 
-    public List<ProductMainSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
-        List<ProductMainSelVo> list = productMapper.getProductByAgeRange(dto);
+    public List<ProductByAgeRangeSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
+        List<ProductByAgeRangeSelVo> list = productMapper.getProductByAgeRange(dto);
         return list;
     }
 
@@ -63,7 +71,6 @@ public class ProductService {
         Map<Integer, ProductSelVo> ProductSelVoMap = new HashMap<>();
         List<ReviewSelVo> reviewSelVoList = productReviewMapper.getProductReview(dto);
         List<ProductSelVo> Product = productMapper.selProductInformation(dto.getIproduct());
-
 
         for(ReviewSelVo vo : reviewSelVoList){
             productReview.add(vo.getIreview());
@@ -79,6 +86,7 @@ public class ProductService {
                 pics.add(vo.getReviewPic());
             }
         }
+
         if (!reviewSelVoList.isEmpty()) {
             for (ProductSelVo vo : Product) {
                 vo.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
@@ -100,7 +108,6 @@ public class ProductService {
 
         return Product;
     }
-
 
 
     //---------- 장바구니
