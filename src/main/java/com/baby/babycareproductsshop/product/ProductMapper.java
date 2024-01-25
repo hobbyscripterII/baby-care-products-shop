@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductMapper {
     //---검색기능
 
-    List<ProductSearchVo> keyword(ProductSearchDto dto);
+    List<ProductSearchVo> search(ProductSearchDto dto);
 
     //-----메인화면
     List<ProductMainSelVo> maimSelVo();
@@ -20,10 +20,6 @@ public interface ProductMapper {
 
     //상품 사진넣기
     List<ProductPicsVo> selProductPics (List<Integer> iproduct);
-
-    // 리뷰사진넣기
-    List<ProductPicsVo> selReviewPicsAll(List<Integer> ireview );
-
     //-- 상품조회페이지
     List<ProductMainSelVo> getProductByAgeRange(productByAgeRangeDto dto);
 

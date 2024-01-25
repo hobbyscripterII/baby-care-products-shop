@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.baby.babycareproductsshop.product.ProductMapper">
-    <select id="keyword">
+    <select id="search">
         SELECT
         A.iproduct,
         M.imiddle,
@@ -27,12 +27,12 @@
                 A.product_nm LIKE CONCAT('%', #{keyword}, '%')
             </if>
 
-            <if test="category != null and category.size() > 0">
-                AND A.imiddle IN
-                <foreach collection="category" item="category" open="(" separator="," close=")"> <!--중분류-->
-                    #{category}
+            <if test="imiddle != null and imiddle.size() > 0">
+                <foreach collection="category" item="value" index="key" separator="and">
+                    (imain = #{key} and imiddle = #{value})
+
                 </foreach>
-                AND A.imain = #{imain} <!-- 대분류-->
+
             </if>
 
             <if test="minPrice !=0 and maxPrice !=0">
