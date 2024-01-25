@@ -14,8 +14,8 @@ public interface ProductMapper {
     //-----메인화면
     List<ProductMainSelVo> maimSelVo();
     List<ProductMainSelVo> selProductMainByAge(ProductMainSelDto dto); // 로그인시
-    List<zzzSelVo> SelPopProduct (); // 인기
-    List<zzzSelVo> SelNewProduct (); // 신상품
+    List<ZzzSelVo> SelPopProduct (); // 인기
+    List<ZzzSelVo> SelNewProduct (); // 신상품
 
 
     // 유저자녀나이

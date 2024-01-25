@@ -34,9 +34,10 @@ public class ProductService {
     public List<ProductMainSelVo> productMainSelVo(ProductMainSelDto dto) {
         dto.setIuser(facade.getLoginUserPk());
 
-        List<zzzSelVo> selNewProduct = productMapper.SelNewProduct();
-        List<zzzSelVo> selPopProduct = productMapper.SelPopProduct();
-
+        List<ZzzSelVo> selNewProduct = productMapper.SelNewProduct();
+        log.info("selNewProduct : {}" ,selNewProduct);
+        List<ZzzSelVo> selPopProduct = productMapper.SelPopProduct();
+        log.info("selNewProduct : {}" ,selPopProduct);
         ProductMainSelVo vo = new ProductMainSelVo();
         vo.setProductPopSelVo(selPopProduct);
         vo.setProductNewSelVo(selNewProduct);
