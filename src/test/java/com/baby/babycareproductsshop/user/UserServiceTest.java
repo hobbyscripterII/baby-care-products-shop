@@ -8,6 +8,7 @@ import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.security.JwtTokenProvider;
 import com.baby.babycareproductsshop.user.model.*;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,30 +117,71 @@ class UserServiceTest {
 
     @Test
     void getMyInfo() {
+        UserSelMyInfoVo vo = new UserSelMyInfoVo();
+        vo.setNm("vam");
+        when(userMapper.selMyInfo(23)).thenReturn(vo);
+        when(wishListMapper.selWishList(23)).thenReturn(new ArrayList<>());
+
+        UserSelMyInfoVo result = service.getMyInfo();
+        assertEquals("vam", result.getNm());
+
     }
 
     @Test
     void postCheckUpw() {
+        UserSelToModifyVo vo = new UserSelToModifyVo();
+        vo.setNm("hubble");
+        vo.setUpw("xptmxm123!@#");
+        when(userMapper.selUserInfoByIuser(23)).thenReturn(vo);
+        when(passwordEncoder.matches(any(),any())).thenReturn(true);
+        when(childMapper.selUserChildren(23)).thenReturn(new ArrayList<>());
+
+        UserCheckUpwDto dto = new UserCheckUpwDto();
+        dto.setUpw("xptmxm123!@#");
+
+        UserSelToModifyVo result = service.postCheckUpw(dto);
+        assertEquals("hubble", result.getNm());
     }
 
     @Test
     void putUserInfo() {
-    }
+        UserUpdDto dto = new UserUpdDto();
+        dto.setIuser(23);
+        dto.setUpw("password");
+        dto.setChildren(new ArrayList<>());
+        when(passwordEncoder.encode(any())).thenReturn("hashedPw");
+        when(childMapper.delUserChildren(23)).thenReturn(1);
+        when(childMapper.insUserChildren(any())).thenReturn(1);
+        when(userMapper.updUser(any())).thenReturn(1);
 
-    @Test
-    void signout() {
+        ResVo resVo = service.putUserInfo(dto);
+
+        assertEquals(1, resVo.getResult());
     }
 
     @Test
     void unregister() {
+        when(userMapper.delUser(23)).thenReturn(1);
+        ResVo result = service.unregister();
+
+        assertEquals(1, result.getResult());
     }
 
     @Test
     void postUserAddress() {
+        List<UserSelAddressVo> list = new ArrayList<>();
+        list.add(new UserSelAddressVo());
+        when(addressMapper.insUserAddress(any())).thenReturn(1);
+
+        assertEquals(1, addressMapper.insUserAddress(any()));
     }
 
     @Test
     void getUserAddress() {
+        when(addressMapper.selUserAddress(23)).thenReturn(new ArrayList<>());
+
+        List<UserSelAddressVo> result = service.getUserAddress();
+        assertNotNull(result);
     }
 
     @Test
@@ -148,5 +190,10 @@ class UserServiceTest {
 
     @Test
     void delUserAddress() {
+    }
+
+    @BeforeEach
+    void beforeSetting() {
+        when(authenticationFacade.getLoginUserPk()).thenReturn(23);
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-public class OrderConfirmOrderDto {
+public class OrderConfirmDto {
     @JsonIgnore
     private int iuser;
     private int iorder;

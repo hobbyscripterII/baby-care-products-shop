@@ -12,7 +12,10 @@ import com.baby.babycareproductsshop.product.model.ProductSelWishListVo;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.security.JwtTokenProvider;
 import com.baby.babycareproductsshop.security.MyPrincipal;
+import com.baby.babycareproductsshop.security.MyUserDetails;
 import com.baby.babycareproductsshop.user.model.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -176,6 +179,34 @@ public class UserService {
         }
         int result = addressMapper.delUserAddress(dto);
         return new ResVo(Const.SUCCESS);
+    }
+
+    //accessToken 재발급
+    public UserSignInVo getRefreshToken(HttpServletRequest req) {
+        Cookie cookie = myCookieUtils.getCookie(req, "refreshToken");
+        if (cookie == null) {
+            return UserSignInVo.builder()
+                    .result(Const.FAIL)
+                    .accessToken(null)
+                    .build();
+        }
+        String token = cookie.getValue();
+        if (!jwtTokenProvider.isValidateToken(token)) {
+            return UserSignInVo.builder()
+                    .result(Const.FAIL)
+                    .accessToken(null)
+                    .build();
+        }
+
+        MyUserDetails myUserDetails = (MyUserDetails) jwtTokenProvider.getUserDetailsFromToken(token);
+        MyPrincipal myPrincipal = myUserDetails.getMyPrincipal();
+
+        String at = jwtTokenProvider.generateAccessToken(myPrincipal);
+
+        return UserSignInVo.builder()
+                .result(Const.SUCCESS)
+                .accessToken(at)
+                .build();
     }
 }
 

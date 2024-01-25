@@ -58,11 +58,11 @@ public class UserController {
     }
 
     @Operation(summary = "내 정보 불러오기 기능", description = """
-                nm : 유저 이름<br>
-                beforeDeposit : 입금 전<br>
-                preparation : 배송 준비중<br>
-                shipping : 배송중<br>
-                completed : 배송 완료<br>
+                nm : 유저 이름
+                beforeDeposit : 입금 전
+                preparation : 배송 준비중
+                shipping : 배송중
+                completed : 배송 완료
                 myWishList : 찜한 상품 목록
             """)
     @GetMapping("/my-page")
@@ -104,5 +104,12 @@ public class UserController {
     @PostMapping("/signout")
     public ResVo postSignout(HttpServletRequest req, HttpServletResponse res) {
         return service.signout(res);
+    }
+
+    @Operation(summary = "access token 재발급", description = """
+            """)
+    @GetMapping("/refresh-token")
+    public UserSignInVo getRefreshToken(HttpServletRequest req) {
+        return service.getRefreshToken(req);
     }
 }

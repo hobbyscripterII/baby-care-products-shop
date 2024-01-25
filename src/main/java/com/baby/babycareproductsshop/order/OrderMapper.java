@@ -9,6 +9,7 @@ import java.util.List;
 public interface OrderMapper {
     int insOrder(OrderInsDto dto);
     List<OrderSelPaymentOptionVo> selPaymentOption();
-    int updOrder(OrderConfirmOrderDto dto);
-    OrderConfirmOrderVo selConfirmOrder(OrderConfirmOrderDto dto);
+    int updOrder(OrderConfirmDto dto);
+    OrderConfirmVo selConfirmOrder(OrderConfirmDto dto);
+    int updRefundFl(int idetails);
 }

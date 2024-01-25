@@ -22,15 +22,21 @@ public class SecurityConfiguration {
                 .httpBasic(http -> http.disable())
                 .formLogin(formLogin -> formLogin.disable())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(author -> author.requestMatchers("/api/user/sign-in",
+                .authorizeHttpRequests(author -> author.requestMatchers(
+                                        "/api/user/sign-in",
                                         "/api/user/sign-up",
                                         "/api/user/sign-up/**",
                                         "/api/user/refresh-token",
+                                        "/api/product",
+                                        "/api/product/{iproduct}",
+                                        "/api/product/search",
                                         "/error",
                                         "/err",
                                         "/",
                                         "/index.html",
                                         "/static/**",
+                                        "/fimg/**",
+                                        "/css/**",
                                         "/swagger.html",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
