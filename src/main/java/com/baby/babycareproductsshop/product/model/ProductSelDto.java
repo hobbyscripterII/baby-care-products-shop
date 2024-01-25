@@ -19,7 +19,6 @@ public class ProductSelDto {
     private int rowCount = 5;
 
     @Schema(title = "페이징처리")
-    @JsonProperty(value = "페이지")
     public void setPage(int page) {
         this.startIdx = (page - 1) * rowCount;
     }
