@@ -36,9 +36,9 @@ public class ProductMainSelVo {
     @Schema(title = "상품 사진")
     private String repPic; //상품 사진
 
-    List<ZzzSelVo> productNewSelVo;
+    private List<ZzzSelVo> productNewSelVo;
 
-    List<ZzzSelVo> productPopSelVo;
+    private List<ZzzSelVo> productPopSelVo;
 
 
 

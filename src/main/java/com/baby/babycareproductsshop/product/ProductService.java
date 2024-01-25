@@ -35,22 +35,31 @@ public class ProductService {
         dto.setIuser(facade.getLoginUserPk());
 
         List<ZzzSelVo> selNewProduct = productMapper.SelNewProduct();
-        log.info("selNewProduct : {}" ,selNewProduct);
         List<ZzzSelVo> selPopProduct = productMapper.SelPopProduct();
-        log.info("selNewProduct : {}" ,selPopProduct);
-        ProductMainSelVo vo = new ProductMainSelVo();
-        vo.setProductPopSelVo(selPopProduct);
-        vo.setProductNewSelVo(selNewProduct);
 
         Integer userChildAge  = productMapper.userChildAge(dto.getIuser());
 
         if(dto.getIuser() > 0) {
             dto.setRecommandAge(userChildAge);
             List<ProductMainSelVo> mainlist = productMapper.selProductMainByAge(dto);
+            for (ProductMainSelVo mainSelVo:mainlist) {
+                mainSelVo.setProductNewSelVo(selNewProduct);
+                mainSelVo.setProductPopSelVo(selPopProduct);
+            }
+
             return mainlist;
         }
 
+
         List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
+        for (ProductMainSelVo mainSelVo:mainlist) {
+
+            mainSelVo.setProductNewSelVo(selNewProduct);
+            log.info("selNewProduct : {}" ,selNewProduct);
+            mainSelVo.setProductPopSelVo(selPopProduct);
+            log.info("selPopProduct : {}" ,selPopProduct);
+
+        }
         return mainlist;
 
     }
