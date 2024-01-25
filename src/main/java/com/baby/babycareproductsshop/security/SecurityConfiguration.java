@@ -3,6 +3,7 @@ package com.baby.babycareproductsshop.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +29,7 @@ public class SecurityConfiguration {
                                         "/api/user/sign-up/**",
                                         "/api/user/refresh-token",
                                         "/api/product",
+                                        "/api/product/main",
                                         "/api/product/{iproduct}",
                                         "/api/product/search",
                                         "/error",
@@ -41,6 +43,8 @@ public class SecurityConfiguration {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
                                 ).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/board").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/board/{iboard}").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
