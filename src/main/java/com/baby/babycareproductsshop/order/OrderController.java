@@ -1,7 +1,8 @@
 package com.baby.babycareproductsshop.order;
 
-import com.baby.babycareproductsshop.order.model.OrderConfirmOrderDto;
-import com.baby.babycareproductsshop.order.model.OrderConfirmOrderVo;
+import com.baby.babycareproductsshop.common.ResVo;
+import com.baby.babycareproductsshop.order.model.OrderConfirmDto;
+import com.baby.babycareproductsshop.order.model.OrderConfirmVo;
 import com.baby.babycareproductsshop.order.model.OrderInsDto;
 import com.baby.babycareproductsshop.order.model.OrderInsVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,13 +29,20 @@ public class OrderController {
             주문 및 결제에서 주문하기 를 누르면 사용되는 요청
             """)
     @PutMapping
-    public OrderConfirmOrderVo confirmOrder(@RequestBody OrderConfirmOrderDto dto) {
+    public OrderConfirmVo confirmOrder(@RequestBody OrderConfirmDto dto) {
         return service.confirmOrder(dto);
     }
 
     @Operation(summary = "주문 상세 내역 확인")
-    @GetMapping
-    public OrderConfirmOrderVo getOrderDetail(@RequestParam int iorder) {
-        return service.getOrderDetail(iorder);
+    @GetMapping("/{iorder}")
+    public OrderConfirmVo getOrderDetails(@PathVariable int iorder) {
+        return service.getOrderDetails(iorder);
     }
+
+    @Operation(summary = "상품 환불 처리")
+    @DeleteMapping("/{idetails}")
+    public ResVo refundOrder(@PathVariable int idetails) {
+        return null;
+    }
+
 }

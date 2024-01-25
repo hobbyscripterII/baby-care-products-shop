@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class OrderConfirmOrderVo {
+public class OrderConfirmVo {
     private int iorder;
     private int totalProductCnt;
-    private List<OrderSelOrderDetailsVo> products;
+    private List<OrderSelDetailsVo> products;
     private String addresseeNm;
     private String phoneNumber;
     private String zipCode;

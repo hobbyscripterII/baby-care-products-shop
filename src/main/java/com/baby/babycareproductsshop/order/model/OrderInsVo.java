@@ -11,7 +11,7 @@ import java.util.List;
 public class OrderInsVo {
     private List<UserSelAddressVo> addresses;
     private int iorder;
-    private List<OrderSelOrderDetailsVo> products;
+    private List<OrderSelDetailsVo> products;
     private int totalOrderPrice;
     private List<OrderSelPaymentOptionVo> paymentOptions;
     private String nm;

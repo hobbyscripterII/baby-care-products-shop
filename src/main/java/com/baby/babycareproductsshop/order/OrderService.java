@@ -5,7 +5,6 @@ import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.user.UserAddressMapper;
 import com.baby.babycareproductsshop.user.UserMapper;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
-import com.baby.babycareproductsshop.user.model.UserSelMyInfoVo;
 import com.baby.babycareproductsshop.user.model.UserSelToModifyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class OrderService {
 
         UserSelToModifyVo userInfoVo = userMapper.selUserInfoByIuser(dto.getIuser());
 
-        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
         List<OrderSelPaymentOptionVo> paymentOptions = orderMapper.selPaymentOption();
 
         return OrderInsVo.builder()
@@ -50,27 +49,27 @@ public class OrderService {
 
     }
 
-    public OrderConfirmOrderVo confirmOrder(OrderConfirmOrderDto dto) {
+    public OrderConfirmVo confirmOrder(OrderConfirmDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         int updResult = orderMapper.updOrder(dto);
 
-        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto);
-        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
-        for (OrderSelOrderDetailsVo product : products) {
+        OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
+        List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        for (OrderSelDetailsVo product : products) {
             resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
         }
         resultVo.setProducts(products);
         return resultVo;
     }
 
-    public OrderConfirmOrderVo getOrderDetail(int iorder) {
-        OrderConfirmOrderDto dto = new OrderConfirmOrderDto();
+    public OrderConfirmVo getOrderDetails(int iorder) {
+        OrderConfirmDto dto = new OrderConfirmDto();
         dto.setIuser(authenticationFacade.getLoginUserPk());
         dto.setIorder(iorder);
 
-        OrderConfirmOrderVo resultVo = orderMapper.selConfirmOrder(dto);
-        List<OrderSelOrderDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
-        for (OrderSelOrderDetailsVo product : products) {
+        OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
+        List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
+        for (OrderSelDetailsVo product : products) {
             resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
         }
         resultVo.setProducts(products);

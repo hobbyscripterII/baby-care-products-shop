@@ -24,4 +24,18 @@
         USING (iproduct)
         WHERE A.iorder = #{iorder}
     </select>
+
+    <update id="updRefundFl">
+        UPDATE t_order_details
+        SET refund_fl = 1
+        WHERE idetails = #{idetails}
+    </update>
+
+    <insert id="insRefund">
+        INSERT INTO t_refund
+        SET idetails = #{idetails},
+            contents = #{contents},
+            refund_cnt = #{refundCnt},
+            refund_price = #{refundPrice}
+    </insert>
 </mapper>
