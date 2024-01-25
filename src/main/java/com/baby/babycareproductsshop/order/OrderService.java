@@ -1,5 +1,7 @@
 package com.baby.babycareproductsshop.order;
 
+import com.baby.babycareproductsshop.common.Const;
+import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.order.model.*;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.user.UserAddressMapper;
@@ -74,5 +76,11 @@ public class OrderService {
         }
         resultVo.setProducts(products);
         return resultVo;
+    }
+
+    public ResVo refundOrder(OrderInsRefundDto dto) {
+        int updOrderDetailsResult = orderDetailMapper.updOrderRefundFl(dto.getIdetails());
+        int insRefundResult = orderDetailMapper.insRefund(dto);
+        return new ResVo(Const.SUCCESS);
     }
 }

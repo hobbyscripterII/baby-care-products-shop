@@ -1,10 +1,7 @@
 package com.baby.babycareproductsshop.order;
 
 import com.baby.babycareproductsshop.common.ResVo;
-import com.baby.babycareproductsshop.order.model.OrderConfirmDto;
-import com.baby.babycareproductsshop.order.model.OrderConfirmVo;
-import com.baby.babycareproductsshop.order.model.OrderInsDto;
-import com.baby.babycareproductsshop.order.model.OrderInsVo;
+import com.baby.babycareproductsshop.order.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +37,11 @@ public class OrderController {
     }
 
     @Operation(summary = "상품 환불 처리")
-    @DeleteMapping("/{idetails}")
-    public ResVo refundOrder(@PathVariable int idetails) {
-        return null;
+    @PostMapping("/{idetails}")
+    public ResVo refundOrder(@PathVariable int idetails,
+                             @RequestBody OrderInsRefundDto dto) {
+        dto.setIdetails(idetails);
+        return service.refundOrder(dto);
     }
 
 }
