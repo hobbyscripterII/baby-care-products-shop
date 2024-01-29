@@ -37,4 +37,34 @@
         ON A.ipayment_option = C.ipayment_option
         WHERE (A.iuser, A.iorder) = (#{iuser}, #{iorder})
     </select>
+
+    <select id="getOrder">
+        SELECT
+        a.iorder, a.process_state processStateCode, b.iproduct, a.created_at createdAt,
+        b.idetails, c.rep_pic repPic, c.product_nm productNm, b.product_cnt productCnt,
+        (SELECT price FROM t_product WHERE iproduct = b.iproduct) * b.product_cnt price,
+        <choose>
+            <when test="listFl == 1"> <!-- 1. 주문내역 조회 2. 주문 취소/반품 내역 조회 -->
+                b.refund_fl refundFl,
+                (SELECT COUNT(*) FROM t_review WHERE ireview = b.idetails) reviewFl
+            </when>
+            <otherwise>
+                if(a.delete_fl = 1, 1, if(b.refund_fl = 1, 2, 0)) orderFl <!-- 주문 취소 = 1, 상품 반품 = 2 -->
+            </otherwise>
+        </choose>
+        FROM t_order a
+        INNER JOIN t_order_details b
+        ON a.iorder = b.iorder
+        INNER JOIN t_product c
+        ON b.iproduct = c.iproduct
+        <if test="listFl != 1">
+            WHERE a.delete_fl = 1 OR b.refund_fl = 1
+        </if>
+    </select>
+
+    <update id="orderCancel">
+        UPDATE t_order
+        SET process_state = 4
+        WHERE iorder = #{iorder}
+    </update>
 </mapper>
