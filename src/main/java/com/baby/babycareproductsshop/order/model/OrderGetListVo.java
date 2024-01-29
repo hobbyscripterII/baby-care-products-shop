@@ -1,18 +1,20 @@
 package com.baby.babycareproductsshop.order.model;
 
+import com.baby.babycareproductsshop.common.OrderCancelAndRefundToStringConverter;
 import com.baby.babycareproductsshop.common.ProcessStateCodeToStringConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.support.DefaultConversionService;
 
 @Slf4j
 @Data
-public class OrderGetVo {
+public class OrderGetListVo {
     @JsonIgnore
     private Integer processStateCode;
-    @Schema(title = "배송 처리 상태", description = "")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Schema(title = "배송 처리 상태", description = "") // 주문 취소/반품 페이지에선 필요 x
     private String processState;
     @Schema(title = "상품 PK", description = "")
     private int iproduct;
@@ -30,12 +32,20 @@ public class OrderGetVo {
     private int refundFl;
     @Schema(title = "리뷰 작성 여부", description = "")
     private int reviewFl;
-
-    public int getPrice() {
-        return this.price * productCnt;
-    }
+    @JsonIgnore
+    private int orderFl;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Schema(title = "주문 취소/반품 여부", description = "")
+    private String orderCancelAndRefund;
 
     public String getProcessState() {
+        if (orderFl == 1) {
+            return null;
+        }
         return new ProcessStateCodeToStringConverter().convert(processStateCode);
+    }
+
+    public String getOrderCancelAndRefund() {
+        return new OrderCancelAndRefundToStringConverter().convert(orderFl);
     }
 }

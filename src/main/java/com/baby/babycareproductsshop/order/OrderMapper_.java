@@ -1,11 +1,12 @@
 package com.baby.babycareproductsshop.order;
 
-import com.baby.babycareproductsshop.order.model.OrderGetVo;
+import com.baby.babycareproductsshop.order.model.OrderGetDto;
+import com.baby.babycareproductsshop.order.model.OrderGetListVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface OrderMapper_ {
-    List<OrderGetVo> getOrder(int iorder);
+    List<OrderGetListVo> getOrder(OrderGetDto dto);
 }

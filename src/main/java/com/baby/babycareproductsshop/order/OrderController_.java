@@ -1,6 +1,7 @@
 package com.baby.babycareproductsshop.order;
 
-import com.baby.babycareproductsshop.order.model.OrderGetVo;
+import com.baby.babycareproductsshop.order.model.OrderGetDto;
+import com.baby.babycareproductsshop.order.model.OrderGetListVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,11 @@ public class OrderController_ {
 
     @GetMapping
     @Operation(summary = "주문 내역", description = "")
-    List<OrderGetVo> getOrder(@RequestParam(name = "iorder") int iorder) {
-        return service.getOrder(iorder);
+    List<OrderGetListVo> getOrder(@RequestParam(name = "list_flag") int listFlag) {
+        log.info("listFlag = {}", listFlag);
+        OrderGetDto dto = new OrderGetDto();
+        dto.setIorder(1); // 수정 필요 - 전체 다 불러올껀지 조건문 줄껀지
+        dto.setListFl(listFlag);
+        return service.getOrder(dto);
     }
-
-//    @GetMapping("/cancel")
-//    @Operation(summary = "취소 내역", description = "")
-
 }
