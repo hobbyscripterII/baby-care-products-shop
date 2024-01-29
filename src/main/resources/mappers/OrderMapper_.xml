@@ -24,4 +24,10 @@
             WHERE a.delete_fl = 1 OR b.refund_fl = 1
         </if>
     </select>
+
+    <update id="orderCancel">
+        UPDATE t_order
+        SET process_state = 4
+        WHERE iorder = #{iorder}
+    </update>
 </mapper>
