@@ -1,16 +1,17 @@
 package com.baby.babycareproductsshop.order.model;
 
-import com.baby.babycareproductsshop.common.ProcessState;
+import com.baby.babycareproductsshop.common.ProcessStateCodeToStringConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.support.DefaultConversionService;
 
-import java.util.Arrays;
-
+@Slf4j
 @Data
 public class OrderGetVo {
     @JsonIgnore
-    private int processStateNum;
+    private Integer processStateCode;
     @Schema(title = "배송 처리 상태", description = "")
     private String processState;
     @Schema(title = "상품 PK", description = "")
@@ -32,5 +33,9 @@ public class OrderGetVo {
 
     public int getPrice() {
         return this.price * productCnt;
+    }
+
+    public String getProcessState() {
+        return new ProcessStateCodeToStringConverter().convert(processStateCode);
     }
 }

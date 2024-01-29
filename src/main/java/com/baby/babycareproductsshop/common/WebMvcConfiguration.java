@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -13,11 +14,17 @@ import java.io.IOException;
 
 @Slf4j
 @Configuration
-public class WebMvcConfiguration implements WebMvcConfigurer {  //새로고침
+public class WebMvcConfiguration implements WebMvcConfigurer { //새로고침
     private final String imgFolder;
 
-    public WebMvcConfiguration(@Value("${file.dir}") String imgFolder) {    //지금    은 절대경로 사용중
+    public WebMvcConfiguration(@Value("${file.dir}") String imgFolder) {    //지금은 절대경로 사용중
         this.imgFolder = imgFolder;
+    }
+
+    // Converter 등록
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new ProcessStateCodeToStringConverter());
     }
 
     @Override
