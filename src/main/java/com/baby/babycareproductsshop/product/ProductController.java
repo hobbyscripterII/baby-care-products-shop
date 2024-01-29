@@ -29,8 +29,8 @@ public class ProductController {
     @GetMapping("main")
     @Operation(summary = "메인화면")
 
-    public List<ProductMainSelVo> getProduct (ProductMainSelDto dto) {
-        return service.productMainSelVo(dto);
+    public List<ProductMainSelVo> getProduct ( ) {
+        return service.productMainSelVo();
     }
 
     //--------------------------------------월령별 상품 페이지---------------------------------------------
