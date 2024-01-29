@@ -22,7 +22,8 @@
             addressee_nm = #{addresseeNm},
             email = #{email},
             phone_number = #{phoneNumber},
-            ipayment_option = #{ipaymentOption}
+            ipayment_option = #{ipaymentOption},
+            process_state = #{processState}
         WHERE (iorder, iuser) = (#{iorder}, #{iuser})
     </update>
 

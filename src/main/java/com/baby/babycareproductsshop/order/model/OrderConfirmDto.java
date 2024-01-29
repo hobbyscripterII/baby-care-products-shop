@@ -13,4 +13,6 @@ public class OrderConfirmDto {
     private String email;
     private String phoneNumber;
     private int ipaymentOption;
+    @JsonIgnore
+    private int processState;
 }

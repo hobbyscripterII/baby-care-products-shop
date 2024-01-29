@@ -56,6 +56,10 @@ public class OrderService {
 
     public OrderConfirmVo confirmOrder(OrderConfirmDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
+        if (dto.getIpaymentOption() == 2) {
+            dto.setProcessState(1);
+        }
+        dto.setProcessState(2);
         int updResult = orderMapper.updOrder(dto);
 
         OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
