@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderService service;
 
-    @Operation(summary = "주문 결제 페이지 요청", description = """
+    @Operation(summary = "주문 및 결제 페이지 요청", description = """
             상품 구매를 누르면 사용되는 요청
             """)
     @PostMapping

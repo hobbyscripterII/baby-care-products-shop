@@ -41,10 +41,10 @@ public class UserService {
 
     //회원가입
     public ResVo postSignUp(UserSignUpDto dto) {
-        UserSignInProcDto procDto = userMapper.selSignInInfoByUid(dto.getUid());
+/*        UserSignInProcDto procDto = userMapper.selSignInInfoByUid(dto.getUid());
         if (procDto != null) {
             throw new RestApiException(AuthErrorCode.DUPLICATED_UID);
-        }
+        }*/
         String hashedUpw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedUpw);
         int insUserResult = userMapper.insUser(dto);
