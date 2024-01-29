@@ -9,4 +9,5 @@ import java.util.List;
 @Mapper
 public interface OrderMapper_ {
     List<OrderGetListVo> getOrder(OrderGetDto dto);
+    int orderCancel(int iorder);
 }

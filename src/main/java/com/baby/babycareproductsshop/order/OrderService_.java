@@ -1,17 +1,14 @@
 package com.baby.babycareproductsshop.order;
 
+import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.order.model.OrderGetDto;
 import com.baby.babycareproductsshop.order.model.OrderGetListVo;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -24,5 +21,10 @@ public class OrderService_ {
         List<OrderGetListVo> list = mapper.getOrder(dto);
 
         return list;
+    }
+
+    public ResVo orderCancel(int iorder) {
+        int orderCancelRows = mapper.orderCancel(iorder); // 추후 예외처리
+        return new ResVo(orderCancelRows);
     }
 }
