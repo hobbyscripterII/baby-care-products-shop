@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderGetListVo {
     @JsonIgnore
     private Integer processStateCode;
+    @Schema(title = "주문 PK", description = "")
+    private int iorder;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Schema(title = "배송 처리 상태", description = "") // 주문 취소/반품 페이지에선 필요 x
     private String processState;

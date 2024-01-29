@@ -18,8 +18,9 @@ public class OrderService_ {
     private final AuthenticationFacade authenticationFacade;
 
     public List<OrderGetListVo> getOrder(OrderGetDto dto) {
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        log.info("iuser = {}", dto.getIuser());
         List<OrderGetListVo> list = mapper.getOrder(dto);
-
         return list;
     }
 

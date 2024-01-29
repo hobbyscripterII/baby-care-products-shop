@@ -20,8 +20,9 @@
         ON a.iorder = b.iorder
         INNER JOIN t_product c
         ON b.iproduct = c.iproduct
+        WHERE a.iuser = #{iuser}
         <if test="listFl != 1">
-            WHERE a.delete_fl = 1 OR b.refund_fl = 1
+            AND a.delete_fl = 1 OR b.refund_fl = 1
         </if>
     </select>
 
