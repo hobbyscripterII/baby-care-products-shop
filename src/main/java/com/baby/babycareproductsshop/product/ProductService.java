@@ -33,7 +33,8 @@ public class ProductService {
     }
 
     //---------- 로그인메인화면
-    public List<ProductMainSelVo> productMainSelVo(ProductMainSelDto dto) {
+    public List<ProductMainSelVo> productMainSelVo( ) {
+        ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
 
 
