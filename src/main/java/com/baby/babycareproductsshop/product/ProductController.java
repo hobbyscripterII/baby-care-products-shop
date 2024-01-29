@@ -3,8 +3,6 @@ package com.baby.babycareproductsshop.product;
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.product.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +18,11 @@ import java.util.List;
 public class ProductController {
     private final ProductService service;
     //--------------------------------------검색기능---------------------------------------------
-    @GetMapping("/search")
+    @PostMapping("/search")
     @Operation(summary = "검색")
-    public List<ProductSearchVo> searchProduct (ProductSearchDto dto,@RequestParam List<ProductSearchCat> cats) {
+    public List<ProductSearchVo> searchProduct (@RequestBody ProductSearchDto dto) {
         log.info("dto = {}",dto);
-        return service.searchProductSelVo(dto,cats);
+        return service.searchProductSelVo(dto);
     }
 
     //--------------------------------------메인 페이지---------------------------------------------
@@ -40,7 +38,7 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "상품 조회 페이지")
 
-    public List<ProductByAgeRangeSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
+    public List<ProductListSelVo> getProductList(ProductListDto dto) {
         return service.getProductByAgeRange(dto);
     }
 

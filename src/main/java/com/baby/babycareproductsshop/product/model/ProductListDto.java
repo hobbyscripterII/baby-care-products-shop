@@ -1,13 +1,12 @@
 package com.baby.babycareproductsshop.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 @Schema(title = "상품상세정보")
-public class productByAgeRangeDto {
+public class ProductListDto {
     @Schema(title = "중분류 PK")
     private int imiddle;
 
