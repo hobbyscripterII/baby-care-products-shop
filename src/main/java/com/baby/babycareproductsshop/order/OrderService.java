@@ -90,4 +90,15 @@ public class OrderService {
         int insRefundResult = orderDetailMapper.insRefund(dto);
         return new ResVo(Const.SUCCESS);
     }
+
+    public List<OrderGetListVo> getOrder(OrderGetDto dto) {
+        List<OrderGetListVo> list = orderMapper.getOrder(dto);
+
+        return list;
+    }
+
+    public ResVo orderCancel(int iorder) {
+        int orderCancelRows = orderMapper.orderCancel(iorder); // 추후 예외처리
+        return new ResVo(orderCancelRows);
+    }
 }
