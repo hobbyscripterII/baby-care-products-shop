@@ -51,8 +51,7 @@ public class OrderController {
     @Operation(summary = "주문 내역", description = "")
     List<OrderGetListVo> getOrder(@Parameter(description = "1 - 주문내역 조회 2 - 주문취소/반품내역 조회")
                                   @RequestParam(name = "list_flag") int listFlag) {
-        OrderGetDto dto = new OrderGetDto();
-        dto.setIorder(1);
+        OrderGetListDto dto = new OrderGetListDto();
         dto.setListFl(listFlag);
         return service.getOrder(dto);
     }
@@ -67,5 +66,4 @@ public class OrderController {
             return null;
         }
     }
-
 }

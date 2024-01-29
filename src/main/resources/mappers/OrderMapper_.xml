@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.baby.babycareproductsshop.order.OrderMapper_">
     <select id="getOrder">
         SELECT
@@ -22,8 +24,9 @@
         ON b.iproduct = c.iproduct
         WHERE a.iuser = #{iuser}
         <if test="listFl != 1">
-            AND a.delete_fl = 1 OR b.refund_fl = 1
+            AND (a.delete_fl = 1 OR b.refund_fl = 1)
         </if>
+        ORDER BY a.iorder DESC
     </select>
 
     <update id="orderCancel">
