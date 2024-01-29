@@ -26,16 +26,7 @@ public class ProductSearchDto {
     private int sortBy ;
 
 
-/*
-    @Schema(title = "중분류 PK ")
-    private List<Integer> imiddle;
-
-
-    @Schema(title = "대분류 PK")
-    private List<Integer> imain;
-
- */
-//   private List<ProductSearchCat> category=new ArrayList<>();
+   private List<ProductSearchCat> cat;
 
 
 

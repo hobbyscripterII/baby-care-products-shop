@@ -9,13 +9,13 @@ import java.util.List;
 public interface ProductMapper {
     //---검색기능
 
-    List<ProductSearchVo> search(ProductSearchDto dto,List<ProductSearchCat> cats);
+    List<ProductSearchVo> search(ProductSearchDto dto);
 
     //-----메인화면
     List<ProductMainSelVo> maimSelVo();
     List<ProductMainSelVo> selProductMainByAge(ProductMainSelDto dto); // 로그인시
-    List<ZzzSelVo> SelPopProduct (); // 인기
-    List<ZzzSelVo> SelNewProduct (); // 신상품
+    List<ProductMainSelVo> SelPopProduct (); // 인기
+    List<ProductMainSelVo> SelNewProduct (); // 신상품
 
 
     // 유저자녀나이
@@ -24,7 +24,7 @@ public interface ProductMapper {
     //상품 사진넣기
     List<ProductPicsVo> selProductPics (List<Integer> iproduct);
     //-- 상품조회페이지
-    List<ProductByAgeRangeSelVo> getProductByAgeRange(productByAgeRangeDto dto);
+    List<ProductListSelVo> getProductByAgeRange(ProductListDto dto);
 
 
 
