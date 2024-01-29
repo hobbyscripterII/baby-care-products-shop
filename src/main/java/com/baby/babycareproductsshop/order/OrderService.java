@@ -27,10 +27,12 @@ public class OrderService {
         List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
         dto.setIaddress(addresses.get(0).getIaddress());
         int insOrderResult = orderMapper.insOrder(dto);
+        int totalProductCnt = 0;
         for (OrderInsDetailsProcDto product : dto.getProducts()) {
             product.setIorder(dto.getIorder());
             product.setProductPrice(product.getProductTotalPrice() / product.getProductCnt());
             int insOrderDetails = orderDetailMapper.insOrderDetail(product);
+            totalProductCnt += product.getProductCnt();
         }
 
         UserSelToModifyVo userInfoVo = userMapper.selUserInfoByIuser(dto.getIuser());
@@ -43,6 +45,7 @@ public class OrderService {
                 .iorder(dto.getIorder())
                 .products(products)
                 .totalOrderPrice(dto.getTotalOrderPrice())
+                .totalProductCnt(totalProductCnt)
                 .paymentOptions(paymentOptions)
                 .nm(userInfoVo.getNm())
                 .phoneNumber(userInfoVo.getPhoneNumber())
@@ -53,12 +56,16 @@ public class OrderService {
 
     public OrderConfirmVo confirmOrder(OrderConfirmDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
+        if (dto.getIpaymentOption() == 2) {
+            dto.setProcessState(1);
+        }
+        dto.setProcessState(2);
         int updResult = orderMapper.updOrder(dto);
 
         OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
         List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
         for (OrderSelDetailsVo product : products) {
-            resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
+            resultVo.setTotalOrderPrice(resultVo.getTotalOrderPrice() + product.getProductTotalPrice());
         }
         resultVo.setProducts(products);
         return resultVo;
@@ -72,7 +79,7 @@ public class OrderService {
         OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
         List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
         for (OrderSelDetailsVo product : products) {
-            resultVo.setTotalProductCnt(resultVo.getTotalProductCnt() + product.getProductCnt());
+            resultVo.setTotalOrderPrice(resultVo.getTotalOrderPrice() + product.getProductTotalPrice());
         }
         resultVo.setProducts(products);
         return resultVo;

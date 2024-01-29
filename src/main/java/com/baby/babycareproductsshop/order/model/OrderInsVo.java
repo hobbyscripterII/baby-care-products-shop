@@ -13,6 +13,7 @@ public class OrderInsVo {
     private int iorder;
     private List<OrderSelDetailsVo> products;
     private int totalOrderPrice;
+    private int totalProductCnt;
     private List<OrderSelPaymentOptionVo> paymentOptions;
     private String nm;
     private String phoneNumber;

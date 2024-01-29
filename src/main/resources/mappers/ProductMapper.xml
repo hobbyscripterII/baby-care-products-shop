@@ -26,10 +26,10 @@
             <if test="keyword != null and keyword != ''">
                 A.product_nm LIKE CONCAT('%', #{keyword}, '%')
             </if>
-
-            <if test="category != null and category.size() > 0">
-                <foreach collection="category" item="ProductSearchCat"  separator="OR">
-                    (imiddle = #{imiddle} and imain = #{imain})
+            and
+            <if test='cat != null and cat.size() > 0'>
+                <foreach collection="cat" item="cat"  separator="OR">
+                     (A.imiddle = #{cat.imiddle} and A.imain = #{cat.imain})
                 </foreach>
 
             </if>
@@ -83,7 +83,9 @@
         LEFT JOIN t_wish_list L
         ON A.iproduct = L.iproduct
         GROUP BY A.iproduct
-        <!--  LIMIT #{startIdx},#{rowCount} -->
+        ORDER BY RAND()
+        limit 0,8
+
     </select>
 
     <select id="SelNewProduct">
@@ -104,6 +106,7 @@
         ON A.iproduct = L.iproduct
         WHERE A.new_fl = 1
         GROUP BY A.iproduct
+        ORDER BY RAND()
     </select>
 
     <select id="SelPopProduct">
@@ -124,6 +127,7 @@
         ON A.iproduct = L.iproduct
         WHERE A.pop_fl = 1
         GROUP BY A.iproduct
+        ORDER BY RAND()
     </select>
 
     <select id="selProductMainByAge"> <!-- 로그인시-->
@@ -146,6 +150,8 @@
         ON A.recommand_age = UC.ichild_age
         WHERE A.recommand_age = #{recommandAge}
         GROUP BY A.iproduct
+        ORDER BY RAND()
+        limit 0,8
     </select>
 
     <select id="userChildAge"> <!--로그인시 유저자녀 나이 -->

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -23,51 +25,51 @@ public class ProductService {
     private final ProductReviewMapper productReviewMapper;
     private final AuthenticationFacade facade;
     //---------- 검색기능
-    public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto,List<ProductSearchCat> cats) {
+    public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
 
-        List<ProductSearchVo> searchVoList = productMapper.search(dto,cats);
+        List<ProductSearchVo> searchVoList = productMapper.search(dto);
 
         return searchVoList;
     }
 
     //---------- 로그인메인화면
-    public List<ProductMainSelVo> productMainSelVo(ProductMainSelDto dto) {
+    public List<ProductMainSelVo> productMainSelVo( ) {
+        ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
 
-        List<ZzzSelVo> selNewProduct = productMapper.SelNewProduct();
-        List<ZzzSelVo> selPopProduct = productMapper.SelPopProduct();
 
-        Integer userChildAge  = productMapper.userChildAge(dto.getIuser());
-
-        if(dto.getIuser() > 0) {
+        List<ProductMainSelVo> mainlist;
+        if (dto.getIuser() > 0) {
+            Integer userChildAge = productMapper.userChildAge(dto.getIuser());
             dto.setRecommandAge(userChildAge);
-            List<ProductMainSelVo> mainlist = productMapper.selProductMainByAge(dto);
-            for (ProductMainSelVo mainSelVo:mainlist) {
-                mainSelVo.setProductNewSelVo(selNewProduct);
-                mainSelVo.setProductPopSelVo(selPopProduct);
-            }
-
-            return mainlist;
+            mainlist = productMapper.selProductMainByAge(dto);
+        } else {
+            mainlist = productMapper.maimSelVo();
         }
 
+        // 인기
+        List<ProductMainSelVo> selPopProduct = productMapper.SelPopProduct();
+        // 최신
+        List<ProductMainSelVo> selNewProduct = productMapper.SelNewProduct();
 
-        List<ProductMainSelVo> mainlist = productMapper.maimSelVo();
-        for (ProductMainSelVo mainSelVo:mainlist) {
+        List<ProductMainSelVo> stream3 = Stream.concat(mainlist.stream(),selNewProduct.stream())
+                .distinct().limit(16)
+                .collect(Collectors.toList());
 
-            mainSelVo.setProductNewSelVo(selNewProduct);
-            log.info("selNewProduct : {}" ,selNewProduct);
-            mainSelVo.setProductPopSelVo(selPopProduct);
-            log.info("selPopProduct : {}" ,selPopProduct);
+        List<ProductMainSelVo> stream = Stream.concat(stream3.stream(),selPopProduct.stream())
+                .distinct().limit(24)
+                .collect(Collectors.toList());
+
+
+        return stream;
 
         }
-        return mainlist;
 
-    }
 
     //------ 월령별 화면? 카테고리 느낌인거같은데
 
-    public List<ProductByAgeRangeSelVo> getProductByAgeRange(productByAgeRangeDto dto) {
-        List<ProductByAgeRangeSelVo> list = productMapper.getProductByAgeRange(dto);
+    public List<ProductListSelVo> getProductByAgeRange(ProductListDto dto) {
+        List<ProductListSelVo> list = productMapper.getProductByAgeRange(dto);
         return list;
     }
 

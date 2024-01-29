@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class ProductByAgeRangeSelVo {
+public class ProductListSelVo {
     @Schema(title = "상품 PK")
     private int iproduct;
 
