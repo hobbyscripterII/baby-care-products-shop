@@ -3,12 +3,8 @@ package com.baby.babycareproductsshop.product.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Schema(title = "메인페이지 응답할 전체 리스트 데이터")
-public class ProductMainSelVo {
-
+public class ProductByAgeRangeSelVo {
     @Schema(title = "상품 PK")
     private int iproduct;
 
@@ -34,18 +30,5 @@ public class ProductMainSelVo {
     private int likeProduct;
 
     @Schema(title = "상품 사진")
-    private String repPic; //상품 사진
-
-    private List<ZzzSelVo> productNewSelVo;
-
-    private List<ZzzSelVo> productPopSelVo;
-
-
-
-
-
-
-
-
-
+    private String repPic;; //상품 사진
 }

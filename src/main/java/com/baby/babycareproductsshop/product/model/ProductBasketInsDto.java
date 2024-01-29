@@ -15,12 +15,9 @@ public class ProductBasketInsDto {
     private int iuser;
 
     @Schema(title = "상품 PK")
-    @JsonProperty(value = "상품 PK")
     private int iproduct;
 
 
-
-    @JsonProperty(value = "물품 수량")
-    @Schema(defaultValue = "1")
+    @Schema(title = "수량",defaultValue = "1")
     private int productCnt;
 }

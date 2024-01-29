@@ -9,10 +9,9 @@ import lombok.Data;
 @Schema(title = "상품상세정보")
 public class productByAgeRangeDto {
     @Schema(title = "중분류 PK")
-    @JsonProperty(value = "중분류")
     private int imiddle;
+
     @Schema(title = "대분류 PK")
-    @JsonProperty(value = "대분류")
     private int imain;
 
     @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")
@@ -24,7 +23,7 @@ public class productByAgeRangeDto {
     @JsonIgnore
     private int rowCount = 5;
 
-    @JsonProperty(value = "페이지")
+    @Schema(title = "페이지")
     public void setPage(int page) {
         this.startIdx = (page - 1) * rowCount;
     }

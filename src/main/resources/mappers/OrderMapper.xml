@@ -28,7 +28,7 @@
 
     <select id="selConfirmOrder">
         SELECT A.iorder, A.addressee_nm, A.phone_number, B.zip_code, B.address, B.address_detail,
-            C.payment_option, A.created_at
+            C.payment_option, DATE(A.created_at) as createdAt
         FROM t_order A
         JOIN t_address B
         ON A.iaddress = B.iaddress
