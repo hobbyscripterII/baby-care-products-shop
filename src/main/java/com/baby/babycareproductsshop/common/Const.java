@@ -23,5 +23,4 @@ public class Const {
     public static final String NOT_ALLOWED_PHONE_NUMBER = "올바르지 않은 전화번호 형식입니다.";
     public static final String NOT_ALLOWED_EMAIL = "올바르지 않은 이메일 형식입니다.";
     public static final String NOT_ALLOWED_CHILDREN_COUNT = "아이 정보는 최소 1명 최대 3명까지 입력할 수 있습니다.";
-
 }
