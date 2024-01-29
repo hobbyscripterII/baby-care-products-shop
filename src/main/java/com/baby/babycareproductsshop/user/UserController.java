@@ -53,7 +53,7 @@ public class UserController {
             로그인 실패 -> error
             """)
     @PostMapping("/sign-in")
-    public UserSignInVo postSignIn(HttpServletResponse res,@Valid @RequestBody UserSignInDto dto) {
+    public UserSignInVo postSignIn(HttpServletResponse res, @Valid @RequestBody UserSignInDto dto) {
         return service.postSignIn(res, dto);
     }
 
@@ -102,7 +102,7 @@ public class UserController {
             성공 -> result = 1
             """)
     @PostMapping("/signout")
-    public ResVo postSignout(HttpServletRequest req, HttpServletResponse res) {
+    public ResVo postSignout(HttpServletResponse res) {
         return service.signout(res);
     }
 
