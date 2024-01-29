@@ -12,5 +12,7 @@ public class OrderGetDto {
     @Schema(title = "주문 PK", description = "")
     private int iorder;
     @JsonIgnore
+    private int iuser;
+    @JsonIgnore
     private int listFl;
 }
