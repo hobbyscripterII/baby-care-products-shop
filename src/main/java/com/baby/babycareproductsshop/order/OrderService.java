@@ -9,10 +9,12 @@ import com.baby.babycareproductsshop.user.UserMapper;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
 import com.baby.babycareproductsshop.user.model.UserSelToModifyVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -91,9 +93,9 @@ public class OrderService {
         return new ResVo(Const.SUCCESS);
     }
 
-    public List<OrderGetListVo> getOrder(OrderGetDto dto) {
+    public List<OrderGetListVo> getOrder(OrderGetListDto dto) {
+        dto.setIuser(authenticationFacade.getLoginUserPk());
         List<OrderGetListVo> list = orderMapper.getOrder(dto);
-
         return list;
     }
 

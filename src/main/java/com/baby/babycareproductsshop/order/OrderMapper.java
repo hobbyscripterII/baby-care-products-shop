@@ -13,6 +13,6 @@ public interface OrderMapper {
     OrderConfirmVo selConfirmOrder(OrderConfirmDto dto);
     int updRefundFl(int idetails);
 
-    List<OrderGetListVo> getOrder(OrderGetDto dto);
+    List<OrderGetListVo> getOrder(OrderGetListDto dto);
     int orderCancel(int iorder);
 }
