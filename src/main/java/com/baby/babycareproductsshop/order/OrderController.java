@@ -5,6 +5,7 @@ import com.baby.babycareproductsshop.order.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +18,27 @@ import java.util.List;
 public class OrderController {
     private final OrderService service;
 
-    @Operation(summary = "주문 및 결제 페이지 요청", description = """
-            상품 구매를 누르면 사용되는 요청
+    @Operation(summary = "상품 구매", description = """
+            상품 구매를 누르면 사용되는 요청<br>
+            성공 : result = iorder(주문 pk)
             """)
     @PostMapping
-    public OrderInsVo postOrder(@RequestBody OrderInsDto dto){
+    public ResVo postOrder(@RequestBody @Valid OrderInsDto dto){
         return service.postOrder(dto);
+    }
+
+    @Operation(summary = "주문 및 결제 페이지 요청")
+    @GetMapping("/confirm")
+    public OrderInsVo getOrderForConfirm(@RequestParam int iorder) {
+        return service.getOrderForConfirm(iorder);
     }
 
     @Operation(summary = "주문 완료 페이지 요청", description = """
             주문 및 결제에서 주문하기 를 누르면 사용되는 요청
             """)
     @PutMapping
-    public OrderConfirmVo confirmOrder(@RequestBody OrderConfirmDto dto) {
-        return service.confirmOrder(dto);
+    public ResVo putConfirmOrder(@RequestBody @Valid OrderConfirmDto dto) {
+        return service.putConfirmOrder(dto);
     }
 
     @Operation(summary = "주문 상세 내역 확인")
@@ -42,7 +50,7 @@ public class OrderController {
     @Operation(summary = "상품 환불 처리")
     @PostMapping("/{idetails}")
     public ResVo refundOrder(@PathVariable int idetails,
-                             @RequestBody OrderInsRefundDto dto) {
+                             @RequestBody @Valid OrderInsRefundDto dto) {
         dto.setIdetails(idetails);
         return service.refundOrder(dto);
     }

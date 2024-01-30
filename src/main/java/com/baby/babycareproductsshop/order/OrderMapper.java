@@ -12,6 +12,7 @@ public interface OrderMapper {
     int updOrder(OrderConfirmDto dto);
     OrderConfirmVo selConfirmOrder(OrderConfirmDto dto);
     int updRefundFl(int idetails);
+    OrderInsVo selOrderForConfirm(int iorder);
 
     List<OrderGetListVo> getOrderList(OrderGetListDto dto);
     List<OrderGetListVo.items> getProductList(OrderGetListDto dto);

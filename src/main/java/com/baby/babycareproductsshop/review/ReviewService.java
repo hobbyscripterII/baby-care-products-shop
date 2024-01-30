@@ -32,10 +32,8 @@ public class ReviewService {
     public ResVo insReview(ReviewInsDto dto) {
         //
         dto.setIuser(authenticationFacade.getLoginUserPk());
-        log.info("dto = {}", dto);
         ReviewPicsInsDto insDto = new ReviewPicsInsDto();
         insDto.setIreview(dto.getIdetails());
-        log.info("insDto = {}", insDto);
         String target = "review/" + dto.getIdetails();
         if( dto.getPics() == null) {
             int insReview = mapper.insReview(dto);
@@ -44,8 +42,8 @@ public class ReviewService {
         for (MultipartFile file : dto.getPics()) {
             String savedFileNm = myFileUtils.transferTo(file, target);
             insDto.getPics().add(savedFileNm);
-            if(dto.getReqReviewPic() == null) {
-                dto.setReqReviewPic(savedFileNm);
+            if(dto.getRepReviewPic() == null) {
+                dto.setRepReviewPic(savedFileNm);
             }
         }
         int insReview = mapper.insReview(dto);
@@ -56,7 +54,6 @@ public class ReviewService {
     public List<ReviewSelVo> getReview(ReviewSelDto dto) {
         //
         dto.setIuser(authenticationFacade.getLoginUserPk());
-        log.info("dto = {}", dto);
         List<ReviewSelVo> reviewSelVoList = mapper.getReview(dto);
         List<Integer> iReviewList = new ArrayList<>();
         Map<Integer, ReviewSelVo> reviewMap = new HashMap<>();
@@ -81,7 +78,6 @@ public class ReviewService {
     public ResVo delReview(ReviewDelDto dto) {
         //
         dto.setIuser(authenticationFacade.getLoginUserPk());
-        log.info("dto = {}", dto);
         int selReview = mapper.selReviewByReview(dto);
         if (selReview == 0) {
             throw new RestApiException(AuthErrorCode.DEL_REVIEW_NOT_FAIL);

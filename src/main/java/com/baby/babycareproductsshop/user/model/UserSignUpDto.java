@@ -31,28 +31,35 @@ public class UserSignUpDto {
             message = NOT_ALLOWED_PASSWORD)
     private String upw;
 
+    @Schema(title = "이름")
     @NotBlank(message = NM_IS_BLANK)
     private String nm;
 
+    @Schema(title = "우편 번호")
     @NotBlank(message = ZIP_CODE_IS_BLANK)
     private String zipCode;
 
+    @Schema(title = "주소")
     @NotBlank(message = ADDRESS_IS_BLANK)
     private String address;
 
+    @Schema(title = "상세 주소")
     @NotBlank(message = ADDRESS_DETAIL_IS_BLANK)
     private String addressDetail;
 
+    @Schema(title = "전화번호")
     @NotNull(message = PHONE_NUMBER_IS_BLANK)
     @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}",
             message = NOT_ALLOWED_PHONE_NUMBER)
     private String phoneNumber;
 
+    @Schema(title = "이메일")
     @NotNull(message = EMAIL_IS_BLANK)
     @Pattern(regexp = "\\w+@\\w{3,}\\.([a-zA-Z]{2,}|[a-zA-Z]{2,}\\.[a-zA-Z]{2,})",
             message = NOT_ALLOWED_EMAIL)
     private String email;
 
+    @Schema(title = "자녀 정보")
     @Size(min = 1, max = 3, message = NOT_ALLOWED_CHILDREN_COUNT)
     private List<@Valid UserChildDto> children;
 }

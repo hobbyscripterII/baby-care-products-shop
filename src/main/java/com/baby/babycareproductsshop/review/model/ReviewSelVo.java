@@ -27,4 +27,8 @@ public class ReviewSelVo{
     //
     @Schema(title = "리뷰에 등록한 사진")
     private List<String> pics = new ArrayList<>();
+
+    @Schema(title = "상품명")
+    private String productNm;
+
 }

@@ -63,7 +63,6 @@ public class UserController {
                 preparation : 배송 준비중
                 shipping : 배송중
                 completed : 배송 완료
-                myWishList : 찜한 상품 목록
             """)
     @GetMapping("/my-page")
     public UserSelMyInfoVo getMyInfo() {
