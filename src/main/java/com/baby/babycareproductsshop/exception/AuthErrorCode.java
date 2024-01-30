@@ -25,6 +25,7 @@ public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 �
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않습니다."),
     COMMENT_REGISTER_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 등록 및 수정이 불가능합니다."),
     COMMENT_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 수정이 불가능합니다."),
+    IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "이미지 업로드에 실패했습니다."),
 
     // 회원
     INVALID_ADDRESS_SIZE(HttpStatus.BAD_REQUEST, "주소는 최소 1개 최대 3개 까지 입력할 수 있습니다."),
@@ -32,10 +33,10 @@ public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 �
     PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND, "비밀번호를 확인해주세요."),
     LOGIN_FAIL(HttpStatus.NOT_FOUND, "아이디와 비밀번호를 확인해주세요."),
     NEED_SIGNIN(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
-    NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "refresh-token 이 없습니다.");
+    NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "refresh-token 이 없습니다."),
 
     //상품
-
+    NOT_FOUND_ORDER_LIST(HttpStatus.NOT_FOUND, "해당하는 상품 내역이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

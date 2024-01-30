@@ -5,24 +5,12 @@
         INSERT INTO t_board(iuser, board_code, title, contents) VALUES(#{iuser}, 0, '', '')
     </insert>
 
-    <!--    <insert id="insBoard" useGeneratedKeys="true" keyProperty="iboard">-->
-    <!--        INSERT INTO t_board(iuser, board_code, title, contents)-->
-    <!--        VALUES(#{iuser}, #{boardCode}, #{title}, #{contents})-->
-    <!--    </insert>-->
     <update id="updBoard">
         UPDATE t_board SET
         title = #{title},
         contents = #{contents}
         WHERE iboard = #{iboard} AND iuser = #{iuser}
     </update>
-
-    <!--    <update id="updBoard">-->
-    <!--        UPDATE t_board SET-->
-    <!--        board_code = #{boardCode},-->
-    <!--        title = #{title},-->
-    <!--        contents = #{contents}-->
-    <!--        WHERE iboard = #{iboard}-->
-    <!--    </update>-->
 
     <delete id="delBoard">
         DELETE FROM t_board
@@ -52,12 +40,9 @@
         INSERT INTO t_board_pics(iboard, board_pic) VALUES (#{iboard}, #{picName})
     </insert>
 
-    <!--    <insert id="insBoardPics">-->
-    <!--        INSERT INTO t_board_pics(iboard, board_pic) VALUES-->
-    <!--        <foreach collection="picNames" item="picName" separator=",">-->
-    <!--            (#{iboard}, #{picName})-->
-    <!--        </foreach>-->
-    <!--    </insert>-->
+    <insert id="insBoardPics">
+        INSERT INTO t_board_pics(iboard, board_pic) VALUES (#{iboard}, #{picName})
+    </insert>
 
     <delete id="delBoardPics">
         DELETE FROM t_board_pics WHERE iboard = #{iboard}
