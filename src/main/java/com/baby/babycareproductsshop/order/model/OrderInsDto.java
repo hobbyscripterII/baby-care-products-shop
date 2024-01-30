@@ -1,6 +1,8 @@
 package com.baby.babycareproductsshop.order.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.List;
 public class OrderInsDto {
     @JsonIgnore
     private int iuser;
-    List<OrderInsDetailsProcDto> products;
+    @Schema(title = "상품 정보")
+    List<@Valid OrderInsDetailsProcDto> products;
     private int totalOrderPrice;
     @JsonIgnore
     private int iaddress;
