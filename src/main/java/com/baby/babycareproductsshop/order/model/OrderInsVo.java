@@ -2,7 +2,6 @@ package com.baby.babycareproductsshop.order.model;
 
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class OrderInsVo {
     @Schema(title = "주소 목록")
     private List<UserSelAddressVo> addresses;
     @Schema(title = "수령인 이름")
-    private String nm;
+    private String addresseeNm;
     @Schema(title = "수령인 전화번호")
     private String phoneNumber;
     @Schema(title = "수령인 이메일")

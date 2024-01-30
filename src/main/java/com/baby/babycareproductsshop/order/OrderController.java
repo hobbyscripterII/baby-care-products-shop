@@ -37,7 +37,7 @@ public class OrderController {
             주문 및 결제에서 주문하기 를 누르면 사용되는 요청
             """)
     @PutMapping
-    public OrderConfirmVo putConfirmOrder(@RequestBody @Valid OrderConfirmDto dto) {
+    public ResVo putConfirmOrder(@RequestBody @Valid OrderConfirmDto dto) {
         return service.putConfirmOrder(dto);
     }
 
