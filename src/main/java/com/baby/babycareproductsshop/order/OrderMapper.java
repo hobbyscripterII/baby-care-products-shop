@@ -14,6 +14,7 @@ public interface OrderMapper {
     int updRefundFl(int idetails);
     OrderInsVo selOrderForConfirm(int iorder);
 
-    List<OrderGetListVo> getOrder(OrderGetListDto dto);
+    List<OrderGetListVo> getOrderList(OrderGetListDto dto);
+    List<OrderGetListVo.items> getProductList(OrderGetListDto dto);
     int orderCancel(int iorder);
 }

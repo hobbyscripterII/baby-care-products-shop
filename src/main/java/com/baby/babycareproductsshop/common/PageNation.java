@@ -11,12 +11,12 @@ public class PageNation {
     private int start; // 페이지네이션 시작 번호
     private int end; // 페이지네이션 끝 번호
     private int realEnd; // 실제 끝 번호
-    private boolean prev; // 이전 버튼
-    private boolean next; // 다음 버튼
+    private boolean prev; // 이전 버튼 *
+    private boolean next; // 다음 버튼 *
     private int page; // 페이지 번호(1 페이지, 2 페이지...)
     private int amount; // 한 페이지당 보여 줄 게시글 개수
     private int total; // 총 게시글 개수
-    private int pageCnt = 5; // 페이지네이션 개수
+    private int pageCnt = 5; // 페이지네이션 개수 *
     private Criteria criteria;
 
     public PageNation(Criteria criteria, int total) {
