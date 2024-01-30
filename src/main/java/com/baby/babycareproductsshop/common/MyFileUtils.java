@@ -1,5 +1,7 @@
 package com.baby.babycareproductsshop.common;
 
+import com.baby.babycareproductsshop.exception.AuthErrorCode;
+import com.baby.babycareproductsshop.exception.RestApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.io.File;
 import java.util.UUID;
 
 @Slf4j
-@Component // 빈 등록
+@Component
 public class MyFileUtils {
     private final String uploadPrefixPath;
 
@@ -28,9 +30,8 @@ public class MyFileUtils {
             file.transferTo(saveFile); // 파일 저장
             return saveFileName;
         } catch (Exception e) {
-            // 추후 예외 처리 추가
             e.printStackTrace();
-            return null;
+            throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
         }
     }
 

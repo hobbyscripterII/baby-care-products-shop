@@ -1,14 +1,12 @@
 package com.baby.babycareproductsshop.board;
 
 import com.baby.babycareproductsshop.board.model.*;
-import com.baby.babycareproductsshop.common.MyFileUtils;
-import com.baby.babycareproductsshop.common.PageNation;
-import com.baby.babycareproductsshop.common.ResVo;
-import com.baby.babycareproductsshop.common.Utils;
+import com.baby.babycareproductsshop.common.*;
 import com.baby.babycareproductsshop.exception.AuthErrorCode;
 import com.baby.babycareproductsshop.exception.RestApiException;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,24 +26,10 @@ import java.util.stream.Collectors;
 public class BoardController {
     private final BoardService service;
     private final MyFileUtils myFileUtils;
-    private final AuthenticationFacade authenticationFacade;
-    private int iboard;
-
-    @GetMapping("/pagenation")
-    @Operation(summary = "게시글 페이지네이션 기능", description = "[보류] 담당자랑 협의 후 수정 진행")
-    public PageNation getPageNation(@RequestParam(name = "board_code") int boardCode, @RequestParam int page, @RequestParam(required = false) String keyword) {
-        PageNation.Criteria criteria = new PageNation.Criteria();
-        criteria.setPage(page);
-        criteria.setBoardCode(boardCode);
-        criteria.setKeyword(keyword);
-        List<BoardGetVo> list = service.getBoard(criteria);
-
-        return new PageNation(criteria, list.size());
-    }
 
     @GetMapping
     @Operation(summary = "게시글 목록 출력 기능", description = "")
-    public List<BoardGetVo> getBoard(@RequestParam(name = "board_code") int boardCode, @RequestParam int page, @RequestParam(required = false) String keyword) {
+    public List<BoardGetVo> getBoard(@RequestParam(name = "board_code") int boardCode, @RequestParam(name = "page") int page, @RequestParam(name = "keyword", required = false) String keyword) {
         try {
             if (Utils.isNotNull(boardCode) && Utils.isNotNull(page)) {
                 PageNation.Criteria criteria = new PageNation.Criteria();
@@ -63,7 +47,7 @@ public class BoardController {
 
     @GetMapping("/{iboard}")
     @Operation(summary = "게시글 읽기 기능", description = "")
-    public BoardSelVo selBoard(@PathVariable int iboard) {
+    public BoardSelVo selBoard(@PathVariable(name = "iboard") int iboard) {
         try {
             if (Utils.isNotNull(iboard)) {
                 return service.selBoard(iboard);
@@ -75,79 +59,54 @@ public class BoardController {
         }
     }
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    @PostMapping("/webeditor")
-    @Operation(summary = "웹에디터 사진 등록 기능", description = "")
-    public String insBoardPics(@RequestPart(name = "pic") MultipartFile pic) {
+    @PostMapping("/write")
+    @Operation(summary = "게시글 등록 기능", description = "null로 게시글 등록 후 PK 반환(웹에디터 로직)")
+    public int insBoard() {
         try {
-            // null로 게시글 insert(pk 값 받아오기 위함)
-            BoardInsDto insDto = new BoardInsDto();
-            insDto.setIuser(authenticationFacade.getLoginUserPk());
-            int insBoardRows = service.insBoard(insDto);
+            int iboard = service.insBoard();
 
-            // null로 insert 완료 시 해당 pk로 폴더 생성 후 이미지 업로드 진행
-            if (Utils.isNotNull(insBoardRows)) {
-                this.iboard = insDto.getIboard();
-                log.info("this.iboard = {}", this.iboard);
-                String path = "/board/" + insDto.getIboard();
-                log.info("path = {}", path);
-                String savedFileName = myFileUtils.transferTo(pic, path);
-                log.info("savedFileName = {}", savedFileName);
-
-                // 이미지 업로드 완료 시 tbl에 사진 경로 저장
-                if (Utils.isNotNull(savedFileName)) {
-                    BoardPicsDto picsDto = new BoardPicsDto();
-                    picsDto.setIboard(insDto.getIboard());
-                    picsDto.setPicName(savedFileName);
-                    int insBoardPic = service.insBoardPic(picsDto);
-                    log.info("insBoardPic = {}", insBoardPic);
-
-                    // db에 사진 저장 완료 시 사진 경로 문자열 반환 없으면 null로 반환
-                    return Utils.isNotNull(insBoardPic) ? savedFileName : null;
-                }
+            if (Utils.isNotNull(iboard)) {
+                return iboard;
             }
+            return Const.FAIL;
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
-        } catch (Exception e) {
-            throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }
 
-//    @GetMapping
-//    @Operation(summary = "게시글 등록 기능", description = "")
-//    public ResVo insBoard() {
-//        return null;
-//    }
-
-    @PostMapping
-    @Operation(summary = "게시글 등록 기능", description = "")
-    public ResVo insBoard(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) {
-        // iboard 있으면 update 진행 없으면 insert
+    @PostMapping("/image-upload")
+    @Operation(summary = "웹에디터 사진 등록 기능", description = "")
+    public String imageUpload(@Parameter(description = "게시글 PK") @RequestParam(name = "iboard") int iboard, @RequestPart(name = "pics") MultipartFile pics) {
         try {
-            if (!Utils.isNotNull(dto)) {
-                throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
-            } else {
-                if (pics != null) {
-                    dto.setIboard(iboard);
-                    dto.setPics(pics);
-                }
+            String path = "/board/" + iboard;
 
-                BoardUpdDto updDto = new BoardUpdDto();
-                updDto.setIboard(iboard);
-                updDto.setIuser(authenticationFacade.getLoginUserPk());
-                updDto.setTitle(dto.getTitle());
-                updDto.setContents(dto.getContents());
-                return service.updBoard(updDto);
-//                return service.insBoard(dto);
+            // db에 사진 저장 완료 시 사진 경로 문자열 반환 없으면 예외 던짐
+            String savedFileName = myFileUtils.transferTo(pics, path);
+
+            if (Utils.isNotNull(savedFileName)) {
+                BoardPicsDto picsDto = new BoardPicsDto();
+                picsDto.setIboard(iboard);
+                picsDto.setPicName(savedFileName);
+                int insBoardPic = service.insBoardPic(picsDto);
+
+                if (Utils.isNotNull(insBoardPic)) {
+                    return savedFileName;
+                } else {
+                    throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
+                }
+            } else {
+                throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
             }
         } catch (Exception e) {
-            throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
+            e.printStackTrace();
+            throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
         }
     }
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    @PatchMapping
+    @PutMapping
     @Operation(summary = "게시판 수정 기능", description = "")
-    public ResVo updBoard(@RequestPart BoardUpdDto dto, @RequestPart(required = false) List<MultipartFile> pics) {
+    public ResVo updBoard(@Parameter(name = "dto") @RequestPart(name = "dto") BoardUpdDto dto, @Parameter(name = "pics") @RequestPart(name = "pics", required = false) List<MultipartFile> pics) {
         try {
             if (!Utils.isNotNull(dto)) {
                 throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
@@ -162,9 +121,11 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("{iboard}")
+    @DeleteMapping
     @Operation(summary = "게시판 삭제 기능", description = "")
-    public ResVo delBoard(@PathVariable int iboard) {
+    public ResVo delBoard(@RequestParam(name = "iboard") int iboard) {
+        log.info("iboard = {}", iboard);
+
         try {
             if (Utils.isNotNull(iboard)) {
                 return service.delBoard(iboard);

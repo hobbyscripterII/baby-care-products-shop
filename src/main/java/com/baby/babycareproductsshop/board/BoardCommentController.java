@@ -77,7 +77,6 @@ public class BoardCommentController {
                 throw new RestApiException(AuthErrorCode.USER_MODIFY_FAIL);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.COMMENT_REGISTER_FAIL);
         }
     }
