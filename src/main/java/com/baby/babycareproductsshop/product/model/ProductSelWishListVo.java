@@ -21,4 +21,6 @@ public class ProductSelWishListVo {
     private int popFl;
     @Schema(title = "리뷰 갯수")
     private int reviewCnt;
+    @Schema(title = "상품 찜하기 여부", description = "1 : 상품 찜 한 상태")
+    private int likeProduct;
 }
