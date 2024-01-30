@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class UserService {
     private final AuthenticationFacade authenticationFacade;
 
     //회원가입
+    @Transactional
     public ResVo postSignUp(UserSignUpDto dto) {
 /*        UserSignInProcDto procDto = userMapper.selSignInInfoByUid(dto.getUid());
         if (procDto != null) {
@@ -118,6 +120,7 @@ public class UserService {
     }
 
     //유저 정보 수정
+    @Transactional
     public ResVo putUserInfo(UserUpdDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         if (StringUtils.hasText(dto.getUpw())) {

@@ -76,6 +76,7 @@ public class OrderService {
         return resultVo;
     }
 
+    @Transactional
     public ResVo refundOrder(OrderInsRefundDto dto) {
         int updOrderDetailsResult = orderDetailMapper.updOrderRefundFl(dto.getIdetails());
         int insRefundResult = orderDetailMapper.insRefund(dto);
