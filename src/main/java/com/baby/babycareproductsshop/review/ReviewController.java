@@ -10,6 +10,7 @@ import com.baby.babycareproductsshop.review.model.ReviewSelDto;
 import com.baby.babycareproductsshop.review.model.ReviewSelVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,15 +30,15 @@ public class ReviewController {
     @PostMapping("/{iproduct}")
     @Operation(summary = "리뷰 작성", description = "리뷰 작성 절차")
     public ResVo insReview(@PathVariable int iproduct,
-                           @RequestPart(required = false) List<MultipartFile> pics,
-                           @RequestPart ReviewInsDto dto) {
-        if (pics != null && pics.size() >= 6) {
-            throw new RestApiException(AuthErrorCode.UPLOAD_PIC_OVER_REVIEW);
+                           @RequestPart(required = false) List<MultipartFile> reviewPics,
+                           @RequestPart @Valid ReviewInsDto dto) {
+        if (reviewPics != null && reviewPics.size() >= 6) {
+            throw new RestApiException(AuthErrorCode.NOT_ALLOWED_PICS_SIZE);
         }
         log.info("iproduct ={}", iproduct);
         log.info("dto = {}", dto);
         dto.setIproduct(iproduct);
-        dto.setPics(pics);
+        dto.setPics(reviewPics);
         return service.insReview(dto);
 
     }

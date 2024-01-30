@@ -5,6 +5,7 @@ import com.baby.babycareproductsshop.order.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class OrderController {
             성공 : result = iorder(주문 pk)
             """)
     @PostMapping
-    public ResVo postOrder(@RequestBody OrderInsDto dto){
+    public ResVo postOrder(@RequestBody @Valid OrderInsDto dto){
         return service.postOrder(dto);
     }
 
@@ -36,7 +37,7 @@ public class OrderController {
             주문 및 결제에서 주문하기 를 누르면 사용되는 요청
             """)
     @PutMapping
-    public OrderConfirmVo putConfirmOrder(@RequestBody OrderConfirmDto dto) {
+    public OrderConfirmVo putConfirmOrder(@RequestBody @Valid OrderConfirmDto dto) {
         return service.putConfirmOrder(dto);
     }
 
@@ -49,7 +50,7 @@ public class OrderController {
     @Operation(summary = "상품 환불 처리")
     @PostMapping("/{idetails}")
     public ResVo refundOrder(@PathVariable int idetails,
-                             @RequestBody OrderInsRefundDto dto) {
+                             @RequestBody @Valid OrderInsRefundDto dto) {
         dto.setIdetails(idetails);
         return service.refundOrder(dto);
     }

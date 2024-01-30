@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,14 @@ public class ReviewInsDto {
     private int iproduct;
     @JsonIgnore
     private int iuser;
-    @Schema(title = "리뷰 대표 사진")
-    private String reqReviewPic;
+    @JsonIgnore
+    private String repReviewPic;
     @Schema(title = "리뷰 내용")
+    @NotNull
     private String contents;
-    @Schema(title = "리뷰 별점")
+    @Schema(title = "리뷰 별점" ,defaultValue = "5")
     @Min(1) @Max(5)
     private int productScore;
-    @Schema(title = "리뷰 첨부사진")
     @JsonIgnore
     private List<MultipartFile> pics;
 }
