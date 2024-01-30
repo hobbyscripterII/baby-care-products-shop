@@ -11,11 +11,11 @@ import java.util.List;
 @Data
 @Schema(title = "상품 상세 정보 조회시 응답할 전체 리스트")
 public class ProductSelVo {
-    @JsonIgnore
+
     @Schema(title = "상품 PK")
     private int iproduct;
 
-    @JsonIgnore
+
     @Schema(title = "리뷰 PK")
     private int ireview;
 

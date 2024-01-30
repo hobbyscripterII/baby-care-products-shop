@@ -12,7 +12,7 @@ import java.util.List;
 @Schema(title = "장바구니 상세 정보")
 public class ProductBasketSelVo {
 
-    @JsonIgnore
+
     @Schema(title = "상품 PK")
     private int iproduct;
 
