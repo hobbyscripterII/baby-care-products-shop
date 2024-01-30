@@ -16,6 +16,17 @@
         WHERE ipayment_option != 1
     </select>
 
+    <select id="selOrderForConfirm">
+        SELECT A.iorder, A.total_price AS totalOrderPrice,
+            SUM(B.product_cnt) AS totalProductCnt,
+            A.addressee_nm AS nm, A.phone_number, A.email
+        FROM t_order A
+        JOIN t_order_details B
+        ON A.iorder = B.iorder
+        AND A.iorder = #{iorder}
+        GROUP BY B.iorder
+    </select>
+
     <update id="updOrder">
         UPDATE t_order
         SET iaddress = #{iaddress},

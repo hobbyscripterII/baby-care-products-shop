@@ -17,20 +17,27 @@ import java.util.List;
 public class OrderController {
     private final OrderService service;
 
-    @Operation(summary = "주문 및 결제 페이지 요청", description = """
-            상품 구매를 누르면 사용되는 요청
+    @Operation(summary = "상품 구매", description = """
+            상품 구매를 누르면 사용되는 요청<br>
+            성공 : result = iorder(주문 pk)
             """)
     @PostMapping
-    public OrderInsVo postOrder(@RequestBody OrderInsDto dto){
+    public ResVo postOrder(@RequestBody OrderInsDto dto){
         return service.postOrder(dto);
+    }
+
+    @Operation(summary = "주문 및 결제 페이지 요청")
+    @GetMapping("/confirm")
+    public OrderInsVo getOrderForConfirm(@RequestParam int iorder) {
+        return service.getOrderForConfirm(iorder);
     }
 
     @Operation(summary = "주문 완료 페이지 요청", description = """
             주문 및 결제에서 주문하기 를 누르면 사용되는 요청
             """)
     @PutMapping
-    public OrderConfirmVo confirmOrder(@RequestBody OrderConfirmDto dto) {
-        return service.confirmOrder(dto);
+    public OrderConfirmVo putConfirmOrder(@RequestBody OrderConfirmDto dto) {
+        return service.putConfirmOrder(dto);
     }
 
     @Operation(summary = "주문 상세 내역 확인")

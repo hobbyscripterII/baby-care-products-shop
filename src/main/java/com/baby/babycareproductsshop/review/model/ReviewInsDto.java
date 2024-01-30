@@ -30,5 +30,6 @@ public class ReviewInsDto {
     @Min(1) @Max(5)
     private int productScore;
     @Schema(title = "리뷰 첨부사진")
+    @JsonIgnore
     private List<MultipartFile> pics;
 }

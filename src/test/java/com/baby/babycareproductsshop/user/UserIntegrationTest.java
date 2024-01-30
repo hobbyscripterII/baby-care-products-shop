@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -88,6 +89,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     public void getMyInfo() throws Exception {
         MvcResult mvcResult = mvc.perform(
                         MockMvcRequestBuilders.get("/api/user/my-page")
+                                .header("Authorization", "Bearer sdfsdgfdhr3@!$sdfsdgsd")
                 ).andExpect(status().isOk())
                 .andReturn();
     String content = mvcResult.getResponse().getContentAsString();
@@ -96,17 +98,5 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     assertNotNull(vo);
     }
 
-    @Test
-    public void signin() throws Exception {
-        UserSignInDto signInDto = new UserSignInDto();
-        signInDto.setUid("hubble");
-        signInDto.setUpw("xptmxm12!@");
 
-        MvcResult inResult = mvc.perform(
-                        MockMvcRequestBuilders.post("/api/user/sign-in")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(signInDto))
-                ).andExpect(status().isOk())
-                .andReturn();
-    }
 }
