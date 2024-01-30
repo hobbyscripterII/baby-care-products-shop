@@ -15,7 +15,7 @@
 //@RequestMapping("/api/order_")
 //@Tag(name = "주문 API", description = "주문 관련 파트")
 //public class OrderController_ {
-//    private final OrderService service;
+//    private final OrderService_ service;
 //
 //    @GetMapping
 //    @Operation(summary = "주문 내역", description = "")
