@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,10 @@ import java.util.*;
 @Schema(title = "리뷰 작성 시 필요한 데이터")
 public class ReviewInsDto {
     @Schema(title = "주문상세 KEY")
+    @Positive
     private int idetails;
     @Schema(title = "주문 PK")
+    @Positive
     private int iorder;
     @JsonIgnore
     private int iproduct;

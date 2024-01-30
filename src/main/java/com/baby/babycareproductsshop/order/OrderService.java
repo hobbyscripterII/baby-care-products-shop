@@ -51,7 +51,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderConfirmVo putConfirmOrder(OrderConfirmDto dto) {
+    public ResVo putConfirmOrder(OrderConfirmDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         if (dto.getIpaymentOption() == 2) {
             dto.setProcessState(1);
@@ -59,13 +59,7 @@ public class OrderService {
         dto.setProcessState(2);
         int updResult = orderMapper.updOrder(dto);
 
-        OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
-        List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
-        for (OrderSelDetailsVo product : products) {
-            resultVo.setTotalOrderPrice(resultVo.getTotalOrderPrice() + product.getProductTotalPrice());
-        }
-        resultVo.setProducts(products);
-        return resultVo;
+        return new ResVo(Const.SUCCESS);
     }
 
     public OrderConfirmVo getOrderDetails(int iorder) {
