@@ -26,45 +26,35 @@ public class ProductService {
     private final AuthenticationFacade facade;
     //---------- 검색기능
     public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
-
         List<ProductSearchVo> searchVoList = productMapper.search(dto);
-
         return searchVoList;
     }
-
-    //---------- 로그인메인화면
+    //---------- 비로그인메인화면
     public List<ProductMainSelVo> productMainSelVo( ) {
+       List<ProductMainSelVo> list = productMapper.maimSelVo();
+       return list;
+    }
+    //-- 로그인
+    public List<ProductMainSelVo> productMainLoginSelVo () { // 로그인
         ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
+        Integer userChildAge = productMapper.userChildAge(dto.getIuser());
+        dto.setRecommandAge(userChildAge);
+        List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
+        return list;
+    }
+    // 인기 뉴 상품
+    public List<ProductMainSelVo> productPopNewSelVo() { // 인기 뉴상품
+        List<ProductMainSelVo> popList = productMapper.SelPopProduct();
+        List<ProductMainSelVo> newList = productMapper.SelNewProduct();
 
-
-        List<ProductMainSelVo> mainlist;
-        if (dto.getIuser() > 0) {
-            Integer userChildAge = productMapper.userChildAge(dto.getIuser());
-            dto.setRecommandAge(userChildAge);
-            mainlist = productMapper.selProductMainByAge(dto);
-        } else {
-            mainlist = productMapper.maimSelVo();
-        }
-
-        // 인기
-        List<ProductMainSelVo> selPopProduct = productMapper.SelPopProduct();
-        // 최신
-        List<ProductMainSelVo> selNewProduct = productMapper.SelNewProduct();
-
-        List<ProductMainSelVo> stream3 = Stream.concat(mainlist.stream(),selNewProduct.stream())
-                .distinct().limit(16)
+        List<ProductMainSelVo> list = Stream.concat(popList.stream()
+                ,newList.stream())
+                .distinct()
+                .limit(16)
                 .collect(Collectors.toList());
-
-        List<ProductMainSelVo> stream = Stream.concat(stream3.stream(),selPopProduct.stream())
-                .distinct().limit(24)
-                .collect(Collectors.toList());
-
-
-        return stream;
-
-        }
-
+        return list;
+    }
 
     //------ 월령별 화면? 카테고리 느낌인거같은데
 
@@ -136,11 +126,18 @@ public class ProductService {
     public ResVo insBasket(ProductBasketInsDto dto) { // 장바구니 넣기
         dto.setIuser(facade.getLoginUserPk());
         Integer productCnt = productMapper.selProductCntBasket(dto);
-        if (productCnt == null) {
+        if (productCnt == null) { //장바구니가 없다
             int result = productMapper.insBasket(dto);
             return new ResVo(dto.getProductCnt());
         }
-        dto.setProductCnt(dto.getProductCnt() + productCnt);
+
+        dto.setProductCnt(dto.getProductCnt() + productCnt); // 기존에 담겨있는개수 + 내가 담아줌.
+        int upt = productMapper.uptBasketProductCnt(dto); //보내주고
+        return new ResVo(dto.getProductCnt()); // 리턴값으로
+    }
+
+    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+        dto.setIuser(facade.getLoginUserPk());
         int upt = productMapper.uptBasketProductCnt(dto);
         return new ResVo(dto.getProductCnt());
 
@@ -161,7 +158,11 @@ public class ProductService {
     }
 
 
-    //----------장바구니에서 주문으로 넘겨줄 데이터
+    //----------장바구니 값 수정
+    public ResVo uptBasketProductCnt (ProductBasketInsDto dto) {
+        int result = productMapper.uptBasketProductCnt(dto);
+        return new ResVo(result);
+    }
 
 
 }

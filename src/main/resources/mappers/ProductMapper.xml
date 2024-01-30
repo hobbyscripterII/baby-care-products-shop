@@ -23,15 +23,16 @@
         LEFT JOIN t_wish_list L
         ON A.iproduct = L.iproduct
         <where>
-            <if test="keyword != null and keyword != ''">
-                A.product_nm LIKE CONCAT('%', #{keyword}, '%')
-            </if>
-            and
             <if test='cat != null and cat.size() > 0'>
                 <foreach collection="cat" item="cat"  separator="OR">
                      (A.imiddle = #{cat.imiddle} and A.imain = #{cat.imain})
                 </foreach>
+            </if>
 
+
+
+            <if test="keyword != null and keyword != ''">
+                AND A.product_nm LIKE CONCAT('%', #{keyword}, '%')
             </if>
 
             <if test="minPrice !=0 and maxPrice !=0">
@@ -49,8 +50,8 @@
             <if test="minPrice !=0 and maxPrice ==0">
                 AND A.price <![CDATA[>]]>= #{minPrice}
             </if>
-
         </where>
+
         GROUP BY A.iproduct
         ORDER BY
         <if test="sortBy == 0">
@@ -67,7 +68,7 @@
 
     </select>
 
-    <select id="maimSelVo"> <!-- 메인-->
+    <select id="maimSelVo"> <!-- 메인 추천 상품-->
         SELECT
         A.iproduct,
         A.product_nm,
@@ -85,7 +86,6 @@
         ON A.iproduct = L.iproduct
         WHERE A.rc_fl = 1
         GROUP BY A.iproduct
-        ORDER BY RAND()
         LIMIT 0,8
 
     </select>
@@ -108,7 +108,7 @@
         ON A.iproduct = L.iproduct
         WHERE A.new_fl = 1
         GROUP BY A.iproduct
-        ORDER BY RAND()
+
     </select>
 
     <select id="SelPopProduct">
@@ -129,7 +129,6 @@
         ON A.iproduct = L.iproduct
         WHERE A.pop_fl = 1
         GROUP BY A.iproduct
-        ORDER BY RAND()
     </select>
 
     <select id="selProductMainByAge"> <!-- 로그인시-->
@@ -152,7 +151,6 @@
         ON A.recommand_age = UC.ichild_age
         WHERE A.recommand_age = #{recommandAge}
         GROUP BY A.iproduct
-        ORDER BY RAND()
         LIMIT 0,8
     </select>
 

@@ -27,12 +27,25 @@ public class ProductController {
 
     //--------------------------------------메인 페이지---------------------------------------------
     @GetMapping("main")
-    @Operation(summary = "메인화면")
+    @Operation(summary = "메인화면 비로그인")
 
-    public List<ProductMainSelVo> getProduct ( ) {
+    public List<ProductMainSelVo> getProduct ( ) { // 비로그인
         return service.productMainSelVo();
     }
+    //--------------------------------------메인 페이지---------------------------------------------
+    @GetMapping("mainSS")
+    @Operation(summary = "메인화면 로그인")
 
+    public List<ProductMainSelVo> getProduct1 ( ) { // 로그인
+        return service.productMainLoginSelVo();
+    }
+    //--------------------------------------메인 페이지---------------------------------------------
+    @GetMapping("S")
+    @Operation(summary = "인기&신상품")
+
+    public List<ProductMainSelVo> getProduct2 ( ) { //인기상품 & 신상품
+        return service.productPopNewSelVo();
+    }
     //--------------------------------------월령별 상품 페이지---------------------------------------------
 
     @GetMapping
@@ -74,8 +87,11 @@ public class ProductController {
         return service.insBasket(dto);
     }
     //-------------------------------------------------------------------------------------------
+    @PatchMapping("/uptbasket")
+    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+       return service.uptBasket(dto);
 
-
+    }
 
     //--------------------------------------찜하기 기능---------------------------------------------
     @GetMapping("/wish")
