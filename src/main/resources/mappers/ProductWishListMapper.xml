@@ -5,7 +5,8 @@
 <mapper namespace="com.baby.babycareproductsshop.product.ProductWishListMapper">
     <select id="selWishList">
         SELECT A.iproduct, C.product_nm, C.price, C.new_fl, C.rep_pic,
-            C.rc_fl, C.pop_fl, COUNT(D.ireview) AS reviewCnt
+            C.rc_fl, C.pop_fl, COUNT(D.ireview) AS reviewCnt,
+            if(A.iproduct > 0, 1, 0) AS likeProduct
         FROM t_wish_list A
         JOIN t_user B
         ON A.iuser = B.iuser
