@@ -21,7 +21,7 @@ public class UserSignUpDto {
 
     @Schema(description = "유저 아이디", example = "Test1234")
     @NotNull(message = ID_IS_BLANK)
-    @Pattern(regexp = "^[a-zA-Z0-9]{4,10}$",
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9]{4,10}$",
             message = NOT_ALLOWED_ID)
     private String uid;
 

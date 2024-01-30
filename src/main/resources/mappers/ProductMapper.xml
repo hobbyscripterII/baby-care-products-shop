@@ -35,20 +35,21 @@
             </if>
 
             <if test="minPrice !=0 and maxPrice !=0">
-                AND A.price BETWEEN #{minPrice} AND #{maxPrice}
+                AND A.price <![CDATA[>=]]> #{minPrice} AND A.price <![CDATA[<=]]>#{maxPrice}
             </if>
 
             <if test="minPrice ==0 and maxPrice ==0">
-                AND A.price >=0
+                AND A.price <![CDATA[>=]]> 0
             </if>
 
             <if test="minPrice ==0 and maxPrice !=0">
-                AND A.price &lt;= #{maxPrice}
+                AND A.price <![CDATA[<=]]> #{maxPrice}
             </if>
 
             <if test="minPrice !=0 and maxPrice ==0">
-                AND A.price >= #{minPrice}
+                AND A.price <![CDATA[>]]>= #{minPrice}
             </if>
+
         </where>
         GROUP BY A.iproduct
         ORDER BY
@@ -82,9 +83,10 @@
         ON A.iproduct = R.iproduct
         LEFT JOIN t_wish_list L
         ON A.iproduct = L.iproduct
+        WHERE A.rc_fl = 1
         GROUP BY A.iproduct
         ORDER BY RAND()
-        limit 0,8
+        LIMIT 0,8
 
     </select>
 
@@ -151,7 +153,7 @@
         WHERE A.recommand_age = #{recommandAge}
         GROUP BY A.iproduct
         ORDER BY RAND()
-        limit 0,8
+        LIMIT 0,8
     </select>
 
     <select id="userChildAge"> <!--로그인시 유저자녀 나이 -->

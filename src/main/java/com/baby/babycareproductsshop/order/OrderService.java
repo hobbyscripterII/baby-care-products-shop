@@ -9,10 +9,13 @@ import com.baby.babycareproductsshop.user.UserMapper;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
 import com.baby.babycareproductsshop.user.model.UserSelToModifyVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -22,39 +25,33 @@ public class OrderService {
     private final UserMapper userMapper;
     private final AuthenticationFacade authenticationFacade;
 
-    public OrderInsVo postOrder(OrderInsDto dto) {
+    @Transactional
+    public ResVo postOrder(OrderInsDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
         dto.setIaddress(addresses.get(0).getIaddress());
         int insOrderResult = orderMapper.insOrder(dto);
-        int totalProductCnt = 0;
+
         for (OrderInsDetailsProcDto product : dto.getProducts()) {
             product.setIorder(dto.getIorder());
             product.setProductPrice(product.getProductTotalPrice() / product.getProductCnt());
             int insOrderDetails = orderDetailMapper.insOrderDetail(product);
-            totalProductCnt += product.getProductCnt();
         }
 
-        UserSelToModifyVo userInfoVo = userMapper.selUserInfoByIuser(dto.getIuser());
-
-        List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
-        List<OrderSelPaymentOptionVo> paymentOptions = orderMapper.selPaymentOption();
-
-        return OrderInsVo.builder()
-                .addresses(addresses)
-                .iorder(dto.getIorder())
-                .products(products)
-                .totalOrderPrice(dto.getTotalOrderPrice())
-                .totalProductCnt(totalProductCnt)
-                .paymentOptions(paymentOptions)
-                .nm(userInfoVo.getNm())
-                .phoneNumber(userInfoVo.getPhoneNumber())
-                .email(userInfoVo.getEmail())
-                .build();
-
+        return new ResVo(dto.getIorder());
     }
 
-    public OrderConfirmVo confirmOrder(OrderConfirmDto dto) {
+    public OrderInsVo getOrderForConfirm(int iorder) {
+        int iuser = authenticationFacade.getLoginUserPk();
+        OrderInsVo result = orderMapper.selOrderForConfirm(iorder);
+        result.setAddresses(addressMapper.selUserAddress(iuser));
+        result.setProducts(orderDetailMapper.selOrderDetailsForPurchase(iorder));
+        result.setPaymentOptions(orderMapper.selPaymentOption());
+        return result;
+    }
+
+    @Transactional
+    public OrderConfirmVo putConfirmOrder(OrderConfirmDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         if (dto.getIpaymentOption() == 2) {
             dto.setProcessState(1);
@@ -89,5 +86,16 @@ public class OrderService {
         int updOrderDetailsResult = orderDetailMapper.updOrderRefundFl(dto.getIdetails());
         int insRefundResult = orderDetailMapper.insRefund(dto);
         return new ResVo(Const.SUCCESS);
+    }
+
+    public List<OrderGetListVo> getOrder(OrderGetListDto dto) {
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        List<OrderGetListVo> list = orderMapper.getOrder(dto);
+        return list;
+    }
+
+    public ResVo orderCancel(int iorder) {
+        int orderCancelRows = orderMapper.orderCancel(iorder); // 추후 예외처리
+        return new ResVo(orderCancelRows);
     }
 }

@@ -5,12 +5,15 @@
 <mapper namespace="com.baby.babycareproductsshop.product.ProductReviewMapper">
 
     <select id="getProductReview">
-        SELECT B.ireview, A.nm, B.product_score, B.contents, B.created_at, B.req_review_pic
+        SELECT B.ireview, A.nm, B.product_score, B.contents, DATE_FORMAT(B.created_at, '%Y-%m-%d') as created_at, B.req_review_pic
+        ,P.product_nm
         FROM t_user AS A
         JOIN t_review AS B
         ON A.iuser = B.iuser
         JOIN t_review AS C
         ON B.ireview = C.ireview
+        JOIN t_product P
+        ON P.iproduct = B.iproduct
         WHERE B.iproduct = #{iproduct}
         ORDER BY B.created_at DESC
         LIMIT #{startIdx}, #{rowCount}

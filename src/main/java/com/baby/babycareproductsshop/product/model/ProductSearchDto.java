@@ -16,10 +16,10 @@ public class ProductSearchDto {
     @Schema(title = "검색어")
     private String keyword;
 
-    @Schema(title = "최솟값")
+    //@Schema(title = "최솟값")
     private int minPrice;
 
-    @Schema(title = "최댓값")
+    //@Schema(title = "최댓값")
     private int maxPrice;
 
     @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")

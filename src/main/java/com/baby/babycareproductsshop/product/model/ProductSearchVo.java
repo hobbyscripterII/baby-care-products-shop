@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Schema(title = "검색시 조회시 응답할 데이터 리스트")
 public class ProductSearchVo {
-    @JsonIgnore
+
     @Schema(title = "상품PK")
     private int iproduct;
 
