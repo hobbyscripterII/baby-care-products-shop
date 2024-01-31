@@ -12,12 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -27,6 +22,7 @@ public class ProductService {
     private final ProductReviewMapper productReviewMapper;
     private final MyFileUtils myFileUtils;
     private final AuthenticationFacade facade;
+
     //---------- 검색기능
     public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
         List<ProductSearchVo> searchVoList = productMapper.search(dto);
@@ -34,7 +30,7 @@ public class ProductService {
     }
 
     //---------- 비로그인메인화면
-    public List<ProductMainSelVo> productMainSelVo( ) {
+    public List<ProductMainSelVo> productMainSelVo() {
         List<ProductMainSelVo> list = productMapper.maimSelVo();
         List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
         List<ProductMainSelVo> mainSelVo = new ArrayList<>();
@@ -54,8 +50,9 @@ public class ProductService {
         }
         return mainSelVo;
     }
+
     //-- 로그인
-    public List<ProductMainSelVo> productMainLoginSelVo () {
+    public List<ProductMainSelVo> productMainLoginSelVo() {
         ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
         Integer userChildAge = productMapper.userChildAge(dto.getIuser());
@@ -83,6 +80,7 @@ public class ProductService {
 
         return mainSelVo;
     }
+
     // 인기 신상품
     public List<ProductMainSelVo> productPopNewSelVo() {
         List<ProductMainSelVo> popList = productMapper.SelPopProduct();
@@ -115,7 +113,8 @@ public class ProductService {
     }
 
     //---- 상품 상세 정보
-    public List<ProductSelVo> selProduct(ProductSelDto dto) {
+    public ProductSelVo selProduct(ProductSelDto dto) {
+        int iuser = facade.getLoginUserPk();
         ProductAverageSelVo productProductAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
 
         List<Integer> productReview = new ArrayList<>();
@@ -123,17 +122,17 @@ public class ProductService {
         Map<Integer, ReviewSelVo> reviewMap = new HashMap<>();
         Map<Integer, ProductSelVo> ProductSelVoMap = new HashMap<>();
         List<ReviewSelVo> reviewSelVoList = productReviewMapper.getProductReview(dto);
-        List<ProductSelVo> Product = productMapper.selProductInformation(dto.getIproduct());
+        ProductSelVo result = productMapper.selProductInformation(dto.getIproduct(), iuser);
 
-        for(ReviewSelVo vo : reviewSelVoList){
+        for (ReviewSelVo vo : reviewSelVoList) {
             productReview.add(vo.getIreview());
             reviewMap.put(vo.getIreview(), vo);
         }
 
-        if(!productReview.isEmpty()){
+        if (!productReview.isEmpty()) {
             List<ReviewPicsVo> reviewPicsVoList = productReviewMapper.getProductReviewPics(productReview);
 
-            for(ReviewPicsVo vo : reviewPicsVoList){
+            for (ReviewPicsVo vo : reviewPicsVoList) {
                 ReviewSelVo reviewSelVo = reviewMap.get(vo.getIreview());
                 List<String> pics = reviewSelVo.getPics();
                 pics.add(vo.getReviewPic());
@@ -141,25 +140,21 @@ public class ProductService {
         }
 
         if (!reviewSelVoList.isEmpty()) {
-            for (ProductSelVo vo : Product) {
-                vo.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
-                vo.setReviewCnt(productProductAverageSelVo.getReviewCnt());
-                iProductList.add(vo.getIproduct());
-                vo.setReviewSelVo(reviewSelVoList);
+            result.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
+            result.setReviewCnt(productProductAverageSelVo.getReviewCnt());
+            iProductList.add(result.getIproduct());
+            result.setReviewSelVo(reviewSelVoList);
 
-                ProductSelVoMap.put(vo.getIproduct(), vo);
-            }
-            if (!iProductList.isEmpty()) {
-                List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iProductList);
-                for (ProductPicsVo vo : productPicsVoList) {
-                    ProductSelVo productSelVo = ProductSelVoMap.get(vo.getIproduct());
-                    List<String> pics = productSelVo.getProductPics();
-                    pics.add(vo.getProductPic());
-                }
+            ProductSelVoMap.put(result.getIproduct(), result);
+            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iProductList);
+            for (ProductPicsVo vo : productPicsVoList) {
+                ProductSelVo productSelVo = ProductSelVoMap.get(vo.getIproduct());
+                List<String> pics = productSelVo.getProductPics();
+                pics.add(vo.getProductPic());
             }
         }
 
-        return Product;
+        return result;
     }
 
 
@@ -213,27 +208,17 @@ public class ProductService {
         return new ResVo(Const.SUCCESS);
     }
 
-    public ResVo insProductRegistration (ProductRegistrationDto dto) {
-        ProductRegistrationDto dto1 = new ProductRegistrationDto();
-        dto1.setIproduct(dto.getIproduct());
-        String target = "product/" + dto.getIproduct();
-
-
-
-
-
-
-
-
-
-
-
-
-        int result = productMapper.insProduct(dto);
-        return null;
+    public ResVo postProduct(List<MultipartFile> pics, ProductInsDto dto) {
+        int insResult = productMapper.insProduct(dto);
+        String target = "/product/" + dto.getIproduct();
+        List<String> savedPics = new ArrayList<>();
+        for (MultipartFile file : pics) {
+            String fileNm = myFileUtils.transferTo(file, target);
+            savedPics.add(fileNm);
+        }
+        dto.setPics(savedPics);
+        int insPicsResult = productMapper.insProductPics(dto);
+        int updRepPicResult = productMapper.updProductRepPic(dto);
+        return new ResVo(Const.SUCCESS);
     }
-
-
-
-
 }

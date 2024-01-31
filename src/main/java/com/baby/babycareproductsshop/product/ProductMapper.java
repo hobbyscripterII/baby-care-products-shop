@@ -37,7 +37,7 @@ public interface ProductMapper {
     int uptBasketProductCnt(ProductBasketInsDto dto); // 수정
 
     //-----상품정보 , 리뷰갯수 별점평균
-    List <ProductSelVo>selProductInformation(int iproduct);
+    ProductSelVo selProductInformation(int iproduct, int iuser);
     ProductAverageSelVo selProductAverage(int iproduct);
 
 
@@ -47,9 +47,7 @@ public interface ProductMapper {
 
     //---------------
 
-    int insProduct(ProductRegistrationDto dto);
-
-
-
-
+    int insProduct(ProductInsDto dto);
+    int insProductPics(ProductInsDto dto);
+    int updProductRepPic(ProductInsDto dto);
 }
