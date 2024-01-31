@@ -28,6 +28,10 @@ public class OrderService_ {
                 if (orderList.get(i).getIorder() == productList.get(j).getIorder()) {
                     orderList.get(i).getItems().add(productList.get(j));
                 }
+
+//                if(dto.getListFl() == 2) {
+//
+//                }
             }
         }
 
