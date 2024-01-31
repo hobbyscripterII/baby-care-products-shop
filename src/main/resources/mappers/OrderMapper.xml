@@ -57,15 +57,10 @@
         INNER JOIN t_order_details b
         ON a.iorder = b.iorder
         WHERE a.iuser = #{iuser}
-        <if test='processStateCode lte 4'>
-            AND process_state = #{processStateCode}
-        </if>
 
-        <choose>
-            <when test="date == 0">
-            </when>
-            <otherwise>
-                AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL
+        <if test="date != 0">
+            <!-- AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW() -->
+            <trim prefix="AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL" suffix=") AND NOW()">
                 <if test="date == 1">
                     -1 DAY
                 </if>
@@ -81,9 +76,12 @@
                 <if test="date == 5">
                     -180 DAY
                 </if>
-                ) AND NOW()
-            </otherwise>
-        </choose>
+            </trim>
+        </if>
+
+        <if test="processStateCode &gt; 0 and processStateCode &lt;= 4"> <!-- processStateCode > 0 and processStateCode <= 4 -->
+            AND process_state = #{processStateCode}
+        </if>
 
         <if test="listFl != 1">
             AND (a.delete_fl = 1 OR b.refund_fl = 1)
