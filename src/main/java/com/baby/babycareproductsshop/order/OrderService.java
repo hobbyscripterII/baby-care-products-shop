@@ -42,9 +42,8 @@ public class OrderService {
     }
 
     public OrderInsVo getOrderForConfirm(int iorder) {
-        int iuser = authenticationFacade.getLoginUserPk();
         OrderInsVo result = orderMapper.selOrderForConfirm(iorder);
-        result.setAddresses(addressMapper.selUserAddress(iuser));
+//        result.setAddresses(addressMapper.selUserAddress(iuser));
         result.setProducts(orderDetailMapper.selOrderDetailsForPurchase(iorder));
         result.setPaymentOptions(orderMapper.selPaymentOption());
         return result;
