@@ -29,28 +29,26 @@ public class ProductController {
     @GetMapping("main")
     @Operation(summary = "메인화면 비로그인")
 
-    public List<ProductMainSelVo> getProduct ( ) { // 비로그인
+    public List<ProductMainSelVo> getNonLoginProduct ( ) { // 비로그인
         return service.productMainSelVo();
     }
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("mainSS")
+    @GetMapping("login-main")
     @Operation(summary = "메인화면 로그인")
 
-    public List<ProductMainSelVo> getProduct1 ( ) { // 로그인
+    public List<ProductMainSelVo> getLoginProduct ( ) { // 로그인
         return service.productMainLoginSelVo();
     }
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("S")
-    @Operation(summary = "인기&신상품")
-
-    public List<ProductMainSelVo> getProduct2 ( ) { //인기상품 & 신상품
+    @GetMapping("pop-new-product")
+    @Operation(summary = "인기 신상품 상품 조회")
+    public List<ProductMainSelVo> getPopAndNewProduct ( ) { //인기상품 & 신상품
         return service.productPopNewSelVo();
     }
     //--------------------------------------월령별 상품 페이지---------------------------------------------
 
     @GetMapping
     @Operation(summary = "상품 조회 페이지")
-
     public List<ProductListSelVo> getProductList(ProductListDto dto) {
         return service.getProductByAgeRange(dto);
     }
