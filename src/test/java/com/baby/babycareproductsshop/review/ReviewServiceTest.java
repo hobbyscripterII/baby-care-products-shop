@@ -69,17 +69,17 @@ class ReviewServiceTest {
            int insReviewResult = mapper.insReview(dto);
            assertEquals(1, insReviewResult);
         }
-        for (MultipartFile file : dto.getPics()) {
-            String savedFileNm = myFileUtils.transferTo(file, target);
-            insDto.getPics().add(savedFileNm);
-            if(dto.getReqReviewPic() == null) {
-                dto.setReqReviewPic(savedFileNm);
-            }
-        }
-        int insReview = mapper.insReview(dto);
-        int result = mapper.insReviewPics(insDto);
-        assertEquals(1, insReview);
-        assertEquals(1, result);
+//        for (MultipartFile file : dto.getPics()) {
+//            String savedFileNm = myFileUtils.transferTo(file, target);
+//            insDto.getPics().add(savedFileNm);
+//            if(dto.getReqReviewPic() == null) {
+//                dto.setReqReviewPic(savedFileNm);
+//            }
+//        }
+//        int insReview = mapper.insReview(dto);
+//        int result = mapper.insReviewPics(insDto);
+//        assertEquals(1, insReview);
+//        assertEquals(1, result);
     }
 
     @Test

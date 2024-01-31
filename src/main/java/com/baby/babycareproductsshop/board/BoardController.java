@@ -59,7 +59,7 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/write")
+    @GetMapping("/write")
     @Operation(summary = "게시글 등록 기능", description = "null로 게시글 등록 후 PK 반환(웹에디터 로직)")
     public int insBoard() {
         try {
