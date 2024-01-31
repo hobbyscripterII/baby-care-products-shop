@@ -24,9 +24,13 @@
         ON A.iproduct = L.iproduct
         <where>
             <if test='cat != null and cat.size() > 0'>
-                <foreach collection="cat" item="cat"  separator="OR">
-                     (A.imiddle = #{cat.imiddle} and A.imain = #{cat.imain})
+
+                <foreach collection="cat" item="cat"  separator="OR" open="(" close=")">
+                    (A.imiddle = #{cat.imiddle} and A.imain = #{cat.imain})
                 </foreach>
+            </if>
+            <if test='cat == null or cat.size() == 0'>
+                1=1
             </if>
 
 
@@ -40,7 +44,7 @@
             </if>
 
             <if test="minPrice ==0 and maxPrice ==0">
-                AND A.price <![CDATA[>=]]> 0
+                AND 1=1
             </if>
 
             <if test="minPrice ==0 and maxPrice !=0">
@@ -54,15 +58,11 @@
 
         GROUP BY A.iproduct
         ORDER BY
-        <if test="sortBy == 0">
-            A.created_at DESC
-        </if>
-        <if test="sortBy == 1">
-            A.price desc
-        </if>
-        <if test="sortBy == 2">
-            A.price ASC
-        </if>
+        <choose>
+            <when test="sortBy == 0">A.created_at DESC</when>
+            <when test="sortBy == 1">A.price DESC</when>
+            <when test="sortBy == 2">A.price ASC</when>
+        </choose>
         LIMIT #{startIdx},#{rowCount}
 
 
@@ -86,7 +86,7 @@
         ON A.iproduct = L.iproduct
         WHERE A.rc_fl = 1
         GROUP BY A.iproduct
-        LIMIT 0,8
+
 
     </select>
 
@@ -151,7 +151,7 @@
         ON A.recommand_age = UC.ichild_age
         WHERE A.recommand_age = #{recommandAge}
         GROUP BY A.iproduct
-        LIMIT 0,8
+
     </select>
 
     <select id="userChildAge"> <!--로그인시 유저자녀 나이 -->

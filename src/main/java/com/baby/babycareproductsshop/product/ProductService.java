@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,34 +26,82 @@ public class ProductService {
         List<ProductSearchVo> searchVoList = productMapper.search(dto);
         return searchVoList;
     }
+
     //---------- 비로그인메인화면
     public List<ProductMainSelVo> productMainSelVo( ) {
-       List<ProductMainSelVo> list = productMapper.maimSelVo();
-       return list;
+        List<ProductMainSelVo> list = productMapper.maimSelVo();
+        List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
+        List<ProductMainSelVo> mainSelVo = new ArrayList<>();
+
+        Set<Integer> popNewIds = new HashSet<>();
+        for (ProductMainSelVo item : popNewList) {
+            popNewIds.add(item.getIproduct());
+        }
+
+        int count = 0;
+        while (mainSelVo.size() < 8 && count < list.size()) {
+            ProductMainSelVo vo = list.get(count);
+            if (!popNewIds.contains(vo.getIproduct())) {
+                mainSelVo.add(vo);
+            }
+            count++;
+        }
+        return mainSelVo;
     }
     //-- 로그인
-    public List<ProductMainSelVo> productMainLoginSelVo () { // 로그인
+    public List<ProductMainSelVo> productMainLoginSelVo () {
         ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
         Integer userChildAge = productMapper.userChildAge(dto.getIuser());
         dto.setRecommandAge(userChildAge);
         List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
-        return list;
+
+        List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
+
+        List<ProductMainSelVo> mainSelVo = new ArrayList<>();
+        Set<Integer> popNewIds = new HashSet<>();
+
+        for (ProductMainSelVo vo : popNewList) {
+            popNewIds.add(vo.getIproduct());
+        }
+
+        int count = 0;
+
+        while (mainSelVo.size() < 8 && count < list.size()) {
+            ProductMainSelVo vo = list.get(count);
+            if (!popNewIds.contains(vo.getIproduct())) {
+                mainSelVo.add(vo);
+            }
+            count++;
+        }
+
+        return mainSelVo;
     }
-    // 인기 뉴 상품
-    public List<ProductMainSelVo> productPopNewSelVo() { // 인기 뉴상품
+    // 인기 신상품
+    public List<ProductMainSelVo> productPopNewSelVo() {
         List<ProductMainSelVo> popList = productMapper.SelPopProduct();
         List<ProductMainSelVo> newList = productMapper.SelNewProduct();
 
-        List<ProductMainSelVo> list = Stream.concat(popList.stream()
-                ,newList.stream())
-                .distinct()
-                .limit(16)
-                .collect(Collectors.toList());
+        Set<Integer> popIds = new HashSet<>();
+        List<ProductMainSelVo> list = new ArrayList<>();
+
+        for (int i = 0; i < popList.size() && popIds.size() < 8; i++) {
+            popIds.add(popList.get(i).getIproduct());
+            list.add(popList.get(i));
+        }
+
+        int count = 0;
+        while (list.size() < 16 && count < newList.size()) {
+            ProductMainSelVo vo = newList.get(count);
+            if (!popIds.contains(vo.getIproduct())) {
+                list.add(vo);
+            }
+            count++;
+        }
         return list;
     }
 
-    //------ 월령별 화면? 카테고리 느낌인거같은데
+    //------ 상품조회페이지
 
     public List<ProductListSelVo> getProductByAgeRange(ProductListDto dto) {
         List<ProductListSelVo> list = productMapper.getProductByAgeRange(dto);
@@ -118,25 +163,28 @@ public class ProductService {
         return productMapper.selProductBasket(dto);
     }
 
-    public ResVo delBasket(List<Integer> iproducts) { // 장바구니 삭제
+    // 장바구니 삭제
+    public ResVo delBasket(List<Integer> iproducts) {
         int delBasket = productMapper.delBasket(iproducts);
         return new ResVo(delBasket);
     }
 
-    public ResVo insBasket(ProductBasketInsDto dto) { // 장바구니 넣기
+    // 장바구니 넣기
+    public ResVo insBasket(ProductBasketInsDto dto) {
         dto.setIuser(facade.getLoginUserPk());
         Integer productCnt = productMapper.selProductCntBasket(dto);
-        if (productCnt == null) { //장바구니가 없다
+        if (productCnt == null) {
             int result = productMapper.insBasket(dto);
             return new ResVo(dto.getProductCnt());
         }
 
-        dto.setProductCnt(dto.getProductCnt() + productCnt); // 기존에 담겨있는개수 + 내가 담아줌.
-        int upt = productMapper.uptBasketProductCnt(dto); //보내주고
-        return new ResVo(dto.getProductCnt()); // 리턴값으로
+        dto.setProductCnt(dto.getProductCnt() + productCnt);
+        int upt = productMapper.uptBasketProductCnt(dto);
+        return new ResVo(dto.getProductCnt());
     }
 
-    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+    //장바구니안에서 상품 수량 수정
+    public ResVo uptBasket(ProductBasketInsDto dto) {
         dto.setIuser(facade.getLoginUserPk());
         int upt = productMapper.uptBasketProductCnt(dto);
         return new ResVo(dto.getProductCnt());
@@ -145,7 +193,6 @@ public class ProductService {
 
 
     //---------- 찜하기
-
     public ResVo wishProduct(ProductLikeDto dto) {
         dto.setIuser(facade.getLoginUserPk());
 
@@ -158,11 +205,6 @@ public class ProductService {
     }
 
 
-    //----------장바구니 값 수정
-    public ResVo uptBasketProductCnt (ProductBasketInsDto dto) {
-        int result = productMapper.uptBasketProductCnt(dto);
-        return new ResVo(result);
-    }
 
 
 }

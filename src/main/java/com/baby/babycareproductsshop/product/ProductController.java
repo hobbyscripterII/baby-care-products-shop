@@ -29,28 +29,26 @@ public class ProductController {
     @GetMapping("main")
     @Operation(summary = "메인화면 비로그인")
 
-    public List<ProductMainSelVo> getProduct ( ) { // 비로그인
+    public List<ProductMainSelVo> getNonLoginProduct ( ) { // 비로그인
         return service.productMainSelVo();
     }
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("mainSS")
+    @GetMapping("login-main")
     @Operation(summary = "메인화면 로그인")
 
-    public List<ProductMainSelVo> getProduct1 ( ) { // 로그인
+    public List<ProductMainSelVo> getLoginProduct ( ) { // 로그인
         return service.productMainLoginSelVo();
     }
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("S")
-    @Operation(summary = "인기&신상품")
-
-    public List<ProductMainSelVo> getProduct2 ( ) { //인기상품 & 신상품
+    @GetMapping("pop-new-product")
+    @Operation(summary = "인기 신상품 상품 조회")
+    public List<ProductMainSelVo> getPopAndNewProduct ( ) { //인기상품 & 신상품
         return service.productPopNewSelVo();
     }
     //--------------------------------------월령별 상품 페이지---------------------------------------------
 
     @GetMapping
     @Operation(summary = "상품 조회 페이지")
-
     public List<ProductListSelVo> getProductList(ProductListDto dto) {
         return service.getProductByAgeRange(dto);
     }
@@ -75,7 +73,7 @@ public class ProductController {
     @Operation(summary = "장바구니물품삭제", description = "result : 성공 시 삭제 된 iproduct 개수 \n" +
             " , 실패 0  ")
 
-    public ResVo delCartProduct(@RequestBody List<Integer> iproduct) {
+    public ResVo delCartProduct(@RequestParam  List<Integer> iproduct) {
         return service.delBasket(iproduct);
     }
     //--------------------------------------장바구니 추가 ---------------------------------------------
@@ -87,8 +85,10 @@ public class ProductController {
         return service.insBasket(dto);
     }
     //-------------------------------------------------------------------------------------------
-    @PatchMapping("/uptbasket")
-    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+    @PatchMapping("/cart")
+    @Operation(summary = "장바구니 물품 수량 변경",description = "result : 성공 시 해당 물품 수량 \n" +
+            " , 실패 0  ")
+    public ResVo uptBasket(ProductBasketInsDto dto) {
        return service.uptBasket(dto);
 
     }
@@ -96,7 +96,6 @@ public class ProductController {
     //--------------------------------------찜하기 기능---------------------------------------------
     @GetMapping("/wish")
     @Operation(summary = "찜하기기능",description = "찜하기기능")
-
     public ResVo wishProduct (ProductLikeDto dto) {
         log.info("dto = {}", dto);
         return service.wishProduct(dto);

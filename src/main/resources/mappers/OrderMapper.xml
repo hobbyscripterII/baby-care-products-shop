@@ -18,8 +18,7 @@
 
     <select id="selOrderForConfirm">
         SELECT A.iorder, A.total_price AS totalOrderPrice,
-            SUM(B.product_cnt) AS totalProductCnt,
-            A.addressee_nm AS nm, A.phone_number, A.email
+            SUM(B.product_cnt) AS totalProductCnt
         FROM t_order A
         JOIN t_order_details B
         ON A.iorder = B.iorder
