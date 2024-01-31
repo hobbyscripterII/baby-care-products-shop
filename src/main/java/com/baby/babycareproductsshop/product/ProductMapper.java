@@ -30,7 +30,7 @@ public interface ProductMapper {
 
     //----장바구니
     List<ProductBasketSelVo> selProductBasket (ProductBasketSelDto dto);
-    int delBasket(List<Integer> iproducts); // 여러개 삭제
+    int delBasket(ProductBasketDelDto dto); // 여러개 삭제
 
     int insBasket (ProductBasketInsDto dto); // 넣고
     Integer selProductCntBasket (ProductBasketInsDto dto); //갯수
@@ -46,6 +46,8 @@ public interface ProductMapper {
     int deleteLikeProduct (ProductLikeDto dto);
 
     //---------------
+
+    int insProduct(ProductRegistrationDto dto);
 
 
 

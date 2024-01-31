@@ -94,9 +94,9 @@ public class ProductController {
     }
 
     //--------------------------------------찜하기 기능---------------------------------------------
-    @GetMapping("/wish")
+    @PutMapping("/wish")
     @Operation(summary = "찜하기기능",description = "찜하기기능")
-    public ResVo wishProduct (ProductLikeDto dto) {
+    public ResVo wishProduct (@RequestBody ProductLikeDto dto) {
         log.info("dto = {}", dto);
         return service.wishProduct(dto);
     }

@@ -30,9 +30,9 @@ class BoardMapperTest {
         String contents = "브이콘 먹는 중";
 
         insDto.setIuser(iuser);
-        insDto.setBoardCode(boardCode);
-        insDto.setTitle(title);
-        insDto.setContents(contents);
+      //  insDto.setBoardCode(boardCode);
+      //  insDto.setTitle(title);
+      //  insDto.setContents(contents);
     }
 
     @Test

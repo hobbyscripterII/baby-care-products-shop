@@ -277,9 +277,10 @@
     <delete id="delBasket">
         DELETE FROM t_basket
         WHERE iproduct IN
-        <foreach collection="iproducts" item="iproduct" open="(" separator="," close=")">
+        <foreach collection="iproduct" item="iproduct" open="(" separator="," close=")">
             #{iproduct}
         </foreach>
+        AND iuser =#{iuser}
     </delete>
 
 
@@ -366,6 +367,23 @@
         FROM t_basket
         WHERE iuser = #{iuser}
     </delete>
+
+    <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
+        INSERT INTO t_product
+        SET
+         imain = #{imain}
+        ,imiddle = #{imiddle}
+        ,product_nm = #{productNm}
+        ,product_details = #{productDetails}
+        ,recommand_age = #{recommandAge}
+        ,price = #{price}
+        ,rep_pic = #{repPic}
+        ,remained_product = #{remainedProduct}
+
+
+
+
+    </insert>
 
 
 

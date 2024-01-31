@@ -154,10 +154,10 @@ class BoardServiceTest {
         BoardInsDto insDto = new BoardInsDto();
         insDto.setIboard(iboard);
         insDto.setIuser(iuser);
-        insDto.setBoardCode(boardCode);
-        insDto.setTitle("게시글 등록 테스트");
-        insDto.setContents("게시글 등록 테스트입니다.");
-        insDto.setPics(list);
+       // insDto.setBoardCode(boardCode);
+       // insDto.setTitle("게시글 등록 테스트");
+      //  insDto.setContents("게시글 등록 테스트입니다.");
+       // insDto.setPics(list);
 
         given(mapper.insBoard(insDto)).willReturn(1);
         when(mapper.insBoard(insDto)).thenReturn(1);

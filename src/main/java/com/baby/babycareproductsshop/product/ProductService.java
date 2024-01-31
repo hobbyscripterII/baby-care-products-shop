@@ -1,6 +1,7 @@
 package com.baby.babycareproductsshop.product;
 
 import com.baby.babycareproductsshop.common.Const;
+import com.baby.babycareproductsshop.common.MyFileUtils;
 import com.baby.babycareproductsshop.common.ResVo;
 import com.baby.babycareproductsshop.product.model.*;
 import com.baby.babycareproductsshop.review.model.ReviewPicsVo;
@@ -9,7 +10,11 @@ import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,6 +25,7 @@ import java.util.stream.Stream;
 public class ProductService {
     private final ProductMapper productMapper;
     private final ProductReviewMapper productReviewMapper;
+    private final MyFileUtils myFileUtils;
     private final AuthenticationFacade facade;
     //---------- 검색기능
     public List<ProductSearchVo> searchProductSelVo(ProductSearchDto dto) {
@@ -164,8 +170,11 @@ public class ProductService {
     }
 
     // 장바구니 삭제
-    public ResVo delBasket(List<Integer> iproducts) {
-        int delBasket = productMapper.delBasket(iproducts);
+    public ResVo delBasket(List<Integer> iproduct) {
+        ProductBasketDelDto dto = new ProductBasketDelDto();
+        dto.setIuser(facade.getLoginUserPk());
+        dto.setIproduct(iproduct);
+        int delBasket = productMapper.delBasket(dto);
         return new ResVo(delBasket);
     }
 
@@ -202,6 +211,26 @@ public class ProductService {
         }
         int result2 = productMapper.insertLikeProduct(dto);
         return new ResVo(Const.SUCCESS);
+    }
+
+    public ResVo insProductRegistration (ProductRegistrationDto dto) {
+        ProductRegistrationDto dto1 = new ProductRegistrationDto();
+        dto1.setIproduct(dto.getIproduct());
+        String target = "product/" + dto.getIproduct();
+
+
+
+
+
+
+
+
+
+
+
+
+        int result = productMapper.insProduct(dto);
+        return null;
     }
 
 
