@@ -57,7 +57,7 @@ public class ProductController {
     @GetMapping("/{iproduct}")
     @Operation(summary = "상품상세정보")
 
-    public List<ProductSelVo> selProduct (@PathVariable int iproduct, ProductSelDto dto) {
+    public List<ProductSelVo> getSelProduct (@PathVariable int iproduct, ProductSelDto dto) {
         dto.setIproduct(iproduct);
         return service.selProduct(dto);
     }
@@ -65,7 +65,7 @@ public class ProductController {
     //--------------------------------------장바구니 조회---------------------------------------------
     @GetMapping("/cart")
     @Operation(summary = "장바구니 조회")
-    public List<ProductBasketSelVo> SelCartProduct (ProductBasketSelDto dto) {
+    public List<ProductBasketSelVo> selCartProduct (ProductBasketSelDto dto) {
         return service.productBasketSelVo(dto);
     }
     //--------------------------------------장바구니 상품 삭제---------------------------------------------
@@ -73,7 +73,7 @@ public class ProductController {
     @Operation(summary = "장바구니물품삭제", description = "result : 성공 시 삭제 된 iproduct 개수 \n" +
             " , 실패 0  ")
 
-    public ResVo delCartProduct(@RequestParam  List<Integer> iproduct) {
+    public ResVo delCartProduct(@RequestParam List<Integer> iproduct) {
         return service.delBasket(iproduct);
     }
     //--------------------------------------장바구니 추가 ---------------------------------------------
@@ -101,5 +101,7 @@ public class ProductController {
         return service.wishProduct(dto);
     }
     //-------------------------------
+
+
 
 }

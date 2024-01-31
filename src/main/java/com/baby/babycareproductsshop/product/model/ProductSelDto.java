@@ -9,6 +9,7 @@ import lombok.Data;
 @Schema(title = "상품 상세 정보 필요한 데이터")
 public class ProductSelDto {
 
+    @JsonIgnore
     @Schema(title = "상품 PK")
     private int iproduct;
 
