@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,8 +28,24 @@ public class ProductService {
     }
     //---------- 비로그인메인화면
     public List<ProductMainSelVo> productMainSelVo( ) {
-       List<ProductMainSelVo> list = productMapper.maimSelVo();
-       return list;
+        List<ProductMainSelVo> list = productMapper.maimSelVo();
+        List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
+        List<ProductMainSelVo> mainSelVo = new ArrayList<>();
+
+        Set<Integer> popNewIds = new HashSet<>();
+        for (ProductMainSelVo item : popNewList) {
+            popNewIds.add(item.getIproduct());
+        }
+
+        int count = 0;
+        while (mainSelVo.size() < 8 && count < list.size()) {
+            ProductMainSelVo vo = list.get(count);
+            if (!popNewIds.contains(vo.getIproduct())) {
+                mainSelVo.add(vo);
+            }
+            count++;
+        }
+        return mainSelVo;
     }
     //-- 로그인
     public List<ProductMainSelVo> productMainLoginSelVo () { // 로그인
@@ -41,18 +54,49 @@ public class ProductService {
         Integer userChildAge = productMapper.userChildAge(dto.getIuser());
         dto.setRecommandAge(userChildAge);
         List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
-        return list;
+
+        List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
+
+        List<ProductMainSelVo> mainSelVo = new ArrayList<>();
+        Set<Integer> popNewIds = new HashSet<>();
+
+        for (ProductMainSelVo vo : popNewList) {
+            popNewIds.add(vo.getIproduct());
+        }
+
+        int count = 0;
+
+        while (mainSelVo.size() < 8 && count < list.size()) {
+            ProductMainSelVo vo = list.get(count);
+            if (!popNewIds.contains(vo.getIproduct())) {
+                mainSelVo.add(vo);
+            }
+            count++;
+        }
+
+        return mainSelVo;
     }
     // 인기 뉴 상품
     public List<ProductMainSelVo> productPopNewSelVo() { // 인기 뉴상품
         List<ProductMainSelVo> popList = productMapper.SelPopProduct();
         List<ProductMainSelVo> newList = productMapper.SelNewProduct();
 
-        List<ProductMainSelVo> list = Stream.concat(popList.stream()
-                ,newList.stream())
-                .distinct()
-                .limit(16)
-                .collect(Collectors.toList());
+        Set<Integer> popIds = new HashSet<>();
+        List<ProductMainSelVo> list = new ArrayList<>();
+
+        for (int i = 0; i < popList.size() && popIds.size() < 8; i++) {
+            popIds.add(popList.get(i).getIproduct());
+            list.add(popList.get(i));
+        }
+
+        int count = 0;
+        while (list.size() < 16 && count < newList.size()) {
+            ProductMainSelVo vo = newList.get(count);
+            if (!popIds.contains(vo.getIproduct())) {
+                list.add(vo);
+            }
+            count++;
+        }
         return list;
     }
 

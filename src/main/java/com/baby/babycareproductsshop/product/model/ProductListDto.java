@@ -14,7 +14,6 @@ public class ProductListDto {
     private int imain;
 
     @Schema(title = "정렬 값 (0 : 최신순, 1 :가격 높은순, 2 : 가격 낮은순)")
-
     private int sortBy;
 
     @JsonIgnore
@@ -22,9 +21,10 @@ public class ProductListDto {
     @JsonIgnore
     private int rowCount = 5;
 
-    @Schema(title = "페이지")
+    @Schema(title = "페이지",defaultValue = "1")
     public void setPage(int page) {
         this.startIdx = (page - 1) * rowCount;
     }
+
 
 }
