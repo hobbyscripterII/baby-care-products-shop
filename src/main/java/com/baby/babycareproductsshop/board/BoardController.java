@@ -106,7 +106,9 @@ public class BoardController {
 
     @PutMapping
     @Operation(summary = "게시판 수정 기능", description = "")
-    public ResVo updBoard(@Parameter(name = "dto") @RequestPart(name = "dto") BoardUpdDto dto, @Parameter(name = "pics") @RequestPart(name = "pics", required = false) List<MultipartFile> pics) {
+    public ResVo updBoard(@Parameter(name = "dto") @RequestPart(name = "dto") BoardUpdDto dto,
+                          @Parameter(name = "pics") @RequestPart(name = "pics", required = false) List<MultipartFile> pics) {
+
         try {
             if (!Utils.isNotNull(dto)) {
                 throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
@@ -117,6 +119,7 @@ public class BoardController {
                 return service.updBoard(dto);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.POST_REGISTER_FAIL);
         }
     }
@@ -124,8 +127,6 @@ public class BoardController {
     @DeleteMapping
     @Operation(summary = "게시판 삭제 기능", description = "")
     public ResVo delBoard(@RequestParam(name = "iboard") int iboard) {
-        log.info("iboard = {}", iboard);
-
         try {
             if (Utils.isNotNull(iboard)) {
                 return service.delBoard(iboard);
