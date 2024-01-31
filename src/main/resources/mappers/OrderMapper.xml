@@ -18,7 +18,7 @@
 
     <select id="selOrderForConfirm">
         SELECT A.iorder, A.total_price AS totalOrderPrice,
-            SUM(B.product_cnt) AS totalProductCnt
+        SUM(B.product_cnt) AS totalProductCnt
         FROM t_order A
         JOIN t_order_details B
         ON A.iorder = B.iorder
@@ -57,28 +57,37 @@
         INNER JOIN t_order_details b
         ON a.iorder = b.iorder
         WHERE a.iuser = #{iuser}
-        <if test='processStateCode != 0'>
+        <if test='processStateCode lte 4'>
             AND process_state = #{processStateCode}
         </if>
-        <if test="date != null and date == 1">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
-        </if>
-        <if test="date != null and date == 2">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()
-        </if>
-        <if test="date != null and date == 3">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
-        </if>
-        <if test="date != null and date == 4">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -90 DAY) AND NOW()
-        </if>
-        <if test="date != null and date == 5">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -180 DAY) AND NOW()
-        </if>
+
+        <choose>
+            <when test="date == 0">
+            </when>
+            <otherwise>
+                AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL
+                <if test="date == 1">
+                    -1 DAY
+                </if>
+                <if test="date == 2">
+                    -1 WEEK
+                </if>
+                <if test="date == 3">
+                    -1 MONTH
+                </if>
+                <if test="date == 4">
+                    -90 DAY
+                </if>
+                <if test="date == 5">
+                    -180 DAY
+                </if>
+                ) AND NOW()
+            </otherwise>
+        </choose>
+
         <if test="listFl != 1">
             AND (a.delete_fl = 1 OR b.refund_fl = 1)
         </if>
-        <!-- GROUP BY a.iorder -->
         ORDER BY a.created_at DESC
     </select>
 
@@ -92,6 +101,9 @@
         INNER JOIN t_product c
         ON b.iproduct = c.iproduct
         WHERE a.iuser = #{iuser}
+        <if test="listFl != 1">
+            AND if(a.delete_fl = 1, 1, if(b.refund_fl = 1, 2, null))
+        </if>
         ORDER BY a.created_at DESC
     </select>
 
