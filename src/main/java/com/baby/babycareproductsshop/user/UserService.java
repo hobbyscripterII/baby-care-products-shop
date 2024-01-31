@@ -82,6 +82,9 @@ public class UserService {
         if (vo == null || !passwordEncoder.matches(dto.getUpw(), vo.getUpw())) {
             throw new RestApiException(AuthErrorCode.LOGIN_FAIL);
         }
+        if (vo.getUnregisterFl() == 1) {
+            throw new RestApiException(AuthErrorCode.UNREGISTER_USER);
+        }
         MyPrincipal myPrincipal = new MyPrincipal(vo.getIuser());
         String at = jwtTokenProvider.generateAccessToken(myPrincipal);
         String rt = jwtTokenProvider.generateRefreshToken(myPrincipal);
