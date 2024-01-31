@@ -11,7 +11,7 @@ import static com.baby.babycareproductsshop.common.Const.*;
 public class UserCheckUidDto {
     @Schema(title = "아이디")
     @NotNull(message = NM_IS_BLANK)
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9]{4,10}",
+    @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,10}",
             message = NOT_ALLOWED_ID)
     private String uid;
 }
