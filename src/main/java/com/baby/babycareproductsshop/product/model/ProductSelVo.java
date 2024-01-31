@@ -39,11 +39,16 @@ public class ProductSelVo {
     @Schema(title = "상품 상세 정보")
     private String productDetails;
 
+    @Schema(title = "찜하기 여부", description = "1 : 찜 한 상태 / 0 : 찜 하지 않은 상태")
+    private int likeProduct;
+
     @Schema(title = "평균 별점")
     private double scoreAvg;
 
     @Schema(title = "리뷰 갯수")
     private int reviewCnt;
 
+    @Schema(title = "상품 리뷰 리스트")
     List<ReviewSelVo> reviewSelVo = new ArrayList<>();
+
 }

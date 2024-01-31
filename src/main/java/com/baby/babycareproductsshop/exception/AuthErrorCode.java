@@ -37,7 +37,8 @@ public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 �
     UNREGISTER_USER(HttpStatus.BAD_REQUEST, "탈퇴한 회원입니다."),
 
     //상품
-    NOT_FOUND_ORDER_LIST(HttpStatus.NOT_FOUND, "해당하는 상품 내역이 없습니다.");
+    NOT_FOUND_ORDER_LIST(HttpStatus.NOT_FOUND, "해당하는 상품 내역이 없습니다."),
+    NOT_FOUND_PRODUCT_PICS(HttpStatus.BAD_REQUEST, "상품 사진을 선택해주세요.");
 
     private final HttpStatus httpStatus;
     private final String message;

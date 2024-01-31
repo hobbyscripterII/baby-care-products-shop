@@ -35,8 +35,6 @@ public class ReviewController {
         if (reviewPics != null && reviewPics.size() >= 6) {
             throw new RestApiException(AuthErrorCode.NOT_ALLOWED_PICS_SIZE);
         }
-        log.info("iproduct ={}", iproduct);
-        log.info("dto = {}", dto);
         dto.setIproduct(iproduct);
         dto.setPics(reviewPics);
         return service.insReview(dto);
@@ -46,7 +44,6 @@ public class ReviewController {
     @GetMapping
     @Operation(summary = "리뷰 목록", description = "리뷰 전체 리스트")
     public List<ReviewSelVo> getReview(ReviewSelDto dto) {
-        log.info("dto = {}", dto);
         try {
             if (Utils.isNotNull(dto)) {
                 List<ReviewSelVo> list = service.getReview(dto);
@@ -62,7 +59,6 @@ public class ReviewController {
     @DeleteMapping
     @Operation(summary = "리뷰 삭제", description = "리뷰 삭제 절차")
     public ResVo delReview(ReviewDelDto dto) {
-        log.info("dto = {}", dto);
         try {
             if (Utils.isNotNull(dto)) {
                 return service.delReview(dto);
