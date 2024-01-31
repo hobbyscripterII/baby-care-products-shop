@@ -25,7 +25,7 @@
     </select>
     
     <select id="selSignInInfoByUid">
-        SELECT iuser, upw, nm
+        SELECT iuser, upw, nm, unregister_fl
         FROM t_user
         WHERE uid = #{uid}
     </select>
