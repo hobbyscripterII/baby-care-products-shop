@@ -86,7 +86,7 @@
         ON A.iproduct = L.iproduct
         WHERE A.rc_fl = 1
         GROUP BY A.iproduct
-        LIMIT 0,8
+
 
     </select>
 
@@ -151,7 +151,7 @@
         ON A.recommand_age = UC.ichild_age
         WHERE A.recommand_age = #{recommandAge}
         GROUP BY A.iproduct
-        LIMIT 0,8
+
     </select>
 
     <select id="userChildAge"> <!--로그인시 유저자녀 나이 -->
