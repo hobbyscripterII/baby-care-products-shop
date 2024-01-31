@@ -41,7 +41,10 @@
     </insert>
 
     <insert id="insBoardPics">
-        INSERT INTO t_board_pics(iboard, board_pic) VALUES (#{iboard}, #{picName})
+        INSERT INTO t_board_pics(iboard, board_pic) VALUES
+        <foreach collection="picNames" item="picName" separator=",">
+            (#{iboard}, #{picName})
+        </foreach>
     </insert>
 
     <delete id="delBoardPics">

@@ -124,11 +124,11 @@ public class BoardService {
                 if (dto.getPics().size() == insBoardPicsRows) {
                     return new ResVo(SUCCESS);
                 } else {
-                    // >>>>> (추후 수정) 테이블에 게시글 수정은 됐으나 사진 업로드(수정)가 제대로 이루어지지 않았을 때
                     throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }
@@ -143,7 +143,6 @@ public class BoardService {
                 myFileUtils.delDirTrigger("/board/" + iboard);
                 return new ResVo(SUCCESS);
             } else {
-                // >>>>> (추후 수정) 테이블에 게시글 삭제는 됐으나 사진 삭제가 제대로 이루어지지 않았을 때
                 throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
             }
         } catch (Exception e) {
