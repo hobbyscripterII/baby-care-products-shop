@@ -26,6 +26,7 @@ public class ProductService {
         List<ProductSearchVo> searchVoList = productMapper.search(dto);
         return searchVoList;
     }
+
     //---------- 비로그인메인화면
     public List<ProductMainSelVo> productMainSelVo( ) {
         List<ProductMainSelVo> list = productMapper.maimSelVo();
@@ -48,7 +49,7 @@ public class ProductService {
         return mainSelVo;
     }
     //-- 로그인
-    public List<ProductMainSelVo> productMainLoginSelVo () { // 로그인
+    public List<ProductMainSelVo> productMainLoginSelVo () {
         ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
         Integer userChildAge = productMapper.userChildAge(dto.getIuser());
@@ -76,8 +77,8 @@ public class ProductService {
 
         return mainSelVo;
     }
-    // 인기 뉴 상품
-    public List<ProductMainSelVo> productPopNewSelVo() { // 인기 뉴상품
+    // 인기 신상품
+    public List<ProductMainSelVo> productPopNewSelVo() {
         List<ProductMainSelVo> popList = productMapper.SelPopProduct();
         List<ProductMainSelVo> newList = productMapper.SelNewProduct();
 
@@ -100,7 +101,7 @@ public class ProductService {
         return list;
     }
 
-    //------ 월령별 화면? 카테고리 느낌인거같은데
+    //------ 상품조회페이지
 
     public List<ProductListSelVo> getProductByAgeRange(ProductListDto dto) {
         List<ProductListSelVo> list = productMapper.getProductByAgeRange(dto);
@@ -162,25 +163,28 @@ public class ProductService {
         return productMapper.selProductBasket(dto);
     }
 
-    public ResVo delBasket(List<Integer> iproducts) { // 장바구니 삭제
+    // 장바구니 삭제
+    public ResVo delBasket(List<Integer> iproducts) {
         int delBasket = productMapper.delBasket(iproducts);
         return new ResVo(delBasket);
     }
 
-    public ResVo insBasket(ProductBasketInsDto dto) { // 장바구니 넣기
+    // 장바구니 넣기
+    public ResVo insBasket(ProductBasketInsDto dto) {
         dto.setIuser(facade.getLoginUserPk());
         Integer productCnt = productMapper.selProductCntBasket(dto);
-        if (productCnt == null) { //장바구니가 없다
+        if (productCnt == null) {
             int result = productMapper.insBasket(dto);
             return new ResVo(dto.getProductCnt());
         }
 
-        dto.setProductCnt(dto.getProductCnt() + productCnt); // 기존에 담겨있는개수 + 내가 담아줌.
-        int upt = productMapper.uptBasketProductCnt(dto); //보내주고
-        return new ResVo(dto.getProductCnt()); // 리턴값으로
+        dto.setProductCnt(dto.getProductCnt() + productCnt);
+        int upt = productMapper.uptBasketProductCnt(dto);
+        return new ResVo(dto.getProductCnt());
     }
 
-    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+    //장바구니안에서 상품 수량 수정
+    public ResVo uptBasket(ProductBasketInsDto dto) {
         dto.setIuser(facade.getLoginUserPk());
         int upt = productMapper.uptBasketProductCnt(dto);
         return new ResVo(dto.getProductCnt());
@@ -189,7 +193,6 @@ public class ProductService {
 
 
     //---------- 찜하기
-
     public ResVo wishProduct(ProductLikeDto dto) {
         dto.setIuser(facade.getLoginUserPk());
 
@@ -202,11 +205,6 @@ public class ProductService {
     }
 
 
-    //----------장바구니 값 수정
-    public ResVo uptBasketProductCnt (ProductBasketInsDto dto) {
-        int result = productMapper.uptBasketProductCnt(dto);
-        return new ResVo(result);
-    }
 
 
 }

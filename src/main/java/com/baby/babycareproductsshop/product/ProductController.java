@@ -85,8 +85,10 @@ public class ProductController {
         return service.insBasket(dto);
     }
     //-------------------------------------------------------------------------------------------
-    @PatchMapping("/uptbasket")
-    public ResVo uptBasket(ProductBasketInsDto dto) { //장바구니 안에서 값 수정
+    @PatchMapping("/cart")
+    @Operation(summary = "장바구니 물품 수량 변경",description = "result : 성공 시 해당 물품 수량 \n" +
+            " , 실패 0  ")
+    public ResVo uptBasket(ProductBasketInsDto dto) {
        return service.uptBasket(dto);
 
     }
@@ -94,7 +96,6 @@ public class ProductController {
     //--------------------------------------찜하기 기능---------------------------------------------
     @GetMapping("/wish")
     @Operation(summary = "찜하기기능",description = "찜하기기능")
-
     public ResVo wishProduct (ProductLikeDto dto) {
         log.info("dto = {}", dto);
         return service.wishProduct(dto);
