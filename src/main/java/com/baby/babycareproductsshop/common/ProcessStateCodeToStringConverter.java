@@ -11,21 +11,24 @@ public class ProcessStateCodeToStringConverter implements Converter<Integer, Str
 
         switch (source) {
             case 0:
-                processStateMsg = ProcessState.BUY_CHECK.getProcessState();
+                processStateMsg = ProcessState.ORDER_CONFIRM.getProcessState();
                 break;
             case 1:
-                processStateMsg = ProcessState.DELIVER_PREPARE.getProcessState();
+                processStateMsg = ProcessState.BEFORE_DEPOSIT.getProcessState();
                 break;
             case 2:
                 processStateMsg = ProcessState.DELIVER_IN_PROGRESS.getProcessState();
                 break;
             case 3:
-                processStateMsg = ProcessState.DELIVER_SUCCESS.getProcessState();
+                processStateMsg = ProcessState.ON_DELIVERY.getProcessState();
                 break;
             case 4:
-                processStateMsg = ProcessState.ORDER_CANCEL.getProcessState();
+                processStateMsg = ProcessState.DELIVER_SUCCESS.getProcessState();
                 break;
             case 5:
+                processStateMsg = ProcessState.ORDER_CANCEL.getProcessState();
+                break;
+            case 6:
                 processStateMsg = ProcessState.RETURN.getProcessState();
                 break;
         }

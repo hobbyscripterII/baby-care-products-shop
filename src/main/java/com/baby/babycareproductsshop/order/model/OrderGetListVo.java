@@ -1,7 +1,9 @@
 package com.baby.babycareproductsshop.order.model;
 
+import com.baby.babycareproductsshop.common.OrderCancelAndRefundToStringConverter;
 import com.baby.babycareproductsshop.common.ProcessStateCodeToStringConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,9 @@ public class OrderGetListVo {
         private int price;
         @Schema(title = "배송 처리 상태", description = "")
         private String processState;
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        @Schema(title = "주문취소/반품 여부", description = "")
+        private String orderCancelAndRefund;
 
         public String getProcessState() {
             if (orderFl == 1) {
@@ -55,8 +60,8 @@ public class OrderGetListVo {
             return new ProcessStateCodeToStringConverter().convert(processStateCode);
         }
 
-//        public String getOrderCancelAndRefund() {
-//            return new OrderCancelAndRefundToStringConverter().convert(orderFl);
-//        }
+        public String getOrderCancelAndRefund() {
+            return new OrderCancelAndRefundToStringConverter().convert(orderFl);
+        }
     }
 }

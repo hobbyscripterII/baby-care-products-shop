@@ -62,8 +62,9 @@ public class OrderController {
     @Operation(summary = "주문 내역", description = "")
     List<OrderGetListVo> getOrder(@Parameter(description = "1 - 주문내역 조회 2 - 주문취소/반품내역 조회")
                                   @RequestParam(name = "list_flag") Integer listFlag,
-                                  @Parameter(description = "1 - 입금전 2 - 배송준비중 3 - 배송중 4 - 배송완료 5 - 환불/취소")
+                                  @Parameter(description = "1 - 입금전 2 - 배송준비중 3 - 배송중 4 - 배송완료")
                                   @RequestParam(name = "process_state_code", required = false) Integer processStateCode,
+                                  @Parameter(description = "1 - 오늘 2 - 일주일 3 - 1개월 4 - 3개월 5 - 6개월")
                                   @RequestParam(name = "date", required = false) Integer date) {
 
         OrderGetListDto dto = new OrderGetListDto();
