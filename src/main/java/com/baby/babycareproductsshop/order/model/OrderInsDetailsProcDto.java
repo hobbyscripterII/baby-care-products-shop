@@ -12,8 +12,6 @@ public class OrderInsDetailsProcDto {
     @Schema(title = "상품 PK")
     @Positive
     private int iproduct;
-    @JsonIgnore
-    private int idetails;
     @Schema(title = "상품 수량")
     @Positive
     private int productCnt;
