@@ -180,7 +180,8 @@
     <select id="getProductByAgeRange"> <!-- 상품조회페이지 -->
         SELECT
         A.iproduct,
-        M.imiddle,
+        A.imiddle,
+        A.imain,
         A.product_nm,
         A.price,
         A.rc_fl,
@@ -198,13 +199,13 @@
         ON A.iproduct = L.iproduct
         <where>
             <if test="imiddle !=0 and imain !=0">
-                M.imiddle = #{imiddle} AND M.imain = #{imain}
+                A.imiddle = #{imiddle} AND A.imain = #{imain}
             </if>
             <if test="imiddle ==0 and imain !=0">
-                M.imain = #{imain}
+                A.imain = #{imain}
             </if>
             <if test="imiddle !=0 and imain ==0">
-                M.imiddle = #{imiddle}
+                A.imiddle = #{imiddle}
             </if>
         </where>
         GROUP BY A.iproduct
