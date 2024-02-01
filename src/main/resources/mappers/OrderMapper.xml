@@ -18,10 +18,13 @@
 
     <select id="selOrderForConfirm">
         SELECT A.iorder, A.total_price AS totalOrderPrice,
-        SUM(B.product_cnt) AS totalProductCnt
+        SUM(B.product_cnt) AS totalProductCnt,
+        C.nm AS addresseeNm, C.phone_number, C.email
         FROM t_order A
         JOIN t_order_details B
         ON A.iorder = B.iorder
+        JOIN t_user C
+        ON A.iuser = C.iuser
         AND A.iorder = #{iorder}
         GROUP BY B.iorder
     </select>
