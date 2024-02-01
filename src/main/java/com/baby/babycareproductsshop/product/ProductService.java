@@ -9,6 +9,7 @@ import com.baby.babycareproductsshop.review.model.ReviewSelVo;
 import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -208,7 +209,7 @@ public class ProductService {
         return new ResVo(Const.SUCCESS);
     }
 
-    public ResVo postProduct(List<MultipartFile> pics, ProductInsDto dto) {
+    public ResVo postProduct(List<MultipartFile> pics, MultipartFile productDetails, ProductInsDto dto) {
         int insResult = productMapper.insProduct(dto);
         String target = "/product/" + dto.getIproduct();
         List<String> savedPics = new ArrayList<>();
@@ -216,6 +217,8 @@ public class ProductService {
             String fileNm = myFileUtils.transferTo(file, target);
             savedPics.add(fileNm);
         }
+        String detailsFileNm = myFileUtils.transferTo(productDetails, target);
+        dto.setProductDetails(detailsFileNm);
         dto.setPics(savedPics);
         int insPicsResult = productMapper.insProductPics(dto);
         int updRepPicResult = productMapper.updProductRepPic(dto);

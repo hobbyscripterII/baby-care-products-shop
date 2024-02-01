@@ -1,6 +1,8 @@
 package com.baby.babycareproductsshop.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.util.List;
@@ -11,10 +13,16 @@ public class ProductInsDto {
     private int iproduct;
     private int imain;
     private int imiddle;
-    private int productNm;
+    private String productNm;
+    @JsonIgnore
+    private String productDetails;
+//    @Min(1)
+//    @Max(4)
     private int recommandAge;
     private int price;
-    private int repPic;
-    private int remainedProduct;
+    @JsonIgnore
+    private String repPic;
+    private int remainedCnt;
+    @JsonIgnore
     private List<String> pics;
 }

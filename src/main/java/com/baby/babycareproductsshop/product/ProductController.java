@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/product")
+@RequestMapping("/api/product")
 @Tag(name = "상품 API", description = "상품 관련 파트")
 public class ProductController {
     private final ProductService service;
@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("main")
+    @GetMapping("/main")
     @Operation(summary = "메인화면 비로그인")
 
     public List<ProductMainSelVo> getNonLoginProduct() { // 비로그인
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("login-main")
+    @GetMapping("/login-main")
     @Operation(summary = "메인화면 로그인")
 
     public List<ProductMainSelVo> getLoginProduct() { // 로그인
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     //--------------------------------------메인 페이지---------------------------------------------
-    @GetMapping("pop-new-product")
+    @GetMapping("/pop-new-product")
     @Operation(summary = "인기 신상품 상품 조회")
     public List<ProductMainSelVo> getPopAndNewProduct() { //인기상품 & 신상품
         return service.productPopNewSelVo();
@@ -111,9 +111,12 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "상품 등록 기능")
-    public ResVo postProduct(@RequestPart @NotEmpty List<MultipartFile> pics,
+    public ResVo postProduct(@RequestPart(name = "pics") List<MultipartFile> pics,
+                             @RequestPart(name = "productDetails") MultipartFile productDetails,
                              @RequestPart ProductInsDto dto) {
-        return service.postProduct(pics, dto);
+        log.info("dto : {}", dto);
+        log.info("pics : {}", pics);
+        log.info("productDetails : {}", productDetails);
+        return service.postProduct(pics, productDetails, dto);
     }
-
 }
