@@ -51,13 +51,11 @@
     <!-- -->
     <select id="getOrderList">
         SELECT DATE(a.created_at) createdAt, a.iorder, b.idetails, b.refund_fl refundFl,
-        (SELECT COUNT(*) FROM t_review WHERE ireview = b.idetails) reviewFl,
         if(a.delete_fl = 1, 1, if(b.refund_fl = 1, 2, 0)) orderFl
         FROM t_order a
         INNER JOIN t_order_details b
         ON a.iorder = b.iorder
         WHERE a.iuser = #{iuser}
-
         <if test="date != 0">
             AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL
             <if test="date == 1">
@@ -87,8 +85,11 @@
     </select>
 
     <select id="getProductList">
-        SELECT a.iorder, b.idetails, c.rep_pic repPic, c.product_nm productNm, b.product_cnt productCnt, a.process_state processStateCode,
+        SELECT a.iorder, b.idetails, b.iproduct, c.rep_pic repPic, c.product_nm productNm, b.product_cnt productCnt, a.process_state processStateCode,
         (SELECT price FROM t_product WHERE iproduct = b.iproduct) * b.product_cnt price
+        <if test="listFl == 1">
+            , (SELECT COUNT(*) FROM t_review WHERE ireview = b.idetails) reviewFl
+        </if>
         <if test="listFl == 2">
             , if(a.delete_fl = 1, 1, if(b.refund_fl = 1, 2, 0)) orderFl
         </if>

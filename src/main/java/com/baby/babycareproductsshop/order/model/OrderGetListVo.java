@@ -26,8 +26,6 @@ public class OrderGetListVo {
     private int idetails;
     @Schema(title = "환불 여부", description = "")
     private int refundFl;
-    @Schema(title = "리뷰 작성 여부", description = "")
-    private int reviewFl;
     @Schema(title = "상품 상세 정보", description = "")
     private List<items> items = new ArrayList<>();
 
@@ -39,8 +37,10 @@ public class OrderGetListVo {
         private int processStateCode;
         @JsonIgnore
         private int iorder;
-        @Schema(title = "주문 번호", description = "")
+        @Schema(title = "주문 PK", description = "")
         private int idetails;
+        @Schema(title = "상품 PK", description = "")
+        private String iproduct;
         @Schema(title = "상품 대표 사진", description = "")
         private String repPic;
         @Schema(title = "상품 이름", description = "")
@@ -52,6 +52,8 @@ public class OrderGetListVo {
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
         @Schema(title = "배송 처리 상태", description = "")
         private String processState;
+        @Schema(title = "리뷰 작성 여부", description = "")
+        private int reviewFl;
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
         @Schema(title = "주문취소/반품 여부", description = "")
         private String orderCancelAndRefund;
