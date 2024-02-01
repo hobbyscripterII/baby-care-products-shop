@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,9 @@ import java.util.stream.Collectors;
 public class BoardController {
     private final BoardService service;
     private final MyFileUtils myFileUtils;
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     @GetMapping
     @Operation(summary = "게시글 목록 출력 기능", description = "")

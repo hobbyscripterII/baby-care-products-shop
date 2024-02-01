@@ -23,4 +23,8 @@ public interface BoardMapper {
     int insBoardPics(BoardPicsDto dto);
 
     int delBoardPics(int iboard);
+
+    List<String> selBoardPics(int iboard);
+
+    List<BoardSelVo.comment> getComment(int iboard);
 }

@@ -40,6 +40,9 @@ public class BoardService {
     public BoardSelVo selBoard(int iboard) {
         try {
             BoardSelVo vo = mapper.selBoard(iboard);
+            vo.setPics(mapper.selBoardPics(iboard));
+            vo.setComment(mapper.getComment(iboard));
+            log.info("comment = {}", vo.getComment());
 
             if (Utils.isNotNull(vo)) {
                 return vo;
