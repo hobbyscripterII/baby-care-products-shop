@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -203,6 +204,7 @@ public class ProductService {
         return new ResVo(Const.SUCCESS);
     }
 
+    @Transactional
     public ResVo postProduct(List<MultipartFile> pics, MultipartFile productDetails, ProductInsDto dto) {
         int insResult = productMapper.insProduct(dto);
         String target = "/product/" + dto.getIproduct();
