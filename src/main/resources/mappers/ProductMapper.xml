@@ -161,13 +161,9 @@
     </select>
 
     <select id="selProductPics"> <!-- 메인사진넣기-->
-        SELECT iproduct, product_pic as productPic
+        SELECT product_pic
         FROM t_product_pics
-        WHERE iproduct in (
-        <foreach collection="iproduct" item="iproduct" separator=",">
-            #{iproduct}
-        </foreach>
-        )
+        WHERE iproduct = #{iproduct}
     </select>
 
 

@@ -145,16 +145,10 @@ public class ProductService {
             result.setReviewCnt(productProductAverageSelVo.getReviewCnt());
             iProductList.add(result.getIproduct());
             result.setReviewSelVo(reviewSelVoList);
-
-            ProductSelVoMap.put(result.getIproduct(), result);
-            List<ProductPicsVo> productPicsVoList = productMapper.selProductPics(iProductList);
-            for (ProductPicsVo vo : productPicsVoList) {
-                ProductSelVo productSelVo = ProductSelVoMap.get(vo.getIproduct());
-                List<String> pics = productSelVo.getProductPics();
-                pics.add(vo.getProductPic());
-            }
         }
-
+        ProductSelVoMap.put(result.getIproduct(), result);
+        List<String> productPicsVoList = productMapper.selProductPics(dto.getIproduct());
+        result.setProductPics(productPicsVoList);
         return result;
     }
 
