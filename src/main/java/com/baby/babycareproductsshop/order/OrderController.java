@@ -60,11 +60,11 @@ public class OrderController {
 
     @GetMapping
     @Operation(summary = "주문 내역", description = "")
-    List<OrderGetListVo> getOrder(@Parameter(description = "1 - 주문내역 조회 2 - 주문취소/반품내역 조회")
+    List<OrderGetListVo> getOrder(@Parameter(description = "1 - 주문내역 조회<br> 2 - 주문취소/반품내역 조회")
                                   @RequestParam(name = "list_flag") Integer listFlag,
-                                  @Parameter(description = "0 - 주문 확인 1 - 입금전 2 - 배송준비중 3 - 배송중 4 - 배송완료")
+                                  @Parameter(description = "0 - 주문 확인<br> 1 - 입금전<br> 2 - 배송준비중<br> 3 - 배송중<br> 4 - 배송완료")
                                   @RequestParam(name = "process_state_code", required = false) Integer processStateCode,
-                                  @Parameter(description = "1 - 오늘 2 - 일주일 3 - 1개월 4 - 3개월 5 - 6개월")
+                                  @Parameter(description = "1 - 오늘<br> 2 - 일주일<br> 3 - 1개월<br> 4 - 3개월<br> 5 - 6개월")
                                   @RequestParam(name = "date", required = false) Integer date) {
 
         OrderGetListDto dto = new OrderGetListDto();
