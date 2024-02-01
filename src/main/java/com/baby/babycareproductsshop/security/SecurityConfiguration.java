@@ -42,7 +42,11 @@ public class SecurityConfiguration {
                                         "/css/**",
                                         "/swagger.html",
                                         "/swagger-ui/**",
-                                        "/v3/api-docs/**"
+                                        "/v3/api-docs/**",
+                                        "/assets/**", // *
+                                        "/login",
+                                        "/signUp",
+                                        "/commu/read/**"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/board").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/board/{iboard}").permitAll()
