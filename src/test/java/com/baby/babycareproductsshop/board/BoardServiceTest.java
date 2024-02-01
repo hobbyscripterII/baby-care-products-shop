@@ -174,11 +174,16 @@ class BoardServiceTest {
         String contents = "게시글 수정 테스트입니다.";
         ResVo success = new ResVo(Const.SUCCESS);
 
+        List<MultipartFile> picsList = new ArrayList();
+        MockMultipartFile testImg1 = new MockMultipartFile("테스트용 이미지1", "test-img1.jpg", MediaType.IMAGE_JPEG_VALUE, "test-img1".getBytes());
+        picsList.add(testImg1);
+
         BoardUpdDto trueUser = new BoardUpdDto();
         trueUser.setIboard(iboard);
         trueUser.setIuser(iuser);
         trueUser.setTitle(title);
         trueUser.setContents(contents);
+        trueUser.setPics(picsList);
 
         BoardUpdDto falseUser = new BoardUpdDto();
         falseUser.setIboard(iboard);

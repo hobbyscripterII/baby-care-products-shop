@@ -98,9 +98,11 @@ public class BoardService {
     @Transactional
     public ResVo updBoard(BoardUpdDto dto) {
         try {
+            log.info("dto = {}", dto);
             int loginUserPk = authenticationFacade.getLoginUserPk();
             dto.setIuser(loginUserPk);
             int updBoardRows = mapper.updBoard(dto);
+            log.info("updBoardRows = {}", updBoardRows);
 
             // 작성자 외 다른 사용자가 접근했을 때 및 게시글 수정 실패 시
             if (!Utils.isNotNull(updBoardRows)) {

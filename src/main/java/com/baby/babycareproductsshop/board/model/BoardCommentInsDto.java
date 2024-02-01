@@ -8,10 +8,10 @@ import lombok.Data;
 public class BoardCommentInsDto {
     @JsonIgnore
     private int icomment;
-    @Schema(title = "게시판 PK", description = "")
-    private int iboard;
     @JsonIgnore
     private int iuser;
+    @Schema(title = "게시판 PK", description = "")
+    private int iboard;
     @Schema(title = "댓글 내용", description = "")
     private String comment;
 }

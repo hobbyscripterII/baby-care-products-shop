@@ -10,10 +10,10 @@ public class OrderCancelAndRefundToStringConverter implements Converter<Integer,
         String orderCancelAndRefund = null;
 
         switch (source) {
-            case 5:
+            case 1:
                 orderCancelAndRefund = ProcessState.ORDER_CANCEL.getProcessState();
                 break;
-            case 6:
+            case 2:
                 orderCancelAndRefund = ProcessState.RETURN.getProcessState();
                 break;
         }
