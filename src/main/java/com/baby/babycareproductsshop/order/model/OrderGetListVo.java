@@ -22,6 +22,8 @@ public class OrderGetListVo {
     private String createdAt;
     @Schema(title = "주문 PK", description = "")
     private int iorder;
+    @Schema(title = "주문 총 가격", description = "")
+    private int price;
     @Schema(title = "대표 사진", description = "")
     private String repPic;
     @Schema(title = "환불 여부", description = "")
