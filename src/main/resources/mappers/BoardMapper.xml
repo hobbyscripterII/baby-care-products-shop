@@ -36,6 +36,10 @@
         WHERE a.iboard = #{iboard}
     </select>
 
+    <select id="selBoardPics">
+        SELECT board_pic pic FROM t_board_pics WHERE iboard = #{iboard}
+    </select>
+
     <insert id="insBoardPic">
         INSERT INTO t_board_pics(iboard, board_pic) VALUES (#{iboard}, #{picName})
     </insert>
@@ -50,4 +54,12 @@
     <delete id="delBoardPics">
         DELETE FROM t_board_pics WHERE iboard = #{iboard}
     </delete>
+
+    <select id="getComment">
+        SELECT a.icomment, b.nm, a.comment contents, DATE_FORMAT((a.created_at), '%Y.%m.%d') createdAt
+        FROM t_board_comment a
+        INNER JOIN t_user b
+        ON a.iuser = b.iuser
+        WHERE a.iboard = #{iboard}
+    </select>
 </mapper>
