@@ -328,16 +328,15 @@
         ,product_details = #{productDetails}
         ,recommand_age = #{recommandAge}
         ,price = #{price}
-        ,remained_product = #{remainedProduct}
+        ,remained_cnt = #{remainedCnt}
     </insert>
 
     <insert id="insProductPics">
-        <selectKey keyProperty="repPic" order="AFTER">
+        <selectKey keyProperty="repPic" order="AFTER" resultType="String">
             SELECT product_pic AS repPic
             FROM t_product_pics
             GROUP BY iproduct
-            HAVING iproduct_pics = MIN(iproduct_pics)
-            AND iproduct = #{iproduct}
+            HAVING iproduct = #{iproduct}
         </selectKey>
         INSERT INTO t_product_pics
         (iproduct, product_pic)
@@ -349,7 +348,8 @@
 
     <update id="updProductRepPic">
         UPDATE t_product
-        SET rep_pic = #{repPic}
+        SET rep_pic = #{repPic},
+            product_details = #{productDetails}
         WHERE iproduct = #{iproduct}
     </update>
 </mapper>
