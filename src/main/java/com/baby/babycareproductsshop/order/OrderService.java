@@ -31,9 +31,12 @@ public class OrderService {
         List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
         dto.setIaddress(addresses.get(0).getIaddress());
         int insOrderResult = orderMapper.insOrder(dto);
+        for (OrderInsDetailsProcDto product : dto.getProducts()) {
 
+        }
         for (OrderInsDetailsProcDto product : dto.getProducts()) {
             product.setIorder(dto.getIorder());
+            dto.setTotalOrderPrice(dto.getTotalOrderPrice() + product.getProductTotalPrice());
             product.setProductPrice(product.getProductTotalPrice() / product.getProductCnt());
             int insOrderDetails = orderDetailMapper.insOrderDetail(product);
         }
