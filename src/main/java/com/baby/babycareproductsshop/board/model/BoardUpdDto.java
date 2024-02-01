@@ -9,15 +9,14 @@ import java.util.List;
 
 @Data
 public class BoardUpdDto {
+    @JsonIgnore
+    private int iuser;
+    @JsonIgnore
+    private List<MultipartFile> pics;
     @Schema(title = "게시글 PK", description = "")
     private int iboard;
-    @Schema(title = "회원 PK", description = "")
-    private int iuser;
     @Schema(title = "게시글 제목", description = "")
     private String title;
     @Schema(title = "게시글 내용", description = "")
     private String contents;
-    @JsonIgnore
-    @Schema(title = "게시글 사진", description = "")
-    private List<MultipartFile> pics;
 }

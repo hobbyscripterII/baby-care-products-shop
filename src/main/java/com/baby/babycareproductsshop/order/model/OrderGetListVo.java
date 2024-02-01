@@ -16,6 +16,8 @@ import java.util.List;
 public class OrderGetListVo {
     @JsonIgnore
     private int listFl;
+    @JsonIgnore
+    private int orderFl;
     @Schema(title = "주문 일자", description = "")
     private String createdAt;
     @Schema(title = "주문 PK", description = "")
@@ -47,6 +49,7 @@ public class OrderGetListVo {
         private int productCnt;
         @Schema(title = "상품 가격", description = "")
         private int price;
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         @Schema(title = "배송 처리 상태", description = "")
         private String processState;
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
