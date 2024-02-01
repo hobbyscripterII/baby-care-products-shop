@@ -37,8 +37,10 @@ public class OrderGetListVo {
         private int processStateCode;
         @JsonIgnore
         private int iorder;
-        @Schema(title = "주문 번호", description = "")
+        @Schema(title = "주문 PK", description = "")
         private int idetails;
+        @Schema(title = "상품 PK", description = "")
+        private String iproduct;
         @Schema(title = "상품 대표 사진", description = "")
         private String repPic;
         @Schema(title = "상품 이름", description = "")
