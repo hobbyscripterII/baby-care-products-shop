@@ -86,16 +86,16 @@ public class BoardController {
             String path = "/board/" + iboard;
 
             // db에 사진 저장 완료 시 사진 경로 문자열 반환 없으면 예외 던짐
-            String savedFileName = myFileUtils.transferTo(pics, path);
+            String savedFilePath = myFileUtils.transferTo(pics, path);
 
-            if (Utils.isNotNull(savedFileName)) {
+            if (Utils.isNotNull(savedFilePath)) {
                 BoardPicsDto picsDto = new BoardPicsDto();
                 picsDto.setIboard(iboard);
-                picsDto.setPicName(savedFileName);
+                picsDto.setPicName(savedFilePath);
                 int insBoardPic = service.insBoardPic(picsDto);
 
                 if (Utils.isNotNull(insBoardPic)) {
-                    return savedFileName;
+                    return savedFilePath;
                 } else {
                     throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
                 }
