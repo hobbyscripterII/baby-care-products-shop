@@ -32,7 +32,6 @@ public class UserAddressController {
     }
 
     @Operation(summary = "주소 정보 조회", description = """
-          
             """)
     @GetMapping
     public List<UserSelAddressVo> getUserAddress() {
