@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                                         "/api/user/my-page",
                                         "/api/review",
                                         "/api/review/**",
-                                        "/api/board/iamge-upload",
+                                        "/api/board/image-upload",
                                         "/api/product/wish",
                                         "/api/product/cart",
                                         "/api/product/login-main"
