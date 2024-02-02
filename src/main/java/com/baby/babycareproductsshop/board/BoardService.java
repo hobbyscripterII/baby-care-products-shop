@@ -107,31 +107,34 @@ public class BoardService {
             int updBoardRows = mapper.updBoard(dto);
             log.info("updBoardRows = {}", updBoardRows);
 
-            // 작성자 외 다른 사용자가 접근했을 때 및 게시글 수정 실패 시
-            if (!Utils.isNotNull(updBoardRows)) {
-                throw new RestApiException(AuthErrorCode.USER_MODIFY_FAIL);
+            return new ResVo(SUCCESS);
 
-                // 등록 시 사진이 있었으나 수정 시 사진이 없을 때 테이블 사진, 디렉토리 모두 삭제
-            } else if (Utils.isNotNull(updBoardRows) && dto.getPics() == null) {
-                String path = "/board/" + dto.getIboard();
-                myFileUtils.delDirTrigger(path);
-                int delBoardPicsRows = mapper.delBoardPics(dto.getIboard());
-
-                if (Utils.isNotNull(delBoardPicsRows)) {
-                    return new ResVo(SUCCESS);
-                } else {
-                    throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
-                }
-            } else {
-                BoardPicsDto picsDto = createPics(dto.getIboard(), dto.getPics());
-                int insBoardPicsRows = mapper.insBoardPics(picsDto);
-
-                if (dto.getPics().size() == insBoardPicsRows) {
-                    return new ResVo(SUCCESS);
-                } else {
-                    throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
-                }
-            }
+            // >>>>> 3차 프로젝트 때 구현하기
+//            // 작성자 외 다른 사용자가 접근했을 때 및 게시글 수정 실패 시
+//            if (!Utils.isNotNull(updBoardRows)) {
+//                throw new RestApiException(AuthErrorCode.USER_MODIFY_FAIL);
+//
+//                // 등록 시 사진이 있었으나 수정 시 사진이 없을 때 테이블 사진, 디렉토리 모두 삭제
+//            } else if (Utils.isNotNull(updBoardRows) && dto.getPics() == null) {
+//                String path = "/board/" + dto.getIboard();
+//                myFileUtils.delDirTrigger(path);
+//                int delBoardPicsRows = mapper.delBoardPics(dto.getIboard());
+//
+//                if (Utils.isNotNull(delBoardPicsRows)) {
+//                    return new ResVo(SUCCESS);
+//                } else {
+//                    throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
+//                }
+//            } else {
+//                BoardPicsDto picsDto = createPics(dto.getIboard(), dto.getPics());
+//                int insBoardPicsRows = mapper.insBoardPics(picsDto);
+//
+//                if (dto.getPics().size() == insBoardPicsRows) {
+//                    return new ResVo(SUCCESS);
+//                } else {
+//                    throw new RestApiException(AuthErrorCode.POST_DELETE_FAIL);
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
