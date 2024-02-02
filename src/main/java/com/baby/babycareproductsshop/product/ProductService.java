@@ -155,7 +155,8 @@ public class ProductService {
 
 
     //---------- 장바구니
-    public List<ProductBasketSelVo> productBasketSelVo(ProductBasketSelDto dto) {
+    public List<ProductBasketSelVo> productBasketSelVo() {
+        ProductBasketSelDto dto = new ProductBasketSelDto();
         dto.setIuser(facade.getLoginUserPk());
         return productMapper.selProductBasket(dto);
     }

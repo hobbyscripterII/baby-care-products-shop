@@ -28,8 +28,6 @@ public class ProductBasketSelVo {
     @Schema(title = "상품 총 가격")
     private int totalPrice;
 
-    @Schema(title = "최종 결제 가격")
-    private int paymentAmount;
 
     @Schema(title = "사진")
     private String repPic;

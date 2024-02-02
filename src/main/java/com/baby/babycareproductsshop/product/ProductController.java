@@ -71,8 +71,8 @@ public class ProductController {
     //--------------------------------------장바구니 조회---------------------------------------------
     @GetMapping("/cart")
     @Operation(summary = "장바구니 조회")
-    public List<ProductBasketSelVo> selCartProduct(ProductBasketSelDto dto) {
-        return service.productBasketSelVo(dto);
+    public List<ProductBasketSelVo> selCartProduct() {
+        return service.productBasketSelVo();
     }
 
     //--------------------------------------장바구니 상품 삭제---------------------------------------------
