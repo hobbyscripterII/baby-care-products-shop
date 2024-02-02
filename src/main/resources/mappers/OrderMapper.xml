@@ -63,21 +63,17 @@
         INNER JOIN t_product c
         ON b.iproduct = c.iproduct
         WHERE a.iuser = #{iuser}
-        <if test="date != 0">
-            AND a.created_at BETWEEN DATE_ADD(NOW(), INTERVAL
-            <if test="date == 1"> -1 DAY </if>
-            <if test="date == 2"> -1 WEEK </if>
-            <if test="date == 3"> -1 MONTH </if>
-            <if test="date == 4"> -90 DAY </if>
-            <if test="date == 5"> -180 DAY </if>
-                )AND NOW()
-        </if>
         <if test="listFl == 1 and processStateCode &gt; 0 and processStateCode &lt;= 4">
             AND process_state = #{processStateCode}
         </if>
-        <if test="listFl == 2">
-            AND (a.delete_fl = 1 OR b.refund_fl = 1)
-        </if>
+        <choose>
+            <when test="listFl == 1">
+                AND b.refund_fl = 0 AND a.delete_fl = 0
+            </when>
+            <otherwise>
+                AND (a.delete_fl = 1 OR b.refund_fl = 1)
+            </otherwise>
+        </choose>
         GROUP BY a.iorder
         ORDER BY a.created_at DESC
     </select>
