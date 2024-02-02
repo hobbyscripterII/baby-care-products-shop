@@ -18,13 +18,15 @@
     </delete>
 
     <select id="getBoard">
-        SELECT iboard, title, board_code boardCode, created_at createdAt
-        FROM t_board
-        WHERE board_code = #{boardCode}
+        SELECT a.iboard, a.title, b.nm, a.board_code boardCode, a.created_at createdAt
+        FROM t_board a
+        INNER JOIN t_user b
+        ON a.iuser = b.iuser
+        WHERE a.board_code = #{boardCode}
         <if test="keyword != null">
-            AND title LIKE '%${keyword}%'
+            AND a.title LIKE '%${keyword}%'
         </if>
-        ORDER BY iboard DESC
+        ORDER BY a.iboard DESC
         LIMIT #{pageStart}, #{amount}
     </select>
 
