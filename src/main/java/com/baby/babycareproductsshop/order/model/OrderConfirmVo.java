@@ -1,5 +1,6 @@
 package com.baby.babycareproductsshop.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -39,4 +40,7 @@ public class OrderConfirmVo {
 
     @Schema(title = "주문일")
     private String createdAt;
+
+    @JsonIgnore
+    private String fullAddress;
 }

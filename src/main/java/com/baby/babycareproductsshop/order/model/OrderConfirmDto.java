@@ -41,4 +41,7 @@ public class OrderConfirmDto {
 
     @JsonIgnore
     private int processState;
+
+    @JsonIgnore
+    private String fullAddress;
 }

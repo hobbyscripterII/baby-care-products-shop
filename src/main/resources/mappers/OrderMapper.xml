@@ -36,12 +36,13 @@
         email = #{email},
         phone_number = #{phoneNumber},
         ipayment_option = #{ipaymentOption},
-        process_state = #{processState}
+        process_state = #{processState},
+        full_address = #{full_address}
         WHERE (iorder, iuser) = (#{iorder}, #{iuser})
     </update>
 
     <select id="selConfirmOrder">
-        SELECT A.iorder, A.addressee_nm, A.phone_number, A.email, B.zip_code, B.address, B.address_detail,
+        SELECT A.iorder, A.addressee_nm, A.phone_number, A.email, A.full_address,
         C.payment_option, DATE(A.created_at) as createdAt
         FROM t_order A
         JOIN t_address B
