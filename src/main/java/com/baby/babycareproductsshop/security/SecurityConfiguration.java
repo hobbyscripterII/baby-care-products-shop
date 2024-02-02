@@ -24,33 +24,48 @@ public class SecurityConfiguration {
                 .formLogin(formLogin -> formLogin.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(author -> author.requestMatchers(
-                                        "/api/user/sign-in",
-                                        "/api/user/sign-up",
-                                        "/api/user/sign-up/**",
-                                        "/api/user/refresh-token",
-                                        "/api/product",
-                                        "/api/product/search",
-                                        "/api/product/main",
-                                        "/api/product/pop-new-product",
-                                        "/api/product/{iproduct}",
-                                        "/error",
-                                        "/err",
-                                        "/",
-                                        "/index.html",
-                                        "/static/**",
-                                        "/fimg/**",
-                                        "/css/**",
-                                        "/swagger.html",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**",
-                                        "/assets/**", // *
-                                        "/login",
-                                        "/signUp",
-                                        "/commu/read/**"
-                                ).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/board").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/board/{iboard}").permitAll()
-                                .anyRequest().authenticated()
+                                        "/api/order",
+                                        "/api/order/**",
+                                        "/api/comment",
+                                        "/api/user/address",
+                                        "/api/user/modify",
+                                        "/api/user/signout",
+                                        "/apu/user/refresh-token",
+                                        "/api/user/my-page",
+                                        "/api/review",
+                                        "/api/review/**",
+                                        "/api/board/iamge-upload",
+                                        "/api/product/wish",
+                                        "/api/product/cart",
+                                        "/api/product/login-main"
+//                                        "/api/user/sign-in",
+//                                        "/api/user/sign-up",
+//                                        "/api/user/sign-up/**",
+//                                        "/api/user/refresh-token",
+//                                        "/api/product",
+//                                        "/api/product/search",
+//                                        "/api/product/main",
+//                                        "/api/product/pop-new-product",
+//                                        "/api/product/{iproduct}",
+//                                        "/error",
+//                                        "/err",
+//                                        "/",
+//                                        "/index.html",
+//                                        "/static/**",
+//                                        "/fimg/**",
+//                                        "/css/**",
+//                                        "/swagger.html",
+//                                        "/swagger-ui/**",
+//                                        "/v3/api-docs/**",
+//                                        "/assets/**", // *
+//                                        "/login",
+//                                        "/signUp",
+//                                        "/commu/read/**"
+                                ).authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/board").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/board").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/board/write").authenticated()
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(except -> {

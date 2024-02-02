@@ -13,7 +13,7 @@ public class OrderInsDto {
     private int iuser;
     @Schema(title = "상품 정보")
     List<@Valid OrderInsDetailsProcDto> products;
-    @JsonIgnore
+    @Schema(title = "총 주문 금액")
     private int totalOrderPrice;
     @JsonIgnore
     private int iaddress;
