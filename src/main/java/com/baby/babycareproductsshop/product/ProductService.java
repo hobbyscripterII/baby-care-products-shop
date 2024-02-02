@@ -36,12 +36,10 @@ public class ProductService {
         List<ProductMainSelVo> list = productMapper.maimSelVo();
         List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
         List<ProductMainSelVo> mainSelVo = new ArrayList<>();
-
         Set<Integer> popNewIds = new HashSet<>();
         for (ProductMainSelVo item : popNewList) {
             popNewIds.add(item.getIproduct());
         }
-
         int count = 0;
         while (mainSelVo.size() < 8 && count < list.size()) {
             ProductMainSelVo vo = list.get(count);
@@ -60,18 +58,13 @@ public class ProductService {
         Integer userChildAge = productMapper.userChildAge(dto.getIuser());
         dto.setRecommandAge(userChildAge);
         List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
-
         List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
-
         List<ProductMainSelVo> mainSelVo = new ArrayList<>();
         Set<Integer> popNewIds = new HashSet<>();
-
         for (ProductMainSelVo vo : popNewList) {
             popNewIds.add(vo.getIproduct());
         }
-
         int count = 0;
-
         while (mainSelVo.size() < 8 && count < list.size()) {
             ProductMainSelVo vo = list.get(count);
             if (!popNewIds.contains(vo.getIproduct())) {
@@ -79,7 +72,6 @@ public class ProductService {
             }
             count++;
         }
-
         return mainSelVo;
     }
 
@@ -87,15 +79,12 @@ public class ProductService {
     public List<ProductMainSelVo> productPopNewSelVo() {
         List<ProductMainSelVo> popList = productMapper.SelPopProduct();
         List<ProductMainSelVo> newList = productMapper.SelNewProduct();
-
         Set<Integer> popIds = new HashSet<>();
         List<ProductMainSelVo> list = new ArrayList<>();
-
         for (int i = 0; i < popList.size() && popIds.size() < 8; i++) {
             popIds.add(popList.get(i).getIproduct());
             list.add(popList.get(i));
         }
-
         int count = 0;
         while (list.size() < 16 && count < newList.size()) {
             ProductMainSelVo vo = newList.get(count);
@@ -118,29 +107,24 @@ public class ProductService {
     public ProductSelVo selProduct(ProductSelDto dto) {
         int iuser = facade.getLoginUserPk();
         ProductAverageSelVo productProductAverageSelVo = productMapper.selProductAverage(dto.getIproduct());
-
         List<Integer> productReview = new ArrayList<>();
         List<Integer> iProductList = new ArrayList<>();
         Map<Integer, ReviewSelVo> reviewMap = new HashMap<>();
         Map<Integer, ProductSelVo> ProductSelVoMap = new HashMap<>();
         List<ReviewSelVo> reviewSelVoList = productReviewMapper.getProductReview(dto);
         ProductSelVo result = productMapper.selProductInformation(dto.getIproduct(), iuser);
-
         for (ReviewSelVo vo : reviewSelVoList) {
             productReview.add(vo.getIreview());
             reviewMap.put(vo.getIreview(), vo);
         }
-
         if (!productReview.isEmpty()) {
             List<ReviewPicsVo> reviewPicsVoList = productReviewMapper.getProductReviewPics(productReview);
-
             for (ReviewPicsVo vo : reviewPicsVoList) {
                 ReviewSelVo reviewSelVo = reviewMap.get(vo.getIreview());
                 List<String> pics = reviewSelVo.getPics();
                 pics.add(vo.getReviewPic());
             }
         }
-
         if (!reviewSelVoList.isEmpty()) {
             result.setScoreAvg(productProductAverageSelVo.getAvgProductScore());
             result.setReviewCnt(productProductAverageSelVo.getReviewCnt());
@@ -154,7 +138,7 @@ public class ProductService {
     }
 
 
-    //---------- 장바구니
+    // 장바구니
     public List<ProductBasketSelVo> productBasketSelVo() {
         ProductBasketSelDto dto = new ProductBasketSelDto();
         dto.setIuser(facade.getLoginUserPk());
@@ -178,7 +162,6 @@ public class ProductService {
             int result = productMapper.insBasket(dto);
             return new ResVo(dto.getProductCnt());
         }
-
         dto.setProductCnt(dto.getProductCnt() + productCnt);
         int upt = productMapper.uptBasketProductCnt(dto);
         return new ResVo(dto.getProductCnt());
@@ -196,7 +179,6 @@ public class ProductService {
     //---------- 찜하기
     public ResVo wishProduct(ProductLikeDto dto) {
         dto.setIuser(facade.getLoginUserPk());
-
         int result = productMapper.deleteLikeProduct(dto);
         if (result == 1) {
             return new ResVo(Const.FAIL);
