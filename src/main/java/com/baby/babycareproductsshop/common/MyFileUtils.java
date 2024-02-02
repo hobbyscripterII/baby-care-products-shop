@@ -27,10 +27,8 @@ public class MyFileUtils {
             File dir = new File(uploadPrefixPath, String.valueOf(path));
             dir.mkdirs(); // 폴더 생성
             File saveFile = new File(dir.getPath(), saveFileName);
-            String savedFilePath = saveFile.getPath();
-            log.info("savedFilePath = {}", savedFilePath);
             file.transferTo(saveFile); // 파일 저장
-            return saveFile.getPath();
+            return saveFileName;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RestApiException(AuthErrorCode.IMAGE_UPLOAD_FAIL);
