@@ -8,7 +8,8 @@
     <update id="updBoard">
         UPDATE t_board SET
         title = #{title},
-        contents = #{contents}
+        contents = #{contents},
+        board_code = #{boardCode}
         WHERE iboard = #{iboard} AND iuser = #{iuser}
     </update>
 
