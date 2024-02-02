@@ -15,6 +15,8 @@ public class BoardUpdDto {
     private List<MultipartFile> pics;
     @Schema(title = "게시글 PK", description = "")
     private int iboard;
+    @Schema(title = "게시판 카테고리", description = "")
+    private int boardCode;
     @Schema(title = "게시글 제목", description = "")
     private String title;
     @Schema(title = "게시글 내용", description = "")
