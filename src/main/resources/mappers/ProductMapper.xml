@@ -231,11 +231,7 @@
         A.rep_pic,
         A.price,
         B.product_cnt,
-        A.price * B.product_cnt AS totalPrice,
-        (SELECT SUM(B.product_cnt * A.price)
-        FROM t_product A
-        JOIN t_basket B ON A.iproduct = B.iproduct
-        )AS paymentAmount
+        A.price * B.product_cnt AS totalPrice
         FROM t_product A
         JOIN t_basket B ON A.iproduct = B.iproduct
         JOIN t_user C ON C.iuser = B.iuser
