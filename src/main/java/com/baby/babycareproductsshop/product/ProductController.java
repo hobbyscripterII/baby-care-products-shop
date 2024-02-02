@@ -25,14 +25,12 @@ public class ProductController {
     @PostMapping("/search")
     @Operation(summary = "검색")
     public List<ProductSearchVo> searchProduct(@RequestBody ProductSearchDto dto) {
-        log.info("dto = {}", dto);
         return service.searchProductSelVo(dto);
     }
 
     //--------------------------------------메인 페이지---------------------------------------------
     @GetMapping("/main")
     @Operation(summary = "메인화면 비로그인")
-
     public List<ProductMainSelVo> getNonLoginProduct() { // 비로그인
         return service.productMainSelVo();
     }
@@ -40,7 +38,6 @@ public class ProductController {
     //--------------------------------------메인 페이지---------------------------------------------
     @GetMapping("/login-main")
     @Operation(summary = "메인화면 로그인")
-
     public List<ProductMainSelVo> getLoginProduct() { // 로그인
         return service.productMainLoginSelVo();
     }
