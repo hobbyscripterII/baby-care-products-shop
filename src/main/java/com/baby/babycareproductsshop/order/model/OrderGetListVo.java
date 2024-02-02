@@ -26,8 +26,6 @@ public class OrderGetListVo {
     private int price;
     @Schema(title = "대표 사진", description = "")
     private String repPic;
-    @Schema(title = "환불 여부", description = "")
-    private int refundFl;
     @Schema(title = "상품 상세 정보", description = "")
     private List<items> items = new ArrayList<>();
 
