@@ -36,7 +36,7 @@ public class ReviewService {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         ReviewPicsInsDto insDto = new ReviewPicsInsDto();
         insDto.setIreview(dto.getIdetails());
-        String target = "review/" + dto.getIdetails();
+        String target = "/review/" + dto.getIdetails();
         if( dto.getPics() == null) {
             int insReview = mapper.insReview(dto);
             return new ResVo(Const.SUCCESS);
