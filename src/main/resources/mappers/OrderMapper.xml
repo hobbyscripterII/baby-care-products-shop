@@ -37,7 +37,7 @@
         phone_number = #{phoneNumber},
         ipayment_option = #{ipaymentOption},
         process_state = #{processState},
-        full_address = #{full_address}
+        full_address = #{fullAddress}
         WHERE (iorder, iuser) = (#{iorder}, #{iuser})
     </update>
 
