@@ -86,7 +86,8 @@ public class BoardController {
             String path = "/board/" + iboard;
 
             // db에 사진 저장 완료 시 사진 경로 문자열 반환 없으면 예외 던짐
-            String savedFilePath = myFileUtils.transferTo(pics, path);
+            // /board/284/41002566-f6ca-480b-baba-67bdd0d6d227.jpg
+            String savedFilePath = path + "/" + myFileUtils.transferTo(pics, path);
 
             if (Utils.isNotNull(savedFilePath)) {
                 BoardPicsDto picsDto = new BoardPicsDto();
