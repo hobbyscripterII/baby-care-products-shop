@@ -7,7 +7,6 @@ import com.baby.babycareproductsshop.security.AuthenticationFacade;
 import com.baby.babycareproductsshop.user.UserAddressMapper;
 import com.baby.babycareproductsshop.user.UserMapper;
 import com.baby.babycareproductsshop.user.model.UserSelAddressVo;
-import com.baby.babycareproductsshop.user.model.UserSelToModifyVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,6 +54,14 @@ public class OrderService {
             dto.setProcessState(1);
         }
         dto.setProcessState(2);
+        List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
+        for (UserSelAddressVo address : addresses) {
+            if (address.getIaddress() == dto.getIaddress()){
+                StringBuilder sb = new StringBuilder();
+                sb.append(address.getZipCode()).append("_").append(address.getAddress()).append("_").append(address.getAddressDetail());
+                dto.setFullAddress(sb.toString());
+            }
+        }
         int updResult = orderMapper.updOrder(dto);
 
         return new ResVo(Const.SUCCESS);
@@ -66,6 +73,11 @@ public class OrderService {
         dto.setIorder(iorder);
 
         OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
+        String[] fullAddress =resultVo.getFullAddress().split("_");
+        resultVo.setZipCode(fullAddress[0]);
+        resultVo.setAddress(fullAddress[1]);
+        resultVo.setAddressDetail(fullAddress[2]);
+
         List<OrderSelDetailsVo> products = orderDetailMapper.selOrderDetailsForPurchase(dto.getIorder());
         for (OrderSelDetailsVo product : products) {
             resultVo.setTotalOrderPrice(resultVo.getTotalOrderPrice() + product.getProductTotalPrice());
