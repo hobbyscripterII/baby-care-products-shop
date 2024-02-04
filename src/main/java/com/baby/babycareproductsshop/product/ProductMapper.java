@@ -50,4 +50,5 @@ public interface ProductMapper {
     int insProduct(ProductInsDto dto);
     int insProductPics(ProductInsDto dto);
     int updProductRepPic(ProductInsDto dto);
+    int updProductDetails(ProductInsDto dto);
 }

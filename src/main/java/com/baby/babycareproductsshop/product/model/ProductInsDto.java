@@ -16,8 +16,8 @@ public class ProductInsDto {
     private String productNm;
     @JsonIgnore
     private String productDetails;
-//    @Min(1)
-//    @Max(4)
+    @Min(1)
+    @Max(4)
     private int recommandAge;
     private int price;
     @JsonIgnore

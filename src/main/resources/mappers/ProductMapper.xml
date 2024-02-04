@@ -226,4 +226,10 @@
             product_details = #{productDetails}
         WHERE iproduct = #{iproduct}
     </update>
+
+    <update id="updProductDetails">
+        UPDATE t_product
+        SET product_details = #{productDetails}
+        WHERE iproduct = #{iproduct}
+    </update>
 </mapper>

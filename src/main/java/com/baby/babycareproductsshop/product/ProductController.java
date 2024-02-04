@@ -5,7 +5,6 @@ import com.baby.babycareproductsshop.product.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -110,10 +109,15 @@ public class ProductController {
     @Operation(summary = "상품 등록 기능")
     public ResVo postProduct(@RequestPart(name = "pics") List<MultipartFile> pics,
                              @RequestPart(name = "productDetails") MultipartFile productDetails,
-                             @RequestPart ProductInsDto dto) {
-        log.info("dto : {}", dto);
-        log.info("pics : {}", pics);
-        log.info("productDetails : {}", productDetails);
+                             @RequestPart @Valid ProductInsDto dto) {
         return service.postProduct(pics, productDetails, dto);
+    }
+
+    @PatchMapping
+    @Operation(summary = "상품 사진 변경")
+    public ResVo patchProductPics(@RequestPart List<MultipartFile> pics,
+                                  @RequestPart MultipartFile productDetails,
+                                  @RequestParam int iproduct) {
+        return service.patchProductPics(pics, productDetails, iproduct);
     }
 }

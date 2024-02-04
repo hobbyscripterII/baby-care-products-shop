@@ -203,4 +203,23 @@ public class ProductService {
         int updRepPicResult = productMapper.updProductRepPic(dto);
         return new ResVo(Const.SUCCESS);
     }
+
+    @Transactional
+    public ResVo patchProductPics(List<MultipartFile> pics, MultipartFile productDetail, int iproduct) {
+        String target = "/product/" + iproduct;
+        myFileUtils.delDirTrigger(target);
+        String saveFileNm = myFileUtils.transferTo(productDetail, target);
+        List<String> savePics = new ArrayList<>();
+        for (MultipartFile pic : pics) {
+            String fileNm = myFileUtils.transferTo(pic, target);
+            savePics.add(fileNm);
+        }
+        ProductInsDto dto = new ProductInsDto();
+        dto.setIproduct(iproduct);
+        dto.setProductDetails(saveFileNm);
+        dto.setPics(savePics);
+        int updRepPicResult = productMapper.updProductRepPic(dto);
+        int insPicsResult = productMapper.insProductPics(dto);
+        return new ResVo(1);
+    }
 }
