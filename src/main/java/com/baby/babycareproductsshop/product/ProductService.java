@@ -220,6 +220,7 @@ public class ProductService {
         dto.setPics(savePics);
         int updRepPicResult = productMapper.updProductRepPic(dto);
         int insPicsResult = productMapper.insProductPics(dto);
+        int updDetailsResult = productMapper.updProductDetails(dto);
         return new ResVo(1);
     }
 }
