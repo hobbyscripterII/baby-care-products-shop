@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         BindingResult bindingResult = ex.getBindingResult();
-        List<ErrorResponse.ValidError> errors = bindingResult.getFieldErrors()
-                .stream()
-                .map(ErrorResponse.ValidError::putError)
-                .toList();
-
+        List<ErrorResponse.ValidError> errors = new ArrayList<>();
+        long beforeTestTime = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(ErrorResponse.ValidError::putError)
+                    .toList();
+        }
+        long streamMeasurementTime = System.currentTimeMillis() - beforeTestTime;
+        log.info("streamMeasurementTime : {}", streamMeasurementTime);
+        List<ErrorResponse.ValidError> errors2 = new ArrayList<>();
+        beforeTestTime = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errors2.add(ErrorResponse.ValidError.putError(fieldError));
+            }
+        }
+        long forMeasurementTime = System.currentTimeMillis() - beforeTestTime;
+        log.info("forMeasurementTime : {}", forMeasurementTime);
         return handleExceptionInternal(CommonErrorCode.INVALID_PARAMETER, errors);
     }
 
