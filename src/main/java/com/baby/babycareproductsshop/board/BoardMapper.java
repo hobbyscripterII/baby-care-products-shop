@@ -27,4 +27,6 @@ public interface BoardMapper {
     List<String> selBoardPics(int iboard);
 
     List<BoardSelVo.comment> getComment(int iboard);
+
+    int getPostCnt(PageNation.Criteria criteria);
 }

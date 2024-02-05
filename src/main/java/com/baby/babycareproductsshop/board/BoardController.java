@@ -142,4 +142,16 @@ public class BoardController {
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }
+
+    @GetMapping("/pagenation")
+    @Operation(summary = "게시글 페이지네이션", description = "")
+    public int getPageNation(@RequestParam(name = "board_code") int boardCode, @RequestParam(name = "page") int page, @RequestParam(name = "keyword", required = false) String keyword) {
+        PageNation.Criteria criteria = new PageNation.Criteria();
+        criteria.setPage(page);
+        criteria.setBoardCode(boardCode);
+        criteria.setKeyword(keyword);
+        int cnt = service.getPostCnt(criteria);
+        PageNation pageNation = new PageNation(criteria, cnt);
+        return pageNation.getTotal(); // 프론트에서 게시글 총 개수만 필요
+    }
 }
