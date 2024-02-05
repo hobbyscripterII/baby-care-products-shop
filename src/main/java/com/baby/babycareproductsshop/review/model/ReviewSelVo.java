@@ -20,6 +20,8 @@ public class ReviewSelVo{
     private int productScore;
     @Schema(title = "리뷰 내용")
     private String contents;
+    @Schema(title = "상품 pk")
+    private int iproduct;
     @Schema(title = "리뷰 대표 사진")
     private String reqReviewPic;
     @Schema(title = "리뷰를 작성한 시간")

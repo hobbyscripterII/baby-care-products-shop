@@ -22,7 +22,7 @@
     </insert>
     <!-- 리뷰 목록 -->
     <select id="getReview">
-        SELECT B.ireview, A.nm, B.product_score, B.contents, DATE_FORMAT(B.created_at, '%Y-%m-%d') AS created_at , B.req_review_pic
+        SELECT B.iproduct, B.ireview, A.nm, B.product_score, B.contents, DATE_FORMAT(B.created_at, '%Y-%m-%d') AS created_at , B.req_review_pic
         ,P.product_nm
         FROM t_user AS A
         JOIN t_review AS B
