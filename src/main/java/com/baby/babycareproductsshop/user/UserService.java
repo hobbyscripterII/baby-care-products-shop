@@ -26,6 +26,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.baby.babycareproductsshop.common.Const.rtNm;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -43,10 +45,6 @@ public class UserService {
     //회원가입
     @Transactional
     public ResVo postSignUp(UserSignUpDto dto) {
-/*        UserSignInProcDto procDto = userMapper.selSignInInfoByUid(dto.getUid());
-        if (procDto != null) {
-            throw new RestApiException(AuthErrorCode.DUPLICATED_UID);
-        }*/
         String hashedUpw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedUpw);
         int insUserResult = userMapper.insUser(dto);
@@ -90,8 +88,8 @@ public class UserService {
         String rt = jwtTokenProvider.generateRefreshToken(myPrincipal);
 
         int rtCookieMaxAge = appProperties.getJwt().getRefreshCookieMaxAge();
-        myCookieUtils.deleteCookie(res, "refreshToken");
-        myCookieUtils.setCookie(res, "refreshToken", rt, rtCookieMaxAge);
+        myCookieUtils.deleteCookie(res, rtNm);
+        myCookieUtils.setCookie(res, rtNm, rt, rtCookieMaxAge);
 
         return UserSignInVo.builder()
                 .result(Const.SIGN_IN_SUCCESS)
@@ -141,7 +139,7 @@ public class UserService {
 
     //로그 아웃
     public ResVo signout(HttpServletResponse res) {
-        myCookieUtils.deleteCookie(res, "refreshToken");
+        myCookieUtils.deleteCookie(res, rtNm);
         return new ResVo(Const.SUCCESS);
     }
 
@@ -189,7 +187,7 @@ public class UserService {
 
     //accessToken 재발급
     public UserSignInVo getRefreshToken(HttpServletRequest req) {
-        Cookie cookie = myCookieUtils.getCookie(req, "refreshToken");
+        Cookie cookie = myCookieUtils.getCookie(req, rtNm);
         if (cookie == null) {
             return UserSignInVo.builder()
                     .result(Const.FAIL)
