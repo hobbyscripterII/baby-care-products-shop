@@ -24,6 +24,7 @@ public class JwtTokenProvider  {
     private final AppProperties appProperties;
     private final ObjectMapper om;
     private SecretKeySpec secretKeySpec;
+    private final String USER = "user";
 
     @PostConstruct
     public void init() {
@@ -51,7 +52,7 @@ public class JwtTokenProvider  {
         try {
             String json = om.writeValueAsString(principal);
             return Jwts.claims()
-                    .add("user", json)
+                    .add(USER, json)
                     .build();
         } catch (Exception e) {
             return null;
@@ -95,7 +96,7 @@ public class JwtTokenProvider  {
     public UserDetails getUserDetailsFromToken(String token) {
         try {
             Claims claims = getAllClaims(token);
-            String json = (String) claims.get("user");
+            String json = (String) claims.get(USER);
             MyPrincipal myPrincipal = om.readValue(json, MyPrincipal.class);
             return MyUserDetails.builder()
                     .myPrincipal(myPrincipal)

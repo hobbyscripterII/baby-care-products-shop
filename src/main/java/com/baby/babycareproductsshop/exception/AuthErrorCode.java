@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 있음.
+public enum AuthErrorCode implements ErrorCode {
     // 리뷰
     NOT_ALLOWED_PICS_SIZE(HttpStatus.NOT_FOUND, "사진은 최대 5장까지만 넣을 수 있습니다."),
     DEL_REVIEW_NOT_FAIL(HttpStatus.NOT_FOUND, "리뷰가 삭제되지 않았습니다."),
@@ -28,11 +28,10 @@ public enum AuthErrorCode implements ErrorCode { //enum : Const 대체 할 수 �
     IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "이미지 업로드에 실패했습니다."),
 
     // 회원
-    INVALID_ADDRESS_SIZE(HttpStatus.BAD_REQUEST, "주소는 최소 1개 최대 3개 까지 입력할 수 있습니다."),
+    INVALID_ADDRESS_SIZE(HttpStatus.BAD_REQUEST, "주소는 최소 1개 최대 3개 까지 저장할 수 있습니다."),
     DUPLICATED_UID(HttpStatus.BAD_REQUEST, "이미 사용중인 아이디입니다."),
     PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND, "비밀번호를 확인해주세요."),
     LOGIN_FAIL(HttpStatus.NOT_FOUND, "아이디와 비밀번호를 확인해주세요."),
-    NEED_SIGNIN(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "refresh-token 이 없습니다."),
     UNREGISTER_USER(HttpStatus.BAD_REQUEST, "탈퇴한 회원입니다."),
 

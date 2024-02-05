@@ -21,7 +21,6 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
     private final UserAddressMapper addressMapper;
-    private final UserMapper userMapper;
     private final AuthenticationFacade authenticationFacade;
 
     @Transactional
@@ -41,7 +40,6 @@ public class OrderService {
 
     public OrderInsVo getOrderForConfirm(int iorder) {
         OrderInsVo result = orderMapper.selOrderForConfirm(iorder);
-//        result.setAddresses(addressMapper.selUserAddress(iuser));
         result.setProducts(orderDetailMapper.selOrderDetailsForPurchase(iorder));
         result.setPaymentOptions(orderMapper.selPaymentOption());
         return result;
@@ -56,7 +54,7 @@ public class OrderService {
         dto.setProcessState(2);
         List<UserSelAddressVo> addresses = addressMapper.selUserAddress(dto.getIuser());
         for (UserSelAddressVo address : addresses) {
-            if (address.getIaddress() == dto.getIaddress()){
+            if (address.getIaddress() == dto.getIaddress()) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(address.getZipCode()).append("_").append(address.getAddress()).append("_").append(address.getAddressDetail());
                 dto.setFullAddress(sb.toString());
@@ -73,7 +71,7 @@ public class OrderService {
         dto.setIorder(iorder);
 
         OrderConfirmVo resultVo = orderMapper.selConfirmOrder(dto);
-        String[] fullAddress =resultVo.getFullAddress().split("_");
+        String[] fullAddress = resultVo.getFullAddress().split("_");
         resultVo.setZipCode(fullAddress[0]);
         resultVo.setAddress(fullAddress[1]);
         resultVo.setAddressDetail(fullAddress[2]);

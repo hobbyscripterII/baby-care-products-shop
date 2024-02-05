@@ -38,29 +38,6 @@ public class SecurityConfiguration {
                                         "/api/product/wish",
                                         "/api/product/cart",
                                         "/api/product/login-main"
-//                                        "/api/user/sign-in",
-//                                        "/api/user/sign-up",
-//                                        "/api/user/sign-up/**",
-//                                        "/api/user/refresh-token",
-//                                        "/api/product",
-//                                        "/api/product/search",
-//                                        "/api/product/main",
-//                                        "/api/product/pop-new-product",
-//                                        "/api/product/{iproduct}",
-//                                        "/error",
-//                                        "/err",
-//                                        "/",
-//                                        "/index.html",
-//                                        "/static/**",
-//                                        "/fimg/**",
-//                                        "/css/**",
-//                                        "/swagger.html",
-//                                        "/swagger-ui/**",
-//                                        "/v3/api-docs/**",
-//                                        "/assets/**", // *
-//                                        "/login",
-//                                        "/signUp",
-//                                        "/commu/read/**"
                                 ).authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/board").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/board").authenticated()
