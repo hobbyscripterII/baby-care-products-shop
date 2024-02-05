@@ -76,11 +76,9 @@
         LEFT JOIN t_wish_list L ON A.iproduct = L.iproduct
         LEFT JOIN t_user_child UC ON A.recommand_age = UC.ichild_age
         <where>
-
             <foreach collection="recommandAge" item="recommandAge" separator="or">
                 A.recommand_age = #{recommandAge}
             </foreach>
-
         </where>
         GROUP BY A.iproduct
     </select>
@@ -107,7 +105,7 @@
         )
     </select>
 
-    <select id="getProductByAgeRange">
+    <select id="getProductList">
         SELECT A.iproduct, A.imiddle, A.imain, A.product_nm, A.price, A.rc_fl, A.pop_fl, A.new_fl, A.rep_pic,
         COUNT(DISTINCT R.iorder) AS reviewCnt,
         IF(COUNT(L.iuser) > 0, 1, 0) AS likeProduct

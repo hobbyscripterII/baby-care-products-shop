@@ -47,12 +47,12 @@ public class ProductController {
     public List<ProductMainSelVo> getPopAndNewProduct() { //인기상품 & 신상품
         return service.productPopNewSelVo();
     }
-    //--------------------------------------월령별 상품 페이지---------------------------------------------
+    //--------------------------------------상품 조회 페이지---------------------------------------------
 
     @GetMapping
     @Operation(summary = "상품 조회 페이지")
     public List<ProductListSelVo> getProductList(ProductListDto dto) {
-        return service.getProductByAgeRange(dto);
+        return service.getProductList(dto);
     }
 
     //--------------------------------------상품 상세 보기---------------------------------------------

@@ -24,7 +24,7 @@ public interface ProductMapper {
     //상품 사진넣기
     List<String> selProductPics (int iproduct);
     //-- 상품조회페이지
-    List<ProductListSelVo> getProductByAgeRange(ProductListDto dto);
+    List<ProductListSelVo> getProductList(ProductListDto dto);
 
 
 
