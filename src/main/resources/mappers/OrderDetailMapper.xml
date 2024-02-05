@@ -13,7 +13,7 @@
     </insert>
 
     <select id="selOrderDetailsForPurchase">
-        SELECT B.product_nm, A.Product_cnt, A.product_total_price, B.rep_pic
+        SELECT iproduct, B.product_nm, A.Product_cnt, A.product_total_price, B.rep_pic
         FROM t_order_details A
         JOIN t_product B
         USING (iproduct)
