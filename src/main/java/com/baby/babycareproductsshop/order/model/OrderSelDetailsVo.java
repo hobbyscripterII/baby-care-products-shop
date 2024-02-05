@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class OrderSelDetailsVo {
+    @Schema(title = "상품 pk")
+    private int iproduct;
     @Schema(title = "상품 이름")
     private String productNm;
     @Schema(title = "상품 수량")

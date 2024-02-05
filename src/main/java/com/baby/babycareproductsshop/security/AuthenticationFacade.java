@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
     public MyUserDetails getLoginUser() {
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) {
+        if ("anonymousUser".equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
             return null;
         }
         return (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

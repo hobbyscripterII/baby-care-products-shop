@@ -14,7 +14,7 @@ import java.util.List;
 import static com.baby.babycareproductsshop.common.Const.*;
 
 @Data
-@Schema(title = "회원가입 시 필요한 고객 요청 데이터")
+@Schema(title = "회원가입 시 필요한 사용자 데이터")
 public class UserSignUpDto {
     @JsonIgnore
     private int iuser;
@@ -35,18 +35,6 @@ public class UserSignUpDto {
     @NotBlank(message = NM_IS_BLANK)
     private String nm;
 
-    @Schema(title = "우편 번호")
-    @NotBlank(message = ZIP_CODE_IS_BLANK)
-    private String zipCode;
-
-    @Schema(title = "주소")
-    @NotBlank(message = ADDRESS_IS_BLANK)
-    private String address;
-
-    @Schema(title = "상세 주소")
-    @NotBlank(message = ADDRESS_DETAIL_IS_BLANK)
-    private String addressDetail;
-
     @Schema(title = "전화번호")
     @NotNull(message = PHONE_NUMBER_IS_BLANK)
     @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}",
@@ -62,4 +50,17 @@ public class UserSignUpDto {
     @Schema(title = "자녀 정보")
     @Size(min = 1, max = 3, message = NOT_ALLOWED_CHILDREN_COUNT)
     private List<@Valid UserChildDto> children;
+
+    @Schema(title = "우편 번호")
+    @NotBlank(message = ZIP_CODE_IS_BLANK)
+    private String zipCode;
+
+    @Schema(title = "주소")
+    @NotBlank(message = ADDRESS_IS_BLANK)
+    private String address;
+
+    @Schema(title = "상세 주소")
+    @NotBlank(message = ADDRESS_DETAIL_IS_BLANK)
+    private String addressDetail;
+
 }
