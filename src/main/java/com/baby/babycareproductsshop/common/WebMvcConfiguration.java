@@ -22,10 +22,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer { //새로고침
     }
 
     // Converter 등록
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new ProcessStateCodeToStringConverter());
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        registry.addConverter(new ProcessStateCodeToStringConverter());
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
