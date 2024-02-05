@@ -30,7 +30,7 @@ public class OrderController {
         return service.postOrder(dto);
     }
 
-    @Operation(summary = "주문 및 결제 페이지 요청")
+    @Operation(summary = "주문 및 결제 페이지 요청", description = "iorder : 상품 구매 요청으로 생성된 iorder pk값")
     @GetMapping("/confirm")
     public OrderInsVo getOrderForConfirm(@RequestParam int iorder) {
         return service.getOrderForConfirm(iorder);
