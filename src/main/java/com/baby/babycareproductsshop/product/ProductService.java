@@ -215,6 +215,7 @@ public class ProductService {
             savePics.add(fileNm);
         }
         ProductInsDto dto = new ProductInsDto();
+        dto.setRepPic(savePics.get(0));
         dto.setIproduct(iproduct);
         dto.setProductDetails(saveFileNm);
         dto.setPics(savePics);
