@@ -55,8 +55,14 @@ public class ProductService {
     public List<ProductMainSelVo> productMainLoginSelVo() {
         ProductMainSelDto dto = new ProductMainSelDto();
         dto.setIuser(facade.getLoginUserPk());
-        Integer userChildAge = productMapper.userChildAge(dto.getIuser());
-        dto.setRecommandAge(userChildAge);
+
+        List<Integer> userChildAge = productMapper.userChildAge(dto.getIuser());
+        List<Integer> userChildAgelist = new ArrayList<>();
+        for (int i = 0; i <userChildAge.size(); i++) {
+            userChildAgelist.add(userChildAge.get(i));
+        }
+
+        dto.setRecommandAge(userChildAgelist);
         List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
         List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
         List<ProductMainSelVo> mainSelVo = new ArrayList<>();

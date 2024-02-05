@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Schema(title = "로그인 시 필요한 데이터")
 public class ProductMainSelDto {
@@ -14,7 +16,7 @@ public class ProductMainSelDto {
 
     @JsonIgnore
     @Schema(title = "유저자녀나이")
-    private int recommandAge;
+    private List<Integer> recommandAge;
 
     @Schema(title = "유저 PK")
     @JsonIgnore

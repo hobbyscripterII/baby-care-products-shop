@@ -19,7 +19,7 @@ public interface ProductMapper {
 
 
     // 유저자녀나이
-    Integer userChildAge(int iuser);
+    List<Integer> userChildAge(int iuser);
 
     //상품 사진넣기
     List<String> selProductPics (int iproduct);
