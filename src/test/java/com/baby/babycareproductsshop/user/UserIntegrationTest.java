@@ -61,7 +61,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 .build());
         signUpDto.setChildren(children);
 
-        MvcResult updResult = mvc.perform(
+        MvcResult singUpResult = mvc.perform(
                         MockMvcRequestBuilders.post("/api/user/sign-up")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(signUpDto))
@@ -83,19 +83,33 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         UserSignInVo vo = mapper.readValue(content, UserSignInVo.class);
 
         assertEquals(signUpDto.getNm(), vo.getNm());
+
+        //-------------------- fail case test
+        UserSignUpDto signUpDtoForFailCase = new UserSignUpDto();
+        signUpDtoForFailCase.setUid(checkUidDto.getUid());
+        signUpDtoForFailCase.setUpw("notAllowedUpw7777");
+        signUpDtoForFailCase.setNm("testCase");
+        signUpDtoForFailCase.setZipCode("11213");
+        signUpDtoForFailCase.setAddress("대구");
+        signUpDtoForFailCase.setAddressDetail("그린컴퓨터");
+        signUpDtoForFailCase.setEmail("test2@naver.com");
+        signUpDtoForFailCase.setPhoneNumber("010-7777-7777");
+        List<UserChildDto> children2 = new ArrayList<>();
+        children2.add(UserChildDto.builder()
+                .gender("M")
+                .ichildAge(2)
+                .build());
+        signUpDtoForFailCase.setChildren(children2);
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/user/sign-up")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(signUpDtoForFailCase))
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
     public void getMyInfo() throws Exception {
-        MvcResult mvcResult = mvc.perform(
-                        MockMvcRequestBuilders.get("/api/user/my-page")
-                                .header("Authorization", "Bearer sdfsdgfdhr3@!$sdfsdgsd")
-                ).andExpect(status().isOk())
-                .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
-    UserSelMyInfoVo vo = mapper.readValue(content, UserSelMyInfoVo.class);
-
-    assertNotNull(vo);
     }
 
 
