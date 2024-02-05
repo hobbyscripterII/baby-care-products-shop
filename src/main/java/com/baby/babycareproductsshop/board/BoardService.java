@@ -157,4 +157,8 @@ public class BoardService {
             throw new RestApiException(AuthErrorCode.GLOBAL_EXCEPTION);
         }
     }
+
+    public int getPostCnt(PageNation.Criteria criteria) {
+        return mapper.getPostCnt(criteria);
+    }
 }
