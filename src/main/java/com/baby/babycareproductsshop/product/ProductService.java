@@ -102,8 +102,10 @@ public class ProductService {
     // 인기 신상품
     public List<ProductMainSelVo> productPopNewSelVo() {
         try {
-            List<ProductMainSelVo> popList = productMapper.SelPopProduct();
-            List<ProductMainSelVo> newList = productMapper.SelNewProduct();
+            int iuser = facade.getLoginUserPk();
+
+            List<ProductMainSelVo> popList = productMapper.SelPopProduct(iuser);
+            List<ProductMainSelVo> newList = productMapper.SelNewProduct(iuser);
             Set<Integer> popIds = new HashSet<>();
             List<ProductMainSelVo> list = new ArrayList<>();
             for (int i = 0; i < popList.size() && popIds.size() < 8; i++) {
