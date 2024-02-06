@@ -53,9 +53,7 @@
         LEFT JOIN t_review R ON A.iproduct = R.iproduct
         LEFT JOIN t_wish_list L
         ON A.iproduct = L.iproduct
-        <if test="iuser != 0">
-            and L.iuser = #{iuser}
-        </if>
+        and L.iuser = #{iuser}
         WHERE A.new_fl = 1
         GROUP BY A.iproduct
     </select>
@@ -69,9 +67,7 @@
         ON A.iproduct = R.iproduct
         LEFT JOIN t_wish_list L
         ON A.iproduct = L.iproduct
-        <if test="iuser != 0">
-            and L.iuser = #{iuser}
-        </if>
+        and L.iuser = #{iuser}
         WHERE A.pop_fl = 1
         GROUP BY A.iproduct
     </select>
