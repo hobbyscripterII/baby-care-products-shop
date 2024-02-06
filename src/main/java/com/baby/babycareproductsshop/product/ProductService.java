@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -67,12 +68,15 @@ public class ProductService {
             ProductMainSelDto dto = new ProductMainSelDto();
             dto.setIuser(facade.getLoginUserPk());
 
-            List<Integer> userChildAge = productMapper.userChildAge(dto.getIuser());
-            List<Integer> userChildAgelist = new ArrayList<>();
-            for (int i = 0; i <userChildAge.size(); i++) {
-                userChildAgelist.add(userChildAge.get(i));
-            }
-            dto.setRecommandAge(userChildAgelist);
+            List<Integer> userChildAge = productMapper.userChildAge(dto.getIuser())
+                    .stream().collect(Collectors.toList());
+
+//            List<Integer> userChildAgelist = new ArrayList<>();
+//            for (int i = 0; i <userChildAge.size(); i++) {
+//                userChildAgelist.add(userChildAge.get(i));
+//            }
+
+            dto.setRecommandAge(userChildAge);
             List<ProductMainSelVo> list = productMapper.selProductMainByAge(dto);
             List<ProductMainSelVo> popNewList = this.productPopNewSelVo();
             List<ProductMainSelVo> mainSelVo = new ArrayList<>();
